@@ -1,11 +1,12 @@
 package com.mustywzki.projettechl3image.Algorithms;
 
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 
 public class Tools {
 
-    protected float[] RGBToHSV(int red, int green, int blue){
+    protected static float[] RGBToHSV(int red, int green, int blue){
         float[] hsv = new float[3];
 
         float r = red / 255.F;
@@ -49,7 +50,7 @@ public class Tools {
         return hsv;
     }
 
-    protected int HSVToRGB(float[] hsv){
+    protected static int HSVToRGB(float[] hsv, int alpha){
         float h = hsv[0];
         float s = hsv[1];
         float v = hsv[2];
@@ -102,10 +103,10 @@ public class Tools {
         green = (int) ((g + m) * 255);
         blue = (int) ((b + m) * 255);
 
-        return Color.rgb(red, green, blue);
+        return Color.argb(alpha, red, green, blue);
     }
 
-    protected int colorToGray(int pixel){
+    protected static int colorToGray(int pixel){
         double red = Color.red(pixel) * 0.3;
         double green = Color.green(pixel) * 0.59;
         double blue = Color.blue(pixel) * 0.11;
@@ -114,11 +115,11 @@ public class Tools {
         return Color.rgb(tmp, tmp, tmp);
     }
 
-    protected boolean isInside(float test, int start, int end){
+    protected static boolean isInside(float test, int start, int end){
         return (test >= start && test <= end);
     }
 
-    protected int[] max_min_red (int[] pixels){
+    protected static int[] max_min_red (int[] pixels){
         int max_red = 0, min_red = 255, red;
 
         for (int i = 0; i < pixels.length; i++){
@@ -132,7 +133,7 @@ public class Tools {
         return new int[] {max_red, min_red};
     }
 
-    protected int[] max_min_green (int[] pixels){
+    protected static int[] max_min_green (int[] pixels){
         int max_green = 0, min_green = 255, green;
 
         for (int i = 0; i < pixels.length; i++){
@@ -146,7 +147,7 @@ public class Tools {
         return new int[] {max_green, min_green};
     }
 
-    protected int[] max_min_blue (int[] pixels){
+    protected static int[] max_min_blue (int[] pixels){
         int max_blue = 0, min_blue = 255, blue;
 
         for (int i = 0; i < pixels.length; i++){
@@ -160,4 +161,24 @@ public class Tools {
         return new int[] {max_blue, min_blue};
     }
 
+    public static int[] getHistogram(Bitmap bmp) {
+        int[] hist = new int[256];
+        int[] tmpCopy = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+        for (int i = 0; i < tmpCopy.length; i++) {
+            int px = tmpCopy[i];
+            float[] hsv = Tools.RGBToHSV(Color.red(px), Color.green(px), Color.blue(px));
+            hist[(int) (hsv[2] * 255f)]++;
+        }
+        return hist;
+    }
+
+    public static int[] cumulativeHistogram(int[] hist){
+        int[] C = new int[256];
+        C[0] = hist[0];
+        for (int k = 1; k < hist.length; k++){
+            C[k] = hist[k] + C[k-1];
+        }
+        return C;
+    }
 }

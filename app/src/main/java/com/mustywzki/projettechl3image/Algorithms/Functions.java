@@ -5,105 +5,70 @@ import android.graphics.Color;
 
 public class Functions {
 
-    private Tools tools;
-    private int left_selected_color;
-    private int right_selected_color;
-
-    /* --- Getter - Setter --- */
-
-    public void setLeft_selected_color(int left_selected_color) {
-        this.left_selected_color = 0;
-    }
-
-    public void setRight_selected_color(int right_selected_color) {
-        this.right_selected_color = 360;
-    }
-
     /* --- Method --- */
 
-    public Functions(Tools tools){
-        this.tools = tools;
-    }
+    public static void toGray(Bitmap bmp, double red_coef, double green_coef, double blue_coef){
 
-    protected Bitmap toGray(Bitmap bmp){
-        Bitmap p_modif = bmp;
-        p_modif = p_modif.copy(p_modif.getConfig(), true);
-        int[] pixels = new int[p_modif.getWidth()*p_modif.getHeight()];
-        p_modif.getPixels(pixels, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        int[] colors = new int[p_modif.getWidth()*p_modif.getHeight()];
+        // Scaling RGB values to the specific range (equalizer)
+        red_coef = red_coef > 1.0 ? 1.0 : red_coef;
+        red_coef = red_coef < 0.0 ? 0.0 : red_coef;
 
-        for(int i = 0; i < pixels.length; i++) {
-            colors[i] = tools.colorToGray(pixels[i]);
+        blue_coef = blue_coef > 1.0 ? 1.0 : blue_coef;
+        blue_coef = blue_coef < 0.0 ? 0.0 : blue_coef;
+
+        green_coef = green_coef > 1.0 ? 1.0 : green_coef;
+        green_coef = green_coef < 0.0 ? 0.0 : green_coef;
+
+        // Copying the bitmap bmp's pixels into a int[] in order to perform the algorithm faster using getPixels()
+        int[] tmpCopy = new int[bmp.getHeight()*bmp.getWidth()];
+        bmp.getPixels(tmpCopy, 0, bmp.getWidth(), 0,0,bmp.getWidth(),bmp.getHeight());
+
+        // Applying gray filter
+        for(int i = 0; i < tmpCopy.length; i++) {
+            int currentPixel = tmpCopy[i];
+            double grayValue = red_coef * Color.red(currentPixel);
+            grayValue += blue_coef * Color.blue(currentPixel);
+            grayValue += green_coef * Color.green(currentPixel);
+            tmpCopy[i] = Color.rgb((int)grayValue,(int)grayValue,(int)grayValue);
         }
-
-        p_modif.setPixels(colors,0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        return p_modif;
+        bmp.setPixels(tmpCopy,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
     }
 
-    protected Bitmap colorize(Bitmap bmp){
-        Bitmap p_modif = bmp;
-        p_modif = p_modif.copy(p_modif.getConfig(), true);
-        int[] pixels = new int[p_modif.getWidth()*p_modif.getHeight()];
-        p_modif.getPixels(pixels, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        int[] colors = new int[p_modif.getWidth()*p_modif.getHeight()];
+    public static void colorize(Bitmap bmp, float hue) {
 
-        int red, green, blue;
-        int new_color = (int) (Math.random() * 360);
+        // Copying the bitmap bmp's pixels into a int[] in order to perform the algorithm faster using getPixels()
+        int[] tmpCopy = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
 
-        for(int i = 0; i < pixels.length; i++) {
-            red = Color.red(pixels[i]);
-            green = Color.green(pixels[i]);
-            blue = Color.blue(pixels[i]);
-            float[] hsv = tools.RGBToHSV(red, green, blue);
-            hsv[0] = new_color;
-
-            colors[i] = tools.HSVToRGB(hsv);
+        // Applying hue modifications
+        for (int i = 0; i < tmpCopy.length; i++) {
+            int currentPixel = tmpCopy[i];
+            float[] hsv = Tools.RGBToHSV(Color.red(currentPixel), Color.green(currentPixel), Color.blue(currentPixel)); // Getting HSV values for the currentPixel
+            hsv[0] = hue; // setting up the new hue selected
+            tmpCopy[i] = Tools.HSVToRGB(hsv, Color.alpha(currentPixel)); // Setting the HSV values back to RGB in order to set the modified pixel
         }
-
-        p_modif.setPixels(colors,0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        return p_modif;
+        bmp.setPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
-    // TODO Manage colors around 0 and around 360
-    protected Bitmap selected_color(Bitmap bmp, int change_left, int change_right) {
-        Bitmap p_modif = bmp;
-        p_modif = p_modif.copy(p_modif.getConfig(), true);
+    public static void keepColor(Bitmap bmp, float hue, float chromakey) {
+        hue = hue % 360f;
+        chromakey = chromakey % 180f;
+        int[] tmpCopy = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
 
-        int[] pixels = new int[p_modif.getWidth() * p_modif.getHeight()];
-        p_modif.getPixels(pixels, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        int[] colors = new int[p_modif.getWidth() * p_modif.getHeight()];
-
-        int red, green, blue;
-        left_selected_color = left_selected_color + change_left;
-        if (left_selected_color < 0)
-            left_selected_color = 0;
-        if (left_selected_color > 360)
-            left_selected_color = 360;
-        right_selected_color = right_selected_color + change_right;
-        if (right_selected_color < 0)
-            right_selected_color = 0;
-        if (right_selected_color > 360)
-            right_selected_color = 360;
-
-        for (int i = 0; i < pixels.length; i++) {
-            red = Color.red(pixels[i]);
-            green = Color.green(pixels[i]);
-            blue = Color.blue(pixels[i]);
-            float[] hsv = tools.RGBToHSV(red, green, blue);
-            if (!tools.isInside(hsv[0], left_selected_color, right_selected_color)){ //min : 0 ; max : 360
-                colors[i] = tools.colorToGray(pixels[i]);
+        for (int i = 0; i < tmpCopy.length; i++) {
+            int currentPixel = tmpCopy[i];
+            float[] hsvValues = Tools.RGBToHSV(Color.red(currentPixel), Color.green(currentPixel), Color.blue(currentPixel));
+            float diff = Math.abs(hsvValues[0] - hue);
+            if (!(Math.min(diff, 360 - diff) <= chromakey)) {
+                hsvValues[1] = 0;
             }
-            else{
-                colors[i] = tools.HSVToRGB(hsv);
-            }
-
+            tmpCopy[i] = Tools.HSVToRGB(hsvValues, Color.alpha(currentPixel));
         }
-
-        p_modif.setPixels(colors, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        return p_modif;
+        bmp.setPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
-    protected Bitmap change_saturation(Bitmap bmp, double saturation_change){
+    public static Bitmap change_saturation(Bitmap bmp, double saturation_change){
         Bitmap p_modif = bmp;
         p_modif = p_modif.copy(p_modif.getConfig(), true);
 
@@ -117,7 +82,7 @@ public class Functions {
             red = Color.red(pixels[i]);
             green = Color.green(pixels[i]);
             blue = Color.blue(pixels[i]);
-            float[] hsv = tools.RGBToHSV(red, green, blue);
+            float[] hsv = Tools.RGBToHSV(red, green, blue);
             hsv[1] += saturation_change;
             if (hsv[1] < 0){
                 hsv[1] = 0;
@@ -125,14 +90,14 @@ public class Functions {
             if (hsv[1] > 1){
                 hsv[1] = 1;
             }
-            colors[i] = tools.HSVToRGB(hsv);
+            colors[i] = Tools.HSVToRGB(hsv, Color.alpha(pixels[i]));
         }
 
         p_modif.setPixels(colors, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
         return p_modif;
     }
 
-    protected Bitmap change_brightness (Bitmap bmp, double brightness_change){
+    public static Bitmap change_brightness (Bitmap bmp, double brightness_change){
         Bitmap p_modif = bmp;
         p_modif = p_modif.copy(p_modif.getConfig(), true);
 
@@ -146,7 +111,7 @@ public class Functions {
             red = Color.red(pixels[i]);
             green = Color.green(pixels[i]);
             blue = Color.blue(pixels[i]);
-            float[] hsv = tools.RGBToHSV(red, green, blue);
+            float[] hsv = Tools.RGBToHSV(red, green, blue);
             hsv[2] += brightness_change;
             if (hsv[2] < 0){
                 hsv[2] = 0;
@@ -154,14 +119,14 @@ public class Functions {
             if (hsv[2] > 1){
                 hsv[2] = 1;
             }
-            colors[i] = tools.HSVToRGB(hsv);
+            colors[i] = Tools.HSVToRGB(hsv, Color.alpha(pixels[i]));
         }
 
         p_modif.setPixels(colors, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
         return p_modif;
     }
 
-    protected Bitmap negative(Bitmap bmp){
+    public static Bitmap negative(Bitmap bmp){
         Bitmap p_modif = bmp;
         p_modif = p_modif.copy(p_modif.getConfig(), true);
 
