@@ -28,7 +28,7 @@ public class Test {
             blue = Color.blue(pixels[i]);
 
             float[] hsv = tools.RGBToHSV(red, green, blue);
-            colors[i] = tools.HSVToRGB(hsv);
+            colors[i] = tools.HSVToRGB(hsv, Color.alpha(pixels[i]));
         }
 
         p_modif.setPixels(colors,0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());

@@ -1,3 +1,28 @@
 <resources>
-    <string name="app_name">projettechL3Image</string>
+    <string name="app_name">Picture_Editor</string>
+
+    <string name="picture_description">picture</string>
+    <string name="change_picture_button">Change picture</string>
+    <string name="reset_c_button">Reset</string>
+
+
+    <string name="filter_button">Filters</string>
+    <string name="egalisation_histogram_button">Egalisation histogram</string>
+    <string name="saturation_button">Change saturation</string>
+    <string name="brightness_button">Change brightness</string>
+    <string name="selected_color_button">Selected colors</string>
+    <string name="random_button">Random color</string>
+    <string name="negative_button">Negative</string>
+    <string name="linear_transformation_button">Linear extansion</string>
+    <string name="gray_button">Gray</string>
+
+    <string name="return_button">Return</string>
+
+    <string-array name="pictures">
+        <item>Choose the picture</item>
+        <item>Multicolor</item>
+        <item>Cat</item>
+        <item>Girl</item>
+    </string-array>
+
 </resources>
