@@ -76,64 +76,73 @@
                     android:id="@+id/filter_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="onClickProcessings"
                     android:text="@string/filter_button"
-                    android:textColor="#FF0000"/>
+                    android:textColor="#FF0000" />
 
                 <Button
                     android:id="@+id/egalisation_histogram_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="onClickProcessings"
                     android:text="@string/egalisation_histogram_button"
-                    android:textColor="#FF0000"/>
+                    android:textColor="#FF0000" />
 
                 <Button
                     android:id="@+id/saturation_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="onClickProcessings"
                     android:text="@string/saturation_button"
-                    android:textColor="#FF0000"/>
+                    android:textColor="#FF0000" />
 
                 <Button
                     android:id="@+id/brightness_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="onClickProcessings"
                     android:text="@string/brightness_button"
-                    android:textColor="#FF0000"/>
+                    android:textColor="#FF0000" />
 
                 <Button
                     android:id="@+id/selected_color_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="onClickProcessings"
                     android:text="@string/selected_color_button"
-                    android:textColor="#FF0000"/>
+                    android:textColor="#FF0000" />
 
                 <Button
                     android:id="@+id/random_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="onClickProcessings"
                     android:text="@string/random_button"
-                    android:textColor="#FF0000"/>
+                    android:textColor="#FF0000" />
 
                 <Button
                     android:id="@+id/negative_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="onClickAlgorithms"
                     android:text="@string/negative_button"
-                    android:textColor="#FF0000"/>
+                    android:textColor="#FF0000" />
 
                 <Button
                     android:id="@+id/linear_transformation_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="onClickProcessings"
                     android:text="@string/linear_transformation_button"
-                    android:textColor="#FF0000"/>
+                    android:textColor="#FF0000" />
 
                 <Button
                     android:id="@+id/gray_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="onClickProcessings"
                     android:text="@string/gray_button"
-                    android:textColor="#FF0000"/>
+                    android:textColor="#FF0000" />
 
             </LinearLayout>
 

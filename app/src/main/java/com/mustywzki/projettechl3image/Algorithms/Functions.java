@@ -68,13 +68,10 @@ public class Functions {
         bmp.setPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
-    public static Bitmap change_saturation(Bitmap bmp, double saturation_change){
-        Bitmap p_modif = bmp;
-        p_modif = p_modif.copy(p_modif.getConfig(), true);
-
-        int[] pixels = new int[p_modif.getWidth() * p_modif.getHeight()];
-        p_modif.getPixels(pixels, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        int[] colors = new int[p_modif.getWidth() * p_modif.getHeight()];
+    public static void change_saturation(Bitmap bmp, double saturation_change){
+        int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+        int[] colors = new int[bmp.getWidth() * bmp.getHeight()];
 
         int red, green, blue;
 
@@ -93,17 +90,13 @@ public class Functions {
             colors[i] = Tools.HSVToRGB(hsv, Color.alpha(pixels[i]));
         }
 
-        p_modif.setPixels(colors, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        return p_modif;
+        bmp.setPixels(colors, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
-    public static Bitmap change_brightness (Bitmap bmp, double brightness_change){
-        Bitmap p_modif = bmp;
-        p_modif = p_modif.copy(p_modif.getConfig(), true);
-
-        int[] pixels = new int[p_modif.getWidth() * p_modif.getHeight()];
-        p_modif.getPixels(pixels, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        int[] colors = new int[p_modif.getWidth() * p_modif.getHeight()];
+    public static void change_brightness (Bitmap bmp, double brightness_change){
+        int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+        int[] colors = new int[bmp.getWidth() * bmp.getHeight()];
 
         int red, green, blue;
 
@@ -122,17 +115,13 @@ public class Functions {
             colors[i] = Tools.HSVToRGB(hsv, Color.alpha(pixels[i]));
         }
 
-        p_modif.setPixels(colors, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        return p_modif;
+        bmp.setPixels(colors, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
-    public static Bitmap negative(Bitmap bmp){
-        Bitmap p_modif = bmp;
-        p_modif = p_modif.copy(p_modif.getConfig(), true);
-
-        int[] pixels = new int[p_modif.getWidth()*p_modif.getHeight()];
-        p_modif.getPixels(pixels, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        int[] colors = new int[p_modif.getWidth()*p_modif.getHeight()];
+    public static void negative(Bitmap bmp){
+        int[] pixels = new int[bmp.getWidth()*bmp.getHeight()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+        int[] colors = new int[bmp.getWidth()*bmp.getHeight()];
         int red, green, blue;
 
         for(int i = 0; i < pixels.length; i++) {
@@ -147,7 +136,6 @@ public class Functions {
             colors[i] = Color.rgb(red, green, blue);
         }
 
-        p_modif.setPixels(colors,0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        return p_modif;
+        bmp.setPixels(colors,0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 }
