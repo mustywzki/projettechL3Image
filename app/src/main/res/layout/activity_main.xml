@@ -17,6 +17,26 @@
 
 
         <Button
+            android:id="@+id/camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="launchCamera"
+            android:text="Button"
+            app:layout_constraintStart_toEndOf="@+id/change_picture_button"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:text="Button"
+            app:layout_constraintEnd_toStartOf="@+id/reset_c_button"
+            app:layout_constraintStart_toEndOf="@+id/camera"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
             android:id="@+id/change_picture_button"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="wrap_content"
@@ -157,6 +177,7 @@
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
         </FrameLayout>
 
 
