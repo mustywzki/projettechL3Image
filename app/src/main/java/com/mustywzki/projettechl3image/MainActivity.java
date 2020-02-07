@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.mustywzki.projettechl3image.Algorithms.Contrast;
 import com.mustywzki.projettechl3image.Algorithms.Functions;
+import com.mustywzki.projettechl3image.Algorithms.Tools;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -149,6 +150,9 @@ public class MainActivity extends AppCompatActivity {
         t1.setText(text1);
         t2.setText(text2);
         t3.setText(text3);
+
+        buttons_view.removeAllViews();
+        buttons_view.addView(slider_bars);
     }
 
     public void onClickAlgorithms(View v) {
@@ -164,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.random_button:
                 currentAlgorithm = AlgorithmType.COLORIZE;
                 seekbars_load(true,"Hue",359,false,"",1,false, "",1);
+                bar1.setProgress((int) (Math.random() * 100));
                 break;
             case R.id.selected_color_button:
                 currentAlgorithm = AlgorithmType.COLOR_RANGE;
@@ -176,21 +181,15 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.linear_transformation_button:
                 currentAlgorithm = AlgorithmType.DYNAMIC_EXTENSION;
-                seekbars_load(false,"",1,false,"",1,false,"",1);
                 break;
             case R.id.egalisation_histogram_button:
                 currentAlgorithm = AlgorithmType.HIST_EQUALIZER;
-                //seekbars_load(false,"",1,false,"",1,false,"",1);
                 break;
             case R.id.negative_button:
                 currentAlgorithm = AlgorithmType.NEGATIVE;
                 break;
         }
         applyProcessings();
-
-        // Change layout
-        buttons_view.removeAllViews();
-        buttons_view.addView(slider_bars);
     }
 
     public void applyProcessings(){
@@ -214,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case HIST_EQUALIZER:
                 processedBmp = currentBmp.copy(currentBmp.getConfig(),true);
-                //Functions.histogramEqualizer(Utils.getHistogram(processedBmp),processedBmp);
+                Contrast.histogramEqualizer(Tools.getHistogram(processedBmp),processedBmp);
                 break;
             case NEGATIVE:
                 processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
