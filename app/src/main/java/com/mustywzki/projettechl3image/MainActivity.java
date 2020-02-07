@@ -78,9 +78,28 @@ public class MainActivity extends AppCompatActivity {
 
         currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         savedBmp = currentBmp;
-
+        
         setSeekBar();
         setGalleryButton();
+        //Permission Caméra et launch caméra
+                camera.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED){
+                        String[] permissions = {Manifest.permission.CAMERA};
+                        requestPermissions(permissions, PERMISSION_CODE);
+                    }
+                    else{
+                        launchCamera();
+                    }
+
+                }
+                else{
+                    launchCamera();
+                }
+            }
+        });
+
 
     }
 
@@ -92,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
+
+
 
     public void getImageFromGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK);
