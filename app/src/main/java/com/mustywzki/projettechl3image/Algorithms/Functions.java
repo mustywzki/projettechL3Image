@@ -68,7 +68,8 @@ public class Functions {
         bmp.setPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
-    public static void change_saturation(Bitmap bmp, double saturation_change){
+    // TODO change in red color when add
+    public static void change_saturation(Bitmap bmp, float saturation_change){
         int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
         int[] colors = new int[bmp.getWidth() * bmp.getHeight()];
@@ -80,7 +81,7 @@ public class Functions {
             green = Color.green(pixels[i]);
             blue = Color.blue(pixels[i]);
             float[] hsv = Tools.RGBToHSV(red, green, blue);
-            hsv[1] += saturation_change;
+            hsv[1] += (saturation_change - 50)*0.02;
             if (hsv[1] < 0){
                 hsv[1] = 0;
             }
@@ -93,7 +94,7 @@ public class Functions {
         bmp.setPixels(colors, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
-    public static void change_brightness (Bitmap bmp, double brightness_change){
+    public static void change_brightness (Bitmap bmp, float brightness_change){
         int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
         int[] colors = new int[bmp.getWidth() * bmp.getHeight()];
@@ -105,7 +106,7 @@ public class Functions {
             green = Color.green(pixels[i]);
             blue = Color.blue(pixels[i]);
             float[] hsv = Tools.RGBToHSV(red, green, blue);
-            hsv[2] += brightness_change;
+            hsv[2] += (brightness_change - 50)*0.02;
             if (hsv[2] < 0){
                 hsv[2] = 0;
             }
