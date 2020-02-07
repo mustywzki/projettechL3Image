@@ -4,11 +4,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,48 +28,19 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE=1;
     static final int RESULT_LOAD_IMG=1000;
     private static final int PERMISSION_CODE = 1001;
+
     // Seekbar tab
     private View slider_bars;
     private FrameLayout buttons_view;
     private HorizontalScrollView button_scroll;
     private SeekBar bar1, bar2, bar3;
     private boolean isSliding;
+    private AlgorithmType currentAlgorithm;
 
-
-    public boolean Camera(){
-        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
-    }
-
-    public void launchCamera(View view){
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-    }
-
-
-    public void getImageFromGallery(){
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, RESULT_LOAD_IMG);
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap photo = (Bitmap) extras.get("data");
-            imageView.setImageBitmap(photo);
-        }
-        else if(requestCode == RESULT_LOAD_IMG){
-            imageView.setImageURI(data.getData());
-
-        }
-
-    }
-
-
-
+    // GUI-related members
+    private ImageView imageView;
+    private Bitmap currentBmp, processedBmp, savedBmp;
+    Button camera_button, gallery_button;
 
     public enum AlgorithmType {
         GRAY,
@@ -87,24 +58,72 @@ public class MainActivity extends AppCompatActivity {
         BRIGHTNESS
     }
 
-    private AlgorithmType currentAlgorithm;
-
-    // GUI-related members
-    private ImageView imageView;
-    private Bitmap currentBmp;
-    private Bitmap processedBmp;
-    private Bitmap savedBmp;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                View.SYSTEM_UI_FLAG_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                View.SYSTEM_UI_FLAG_IMMERSIVE);
 
-        Button camera = findViewById(R.id.camera);
-        Button gallery = findViewById(R.id.gallery);
+        imageView = findViewById(R.id.picture);
+        camera_button = findViewById(R.id.camera_button);
+        gallery_button = findViewById(R.id.gallery_button);
 
-        gallery.setOnClickListener(new View.OnClickListener(){
+        slider_bars = View.inflate(this,R.layout.seekbar_view,null);
+        button_scroll = findViewById(R.id.button_scroll);
+        buttons_view = findViewById(R.id.button_view);
+
+        currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        savedBmp = currentBmp;
+
+        setSeekBar();
+        setGalleryButton();
+
+    }
+
+    public boolean Camera(){
+        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+
+    public void launchCamera(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    public void getImageFromGallery(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, RESULT_LOAD_IMG);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // For camera change
+            // TODO wrong picture place/size
+            Bundle extras = data.getExtras();
+            savedBmp = (Bitmap) extras.get("data");
+        }
+        else if(requestCode == RESULT_LOAD_IMG){
+            Uri uri = data.getData();
+            try{
+                savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            }
+            catch (Exception e){
+
+            }
+        }
+        currentBmp = savedBmp;
+        imageView.setImageBitmap(savedBmp);
+
+    }
+
+    public void setGalleryButton(){
+        gallery_button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                     if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
@@ -124,30 +143,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(!Camera()){
-            camera.setEnabled(false);
+            camera_button.setEnabled(false);
         }
-
-
-
-
-
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                View.SYSTEM_UI_FLAG_FULLSCREEN |
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_IMMERSIVE);
-
-        imageView = findViewById(R.id.picture);
-
-
-        slider_bars = View.inflate(this,R.layout.seekbar_view,null);
-        button_scroll = findViewById(R.id.button_scroll);
-        buttons_view = findViewById(R.id.button_view);
-
-        currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        savedBmp = currentBmp;
-
-        setSeekBar();
-
     }
 
     public void setSeekBar(){

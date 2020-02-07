@@ -17,6 +17,8 @@
     <string name="gray_button">Gray</string>
 
     <string name="return_button">Return</string>
+    <string name="camera_string">camera</string>
+    <string name="gallery_string">gallery</string>
 
     <string-array name="pictures">
         <item>Choose the picture</item>
