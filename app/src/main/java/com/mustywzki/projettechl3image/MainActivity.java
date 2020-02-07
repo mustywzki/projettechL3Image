@@ -81,38 +81,8 @@ public class MainActivity extends AppCompatActivity {
         
         setSeekBar();
         setGalleryButton();
-        //Permission Caméra et launch caméra
-                camera.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.CAMERA};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else{
-                        launchCamera();
-                    }
-
-                }
-                else{
-                    launchCamera();
-                }
-            }
-        });
-
-
+        setCameraButton();
     }
-
-    public boolean Camera(){
-        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
-    }
-
-    public void launchCamera(){
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-    }
-
-
 
     public void getImageFromGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -166,6 +136,35 @@ public class MainActivity extends AppCompatActivity {
         if(!Camera()){
             camera_button.setEnabled(false);
         }
+    }
+
+    public boolean Camera(){
+        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+
+    public void launchCamera(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    public void setCameraButton(){
+        camera_button.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED){
+                        String[] permissions = {Manifest.permission.CAMERA};
+                        requestPermissions(permissions, PERMISSION_CODE);
+                    }
+                    else{
+                        launchCamera();
+                    }
+
+                }
+                else{
+                    launchCamera();
+                }
+            }
+        });
     }
 
     public void setSeekBar(){
