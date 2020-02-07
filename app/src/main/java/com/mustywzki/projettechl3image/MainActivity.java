@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         SOBEL_FILTER,
         LAPLACIEN_FILTER,
         NEGATIVE,
-        HUE,
+        SATURATION,
         BRIGHTNESS
     }
 
@@ -266,6 +266,16 @@ public class MainActivity extends AppCompatActivity {
             case R.id.negative_button:
                 currentAlgorithm = AlgorithmType.NEGATIVE;
                 break;
+            case R.id.saturation_button:
+                currentAlgorithm = AlgorithmType.SATURATION;
+                seekbars_load(true,"Hue",100,false,"",1,false, "",1);
+
+                bar1.setProgress(50);
+                break;
+            case R.id.brightness_button:
+                currentAlgorithm = AlgorithmType.BRIGHTNESS;
+                seekbars_load(true,"Hue",100,false,"",1,false, "",1);
+                bar1.setProgress(50);
         }
         applyProcessings();
     }
@@ -296,6 +306,14 @@ public class MainActivity extends AppCompatActivity {
             case NEGATIVE:
                 processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
                 Functions.negative(processedBmp);
+                break;
+            case SATURATION:
+                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
+                Functions.change_saturation(processedBmp,bar1.getProgress());
+                break;
+            case BRIGHTNESS:
+                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
+                Functions.change_brightness(processedBmp,bar1.getProgress());
 
         }
         imageView.setImageBitmap(processedBmp);

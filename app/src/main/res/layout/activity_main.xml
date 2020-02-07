@@ -112,24 +112,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="onClickAlgorithms"
-                        android:text="@string/egalisation_histogram_button"
-                        android:textColor="#FF0000" />
+                        android:text="@string/egalisation_histogram_button"/>
 
                     <Button
                         android:id="@+id/saturation_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="onClickAlgorithms"
-                        android:text="@string/saturation_button"
-                        android:textColor="#FF0000" />
+                        android:text="@string/saturation_button"/>
 
                     <Button
                         android:id="@+id/brightness_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="onClickAlgorithms"
-                        android:text="@string/brightness_button"
-                        android:textColor="#FF0000" />
+                        android:text="@string/brightness_button"/>
 
                     <Button
                         android:id="@+id/selected_color_button"
