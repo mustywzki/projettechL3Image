@@ -5,27 +5,16 @@ import android.graphics.Color;
 
 public class Contrast {
 
-    private Tools tools;
-    private Functions functions;
-
-    public Contrast (Tools tools, Functions functions){
-        this.tools = tools;
-        this.functions = functions;
-    }
-
     // TODO contraste with HSV and linear extension less
-    protected Bitmap linear_transformation(Bitmap bmp){
-        Bitmap p_modif = bmp;
-        p_modif = p_modif.copy(p_modif.getConfig(), true);
-
-        int[] pixels = new int[p_modif.getWidth()*p_modif.getHeight()];
-        p_modif.getPixels(pixels, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        int[] colors = new int[p_modif.getWidth()*p_modif.getHeight()];
+    public static void linear_transformation(Bitmap bmp){
+        int[] pixels = new int[bmp.getWidth()*bmp.getHeight()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+        int[] colors = new int[bmp.getWidth()*bmp.getHeight()];
         int red, green, blue;
 
-        int[] LUTred = createLUTred(tools.max_min_red(pixels));
-        int[] LUTgreen = createLUTgreen(tools.max_min_green(pixels));
-        int[] LUTblue = createLUTblue(tools.max_min_blue(pixels));
+        int[] LUTred = createLUTred(Tools.max_min_red(pixels));
+        int[] LUTgreen = createLUTgreen(Tools.max_min_green(pixels));
+        int[] LUTblue = createLUTblue(Tools.max_min_blue(pixels));
 
         for (int i = 0; i < pixels.length; i++){
             red = Color.red(pixels[i]);
@@ -39,8 +28,7 @@ public class Contrast {
             colors[i] = Color.rgb(red, green, blue);
         }
 
-        p_modif.setPixels(colors, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        return p_modif;
+        bmp.setPixels(colors, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
     public static void histogramEqualizer(int[] hist, Bitmap bmp){
@@ -59,9 +47,9 @@ public class Contrast {
         bmp.setPixels(pixels,0,bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
     }
 
-    protected int[] createLUTred (int[] max_min_array){
-        int max_red = max_min_array[0];
-        int min_red = max_min_array[1];
+    protected static int[] createLUTred (int[] max_min_red){
+        int max_red = max_min_red[0];
+        int min_red = max_min_red[1];
         int[] LUTred = new int[256];
 
         for (int ng = 0; ng < 256; ng++){
@@ -75,9 +63,9 @@ public class Contrast {
         return LUTred;
     }
 
-    protected int[] createLUTgreen (int[] max_min_array){
-        int max_green = max_min_array[2];
-        int min_green = max_min_array[3];
+    protected static int[] createLUTgreen (int[] max_min_green){
+        int max_green = max_min_green[0];
+        int min_green = max_min_green[1];
         int[] LUTgreen = new int[256];
 
         for (int ng = 0; ng < 256; ng++){
@@ -91,9 +79,9 @@ public class Contrast {
         return LUTgreen;
     }
 
-    protected int[] createLUTblue (int[] max_min_array) {
-        int max_blue = max_min_array[4];
-        int min_blue = max_min_array[5];
+    protected static int[] createLUTblue (int[] max_min_blue) {
+        int max_blue = max_min_blue[0];
+        int min_blue = max_min_blue[1];
         int[] LUTblue = new int[256];
 
         for (int ng = 0; ng < 256; ng++) {
