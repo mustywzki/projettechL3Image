@@ -25,6 +25,7 @@
     <string name="return_button">Return</string>
     <string name="camera_string">camera</string>
     <string name="gallery_string">gallery</string>
+    <string name="save_button" >Save</string>
 
     <string-array name="pictures">
         <item>Choose the picture</item>
