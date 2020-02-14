@@ -5,16 +5,8 @@ import android.graphics.Color;
 
 public class Convolution {
 
-    private Tools tools;
-    private Functions functions;
-
-    public Convolution(Tools tools, Functions functions){
-        this.tools = tools;
-        this.functions = functions;
-    }
-
     // TODO doesn't create a gray picture (there is yellow) when negative value, not in 0-255
-    private Bitmap applyfilter(Bitmap bmp, double[] core, int div){
+    private static void applyfilter(Bitmap bmp, double[] core, int div){
         int[] pixels = new int[bmp.getWidth()*bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
 
@@ -52,87 +44,83 @@ public class Convolution {
             }
         }
 
-        Bitmap p_modif = bmp;
-        p_modif = p_modif.copy(p_modif.getConfig(), true);
-        p_modif.setPixels(colors, 0, p_modif.getWidth(), 0, 0, p_modif.getWidth(), p_modif.getHeight());
-        return p_modif;
+        bmp.setPixels(colors,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
     }
 
-    public Bitmap filter_Moyenneur(Bitmap bmp, int size){
+    public static void filter_Moyenneur(Bitmap bmp, int size){
         double[] core = new double[size];
         for (int i = 0; i < core.length; i++){
             core[i] = 1.0;
         }
-        return applyfilter(bmp, core, size);
+        applyfilter(bmp, core, size);
     }
 
-    public Bitmap filter_Gaussien(Bitmap bmp){
+    public static void filter_Gaussien(Bitmap bmp){
         double[] core = {1.0, 2.0, 3.0, 2.0, 1.0
                         ,2.0, 6.0, 8.0, 6.0, 2.0
                         ,3.0, 8.0, 10.0, 8.0, 3.0
                         ,2.0, 6.0, 8.0, 6.0, 2.0
                         ,1.0, 2.0, 3.0, 2.0, 1.0};
-        return applyfilter(bmp, core, 98);
+        applyfilter(bmp, core, 98);
     }
 
     /* --- Prewitt --- */
 
-    public Bitmap filter_Prewitt(Bitmap bmp){
-        bmp = filter_Prewitt_horizontal(bmp);
-        bmp = filter_Prewitt_vertical(bmp);
-        return bmp;
+    public static void filter_Prewitt(Bitmap bmp){
+        filter_Prewitt_horizontal(bmp);
+        filter_Prewitt_vertical(bmp);
     }
 
-    public Bitmap filter_Prewitt_horizontal(Bitmap bmp){
+    public static void filter_Prewitt_horizontal(Bitmap bmp){
         double[] core = {-1, 0, 1
                         ,-1, 0, 1
                         ,-1, 0, 1};
-        return applyfilter(bmp, core, 1);
+        applyfilter(bmp, core, 1);
     }
 
-    public Bitmap filter_Prewitt_vertical(Bitmap bmp){
+    public static void filter_Prewitt_vertical(Bitmap bmp){
         double[] core = {-1, -1, -1
                         ,0, 0, 0
                         ,1, 1, 1};
-        return applyfilter(bmp, core, 1);
+        applyfilter(bmp, core, 1);
     }
 
     /* --- Sobel --- */
 
-    public Bitmap filter_Sobel(Bitmap bmp){
-        bmp = filter_Prewitt_horizontal(bmp);
-        bmp = filter_Prewitt_vertical(bmp);
-        return bmp;
+    public static void filter_Sobel(Bitmap bmp){
+        filter_Prewitt_horizontal(bmp);
+        filter_Prewitt_vertical(bmp);
+
     }
 
-    public Bitmap filter_Sobel_horizontal(Bitmap bmp){
+    public static void filter_Sobel_horizontal(Bitmap bmp){
         double[] core = {-1, 0, 1
                         ,-2, 0, 2
                         ,-1, 0, 1};
-        return applyfilter(bmp, core, 1);
+        applyfilter(bmp, core, 1);
     }
 
-    public Bitmap filter_Sobel_vertical(Bitmap bmp){
+    public static void filter_Sobel_vertical(Bitmap bmp){
         double[] core = {-1, -2, -1
                         ,0, 0, 0
                         ,1, 2, 1};
-        return applyfilter(bmp, core, 1);
+        applyfilter(bmp, core, 1);
     }
 
     /* --- Laplacien --- */
 
-    public Bitmap filter_Laplacier_4(Bitmap bmp){
+    public static void filter_Laplacier_4(Bitmap bmp){
         double[] core = {0, 1, 0
                         ,1, -4, 1
                         ,0, 1, 0};
-        return applyfilter(bmp, core, 1);
+        applyfilter(bmp, core, 1);
     }
 
-    public Bitmap filter_Laplacier_8(Bitmap bmp){
+    public static void filter_Laplacier_8(Bitmap bmp){
         double[] core = {1, 1, 1
                         ,1, -8, 1
                         ,1, 1, 1};
-        return applyfilter(bmp, core, 1);
+        applyfilter(bmp, core, 1);
     }
 
 }
