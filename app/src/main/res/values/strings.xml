@@ -16,6 +16,12 @@
     <string name="linear_transformation_button">Linear extansion</string>
     <string name="gray_button">Gray</string>
 
+    <string name="average_button">Average</string>
+    <string name="gaussian_button">Gaussian 5*5</string>
+    <string name="prewitt_button">Prewitt</string>
+    <string name="sobel_button">Sobel</string>
+    <string name="laplacian_button">Laplacian</string>
+
     <string name="return_button">Return</string>
     <string name="camera_string">camera</string>
     <string name="gallery_string">gallery</string>

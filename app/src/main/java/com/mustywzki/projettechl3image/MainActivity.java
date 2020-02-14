@@ -84,13 +84,104 @@ public class MainActivity extends AppCompatActivity {
         setCameraButton();
     }
 
-    public void getImageFromGallery(){
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, RESULT_LOAD_IMG);
+    public void onClickReset(View v){
+        currentBmp = savedBmp;
+        processedBmp = savedBmp;
+        imageView.setImageBitmap(savedBmp);
     }
 
-    @Override
+    public void onClickReturn(View v) {
+        currentAlgorithm = null;
+        currentBmp = processedBmp;
+        buttons_view.removeAllViews();
+        buttons_view.addView(button_scroll);
+    }
+
+    public void onClickAlgorithms(View v) {
+        switch (v.getId()) {
+            case R.id.gray_button:
+                currentAlgorithm = AlgorithmType.GRAY;
+                seekbars_load(true,"Red",100,true,"Green",100,true,"Blue",100);
+                // Default bars
+                bar1.setProgress(30);
+                bar2.setProgress(59);
+                bar3.setProgress(11);
+                break;
+            case R.id.random_button:
+                currentAlgorithm = AlgorithmType.COLORIZE;
+                seekbars_load(true,"Hue",359,false,"",1,false, "",1);
+                bar1.setProgress((int) (Math.random() * 100));
+                break;
+            case R.id.selected_color_button:
+                currentAlgorithm = AlgorithmType.COLOR_RANGE;
+                seekbars_load(true,"Hue",359,true,"Chroma Key",180,false,"",1);
+                break;
+            case R.id.filter_button:
+                //currentAlgorithm = AlgorithmType.CONVOLUTION;
+                //seekbars_load(true,"Range",128,false,"",1,false,"",1);
+                //bar1.setProgress(64);
+                break;
+            case R.id.linear_transformation_button:
+                currentAlgorithm = AlgorithmType.DYNAMIC_EXTENSION;
+                break;
+            case R.id.egalisation_histogram_button:
+                currentAlgorithm = AlgorithmType.HIST_EQUALIZER;
+                break;
+            case R.id.negative_button:
+                currentAlgorithm = AlgorithmType.NEGATIVE;
+                break;
+            case R.id.saturation_button:
+                currentAlgorithm = AlgorithmType.SATURATION;
+                seekbars_load(true,"Hue",100,false,"",1,false, "",1);
+                bar1.setProgress(50);
+                break;
+            case R.id.brightness_button:
+                currentAlgorithm = AlgorithmType.BRIGHTNESS;
+                seekbars_load(true,"Hue",100,false,"",1,false, "",1);
+                bar1.setProgress(50);
+        }
+        applyProcessings();
+    }
+
+    public void applyProcessings(){
+
+        switch (currentAlgorithm){
+            case GRAY:
+                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
+                Functions.toGray(processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
+                break;
+            case COLORIZE:
+                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
+                Functions.colorize(processedBmp,bar1.getProgress());
+                break;
+            case COLOR_RANGE:
+                processedBmp = currentBmp.copy(currentBmp.getConfig(),true);
+                Functions.keepColor(processedBmp,bar1.getProgress(),bar2.getProgress());
+                break;
+            case DYNAMIC_EXTENSION:
+                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
+                Contrast.linear_transformation(processedBmp);
+                break;
+            case HIST_EQUALIZER:
+                processedBmp = currentBmp.copy(currentBmp.getConfig(),true);
+                Contrast.histogramEqualizer(Tools.getHistogram(processedBmp),processedBmp);
+                break;
+            case NEGATIVE:
+                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
+                Functions.negative(processedBmp);
+                break;
+            case SATURATION:
+                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
+                Functions.change_saturation(processedBmp,bar1.getProgress());
+                break;
+            case BRIGHTNESS:
+                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
+                Functions.change_brightness(processedBmp,bar1.getProgress());
+
+        }
+        imageView.setImageBitmap(processedBmp);
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -132,19 +223,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        if(!Camera()){
+        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
             camera_button.setEnabled(false);
         }
     }
 
-    public boolean Camera(){
-        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
-    }
-
-    public void launchCamera(){
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    public void getImageFromGallery(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, RESULT_LOAD_IMG);
     }
 
     public void setCameraButton(){
@@ -165,6 +252,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void launchCamera(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 
     public void setSeekBar(){
@@ -231,7 +323,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // Fonction qui permet de load les seekbars pour être plus efficace (éviter la redondance)
     public void seekbars_load(boolean visible1, String text1, int maxVal1, boolean visible2, String text2, int maxVal2, boolean visible3, String text3, int maxVal3) {
         TextView t1 = slider_bars.findViewById(R.id.textView1), t2 = slider_bars.findViewById(R.id.textView2), t3 = slider_bars.findViewById(R.id.textView3);
         bar1.setVisibility(visible1 ? View.VISIBLE : View.INVISIBLE);
@@ -249,107 +340,4 @@ public class MainActivity extends AppCompatActivity {
         buttons_view.removeAllViews();
         buttons_view.addView(slider_bars);
     }
-
-    public void onClickAlgorithms(View v) {
-        switch (v.getId()) {
-            case R.id.gray_button:
-                currentAlgorithm = AlgorithmType.GRAY;
-                seekbars_load(true,"Red",100,true,"Green",100,true,"Blue",100);
-                // Default bars
-                bar1.setProgress(30);
-                bar2.setProgress(59);
-                bar3.setProgress(11);
-                break;
-            case R.id.random_button:
-                currentAlgorithm = AlgorithmType.COLORIZE;
-                seekbars_load(true,"Hue",359,false,"",1,false, "",1);
-                bar1.setProgress((int) (Math.random() * 100));
-                break;
-            case R.id.selected_color_button:
-                currentAlgorithm = AlgorithmType.COLOR_RANGE;
-                seekbars_load(true,"Hue",359,true,"Chroma Key",180,false,"",1);
-                break;
-            case R.id.filter_button:
-                //currentAlgorithm = AlgorithmType.CONVOLUTION;
-                //seekbars_load(true,"Range",128,false,"",1,false,"",1);
-                //bar1.setProgress(64);
-                break;
-            case R.id.linear_transformation_button:
-                currentAlgorithm = AlgorithmType.DYNAMIC_EXTENSION;
-                break;
-            case R.id.egalisation_histogram_button:
-                currentAlgorithm = AlgorithmType.HIST_EQUALIZER;
-                break;
-            case R.id.negative_button:
-                currentAlgorithm = AlgorithmType.NEGATIVE;
-                break;
-            case R.id.saturation_button:
-                currentAlgorithm = AlgorithmType.SATURATION;
-                seekbars_load(true,"Hue",100,false,"",1,false, "",1);
-
-                bar1.setProgress(50);
-                break;
-            case R.id.brightness_button:
-                currentAlgorithm = AlgorithmType.BRIGHTNESS;
-                seekbars_load(true,"Hue",100,false,"",1,false, "",1);
-                bar1.setProgress(50);
-        }
-        applyProcessings();
-    }
-
-    public void applyProcessings(){
-
-        switch (currentAlgorithm){
-            case GRAY:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
-                Functions.toGray(processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
-                break;
-            case COLORIZE:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
-                Functions.colorize(processedBmp,bar1.getProgress());
-                break;
-            case COLOR_RANGE:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(),true);
-                Functions.keepColor(processedBmp,bar1.getProgress(),bar2.getProgress());
-                break;
-            case DYNAMIC_EXTENSION:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
-                Contrast.linear_transformation(processedBmp);
-                break;
-            case HIST_EQUALIZER:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(),true);
-                Contrast.histogramEqualizer(Tools.getHistogram(processedBmp),processedBmp);
-                break;
-            case NEGATIVE:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
-                Functions.negative(processedBmp);
-                break;
-            case SATURATION:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
-                Functions.change_saturation(processedBmp,bar1.getProgress());
-                break;
-            case BRIGHTNESS:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
-                Functions.change_brightness(processedBmp,bar1.getProgress());
-
-        }
-        imageView.setImageBitmap(processedBmp);
-    }
-
-    public void onClickReset(View v){
-        currentBmp = savedBmp;
-        processedBmp = savedBmp;
-        imageView.setImageBitmap(savedBmp);
-    }
-
-    public void onClickReturn(View v) {
-        switch (v.getId()) {
-            case R.id.backButton:
-                currentAlgorithm = null;
-                currentBmp = processedBmp;
-                buttons_view.removeAllViews();
-                buttons_view.addView(button_scroll);
-        }
-    }
-
 }
