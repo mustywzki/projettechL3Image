@@ -35,7 +35,9 @@ public class Convolution {
                         int id_core = (int) (j * line + i);
 
                         newRed += Color.red(pixels[id_color]) * (core[id_core] / div);
+
                         newGreen += Color.green(pixels[id_color]) * (core[id_core] / div);
+
                         newBlue += Color.blue(pixels[id_color]) * (core[id_core] / div);
                     }
                 }

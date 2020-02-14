@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         savedBmp = currentBmp;
+        processedBmp = currentBmp;
         
         setSeekBar();
         setGalleryButton();
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         buttons_view.addView(button_scroll);
     }
 
-    public void onClickSave(View v){
+    public void onClickSave(View v) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -132,17 +133,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-
         String root = Environment.getExternalStorageDirectory().toString();
         System.out.println(root);
         File myDir = new File(root + "/piceditor");
         myDir.mkdirs();
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String fname = "PicEditor_"+ timeStamp +".jpg";
+        String fname = "PicEditor_" + timeStamp + ".jpg";
 
         File file = new File(myDir, fname);
-        if (file.exists()) file.delete ();
+        if (file.exists()) file.delete();
         try {
             FileOutputStream out = new FileOutputStream(file);
             processedBmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
             out.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
     }
    
     public void onClickReturnFilters(View v){
