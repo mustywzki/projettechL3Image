@@ -92,9 +92,8 @@
                         android:id="@+id/filter_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="onClickAlgorithms"
-                        android:text="@string/filter_button"
-                        android:textColor="#FF0000" />
+                        android:onClick="onClickView"
+                        android:text="@string/filter_button"/>
 
                     <Button
                         android:id="@+id/egalisation_histogram_button"

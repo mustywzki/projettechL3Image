@@ -12,38 +12,48 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:id="@+id/average_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onClickView"
                 android:text="@string/average_button">
 
             </Button>
 
             <Button
+                android:id="@+id/gaussian_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onClickAlgorithms"
                 android:text="@string/gaussian_button">
 
             </Button>
 
             <Button
+                android:id="@+id/prewitt_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onClickView"
                 android:text="@string/prewitt_button">
 
             </Button>
 
             <Button
+                android:id="@+id/sobel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onClickView"
                 android:text="@string/sobel_button">
 
             </Button>
 
             <Button
+                android:id="@+id/laplacian_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onClickView"
                 android:text="@string/laplacian_button">
-
+                match_parent
             </Button>
         </LinearLayout>
 

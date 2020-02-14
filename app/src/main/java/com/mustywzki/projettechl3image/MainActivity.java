@@ -22,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.mustywzki.projettechl3image.Algorithms.Contrast;
+import com.mustywzki.projettechl3image.Algorithms.Convolution;
 import com.mustywzki.projettechl3image.Algorithms.Functions;
 import com.mustywzki.projettechl3image.Algorithms.Tools;
 
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_CODE = 1001;
 
     // Seekbar tab
-    private View slider_bars;
+    private View slider_bars, filter_view, average_view, laplacien_view, prewitt_view, sobel_view;
     private FrameLayout buttons_view;
     private HorizontalScrollView button_scroll;
     private SeekBar bar1, bar2, bar3;
@@ -60,14 +61,21 @@ public class MainActivity extends AppCompatActivity {
         COLOR_RANGE,
         DYNAMIC_EXTENSION,
         HIST_EQUALIZER,
-        AVERAGE_FILTER,
-        GAUSSIAN_FILTER,
-        PREWITT_FILTER,
-        SOBEL_FILTER,
-        LAPLACIEN_FILTER,
         NEGATIVE,
         SATURATION,
-        BRIGHTNESS
+        BRIGHTNESS,
+        AVERAGE_3x3,
+        AVERAGE_7x7,
+        AVERAGE_15x15,
+        GAUSSIAN_5x5,
+        PREWITT_HOR,
+        PREWITT_VER,
+        PREWITT_ALL,
+        SOBEL_HOR,
+        SOBEL_VER,
+        SOBEL_ALL,
+        LAPLACIEN_4,
+        LAPLACIEN_8
     }
 
     @Override
@@ -80,11 +88,16 @@ public class MainActivity extends AppCompatActivity {
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                 View.SYSTEM_UI_FLAG_IMMERSIVE);
 
+        slider_bars = View.inflate(this,R.layout.seekbar_view,null);
+        filter_view = View.inflate(this, R.layout.filter_view, null);
+        average_view = View.inflate(this, R.layout.average_filter_view, null);
+        laplacien_view = View.inflate(this, R.layout.laplacien_filter_view, null);
+        prewitt_view = View.inflate(this, R.layout.prewitt_filter_view, null);
+        sobel_view = View.inflate(this, R.layout.sobel_filter_view, null);
+
         imageView = findViewById(R.id.picture);
         camera_button = findViewById(R.id.camera_button);
         gallery_button = findViewById(R.id.gallery_button);
-
-        slider_bars = View.inflate(this,R.layout.seekbar_view,null);
         button_scroll = findViewById(R.id.button_scroll);
         buttons_view = findViewById(R.id.button_view);
 
@@ -95,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
         setGalleryButton();
         setCameraButton();
     }
+
+    /* --- OnClick functions --- */
 
     public void onClickReset(View v){
         currentBmp = savedBmp;
@@ -135,6 +150,37 @@ public class MainActivity extends AppCompatActivity {
             out.close();
         } catch (Exception e) {
             e.printStackTrace();
+    }
+   
+    public void onClickReturnFilters(View v){
+        currentAlgorithm = null;
+        currentBmp = processedBmp;
+        buttons_view.removeAllViews();
+        buttons_view.addView(filter_view);
+    }
+
+    public void onClickView(View v){
+        switch (v.getId()){
+            case R.id.filter_button:
+                buttons_view.removeAllViews();
+                buttons_view.addView(filter_view);
+                break;
+            case R.id.average_button:
+                buttons_view.removeAllViews();
+                buttons_view.addView(average_view);
+                break;
+            case R.id.prewitt_button:
+                buttons_view.removeAllViews();
+                buttons_view.addView(prewitt_view);
+                break;
+            case R.id.sobel_button:
+                buttons_view.removeAllViews();
+                buttons_view.addView(sobel_view);
+                break;
+            case R.id.laplacian_button:
+                buttons_view.removeAllViews();
+                buttons_view.addView(laplacien_view);
+                break;
         }
     }
 
@@ -157,11 +203,6 @@ public class MainActivity extends AppCompatActivity {
                 currentAlgorithm = AlgorithmType.COLOR_RANGE;
                 seekbars_load(true,"Hue",359,true,"Chroma Key",180,false,"",1);
                 break;
-            case R.id.filter_button:
-                //currentAlgorithm = AlgorithmType.CONVOLUTION;
-                //seekbars_load(true,"Range",128,false,"",1,false,"",1);
-                //bar1.setProgress(64);
-                break;
             case R.id.linear_transformation_button:
                 currentAlgorithm = AlgorithmType.DYNAMIC_EXTENSION;
                 break;
@@ -180,127 +221,121 @@ public class MainActivity extends AppCompatActivity {
                 currentAlgorithm = AlgorithmType.BRIGHTNESS;
                 seekbars_load(true,"Hue",100,false,"",1,false, "",1);
                 bar1.setProgress(50);
+                break;
+            case R.id.average_3_button:
+                currentAlgorithm = AlgorithmType.AVERAGE_3x3;
+                break;
+            case R.id.average_7_button:
+                currentAlgorithm = AlgorithmType.AVERAGE_7x7;
+                break;
+            case R.id.average_15_button:
+                currentAlgorithm = AlgorithmType.AVERAGE_15x15;
+                break;
+            case R.id.gaussian_button:
+                currentAlgorithm = AlgorithmType.GAUSSIAN_5x5;
+                break;
+            case R.id.prewitt_hor_button:
+                currentAlgorithm = AlgorithmType.PREWITT_HOR;
+                break;
+            case R.id.prewitt_ver_button:
+                currentAlgorithm = AlgorithmType.PREWITT_VER;
+                break;
+            case R.id.prewitt_all_button:
+                currentAlgorithm = AlgorithmType.PREWITT_ALL;
+                break;
+            case R.id.sobel_hor_button:
+                currentAlgorithm = AlgorithmType.SOBEL_HOR;
+                break;
+            case R.id.sobel_ver_button:
+                currentAlgorithm = AlgorithmType.SOBEL_VER;
+                break;
+            case R.id.sobel_all_button:
+                currentAlgorithm = AlgorithmType.SOBEL_ALL;
+                break;
+            case R.id.laplacian_4_button:
+                currentAlgorithm = AlgorithmType.LAPLACIEN_4;
+                break;
+            case R.id.laplacian_8_button:
+                currentAlgorithm = AlgorithmType.LAPLACIEN_8;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + v.getId());
         }
         applyProcessings();
     }
 
     public void applyProcessings(){
+        processedBmp = currentBmp.copy(currentBmp.getConfig(),true);
 
         switch (currentAlgorithm){
             case GRAY:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
                 Functions.toGray(processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
                 break;
             case COLORIZE:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
                 Functions.colorize(processedBmp,bar1.getProgress());
                 break;
             case COLOR_RANGE:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(),true);
                 Functions.keepColor(processedBmp,bar1.getProgress(),bar2.getProgress());
                 break;
             case DYNAMIC_EXTENSION:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
                 Contrast.linear_transformation(processedBmp);
                 break;
             case HIST_EQUALIZER:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(),true);
-                Contrast.histogramEqualizer(Tools.getHistogram(processedBmp),processedBmp);
                 break;
             case NEGATIVE:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
                 Functions.negative(processedBmp);
                 currentBmp = processedBmp;
                 currentAlgorithm = null;
                 break;
             case SATURATION:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
                 Functions.change_saturation(processedBmp,bar1.getProgress());
                 break;
             case BRIGHTNESS:
-                processedBmp = currentBmp.copy(currentBmp.getConfig(), true);
                 Functions.change_brightness(processedBmp,bar1.getProgress());
-
+                break;
+            case AVERAGE_3x3:
+                Convolution.filter_Moyenneur(processedBmp, 9);
+                break;
+            case AVERAGE_7x7:
+                Convolution.filter_Moyenneur(processedBmp, 49);
+                break;
+            case AVERAGE_15x15:
+                Convolution.filter_Moyenneur(processedBmp, 225);
+                break;
+            case GAUSSIAN_5x5:
+                Convolution.filter_Gaussien(processedBmp);
+                break;
+            case PREWITT_HOR:
+                Convolution.filter_Prewitt_horizontal(processedBmp);
+                break;
+            case PREWITT_VER:
+                Convolution.filter_Prewitt_vertical(processedBmp);
+                break;
+            case PREWITT_ALL:
+                Convolution.filter_Prewitt(processedBmp);
+                break;
+            case SOBEL_HOR:
+                Convolution.filter_Sobel_horizontal(processedBmp);
+                break;
+            case SOBEL_VER:
+                Convolution.filter_Sobel_vertical(processedBmp);
+                break;
+            case SOBEL_ALL:
+                Convolution.filter_Sobel(processedBmp);
+                break;
+            case LAPLACIEN_4:
+                Convolution.filter_Laplacier_4(processedBmp);
+                break;
+            case LAPLACIEN_8:
+                Convolution.filter_Laplacier_8(processedBmp);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + currentAlgorithm);
         }
         imageView.setImageBitmap(processedBmp);
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            // For camera change
-            // TODO wrong picture place/size
-            Bundle extras = data.getExtras();
-            savedBmp = (Bitmap) extras.get("data");
-        }
-        else if(requestCode == RESULT_LOAD_IMG){
-            Uri uri = data.getData();
-            try{
-                savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-            }
-            catch (Exception e){
-
-            }
-        }
-        currentBmp = savedBmp;
-        imageView.setImageBitmap(savedBmp);
-
-    }
-
-    public void setGalleryButton(){
-        gallery_button.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else{
-                        getImageFromGallery();
-                    }
-
-                }
-                else{
-                    getImageFromGallery();
-                }
-            }
-        });
-
-        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-            camera_button.setEnabled(false);
-        }
-    }
-
-    public void getImageFromGallery(){
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, RESULT_LOAD_IMG);
-    }
-
-    public void setCameraButton(){
-        camera_button.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.CAMERA};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else{
-                        launchCamera();
-                    }
-
-                }
-                else{
-                    launchCamera();
-                }
-            }
-        });
-    }
-
-    public void launchCamera(){
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-    }
+    /* --- SeekBar functions --- */
 
     public void setSeekBar(){
         // Option sliders listeners
@@ -382,5 +417,82 @@ public class MainActivity extends AppCompatActivity {
 
         buttons_view.removeAllViews();
         buttons_view.addView(slider_bars);
+    }
+
+    /* --- Camera and Gallery buttons --- */
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            savedBmp = (Bitmap) extras.get("data");
+        }
+        else if(requestCode == RESULT_LOAD_IMG){
+            Uri uri = data.getData();
+            try{
+                savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            }
+            catch (Exception e){
+
+            }
+        }
+        currentBmp = savedBmp;
+        imageView.setImageBitmap(savedBmp);
+
+    }
+
+    public void setGalleryButton(){
+        gallery_button.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
+                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                        requestPermissions(permissions, PERMISSION_CODE);
+                    }
+                    else{
+                        getImageFromGallery();
+                    }
+
+                }
+                else{
+                    getImageFromGallery();
+                }
+            }
+        });
+
+        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+            camera_button.setEnabled(false);
+        }
+    }
+
+    public void getImageFromGallery(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, RESULT_LOAD_IMG);
+    }
+
+    public void setCameraButton(){
+        camera_button.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED){
+                        String[] permissions = {Manifest.permission.CAMERA};
+                        requestPermissions(permissions, PERMISSION_CODE);
+                    }
+                    else{
+                        launchCamera();
+                    }
+
+                }
+                else{
+                    launchCamera();
+                }
+            }
+        });
+    }
+
+    public void launchCamera(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 }
