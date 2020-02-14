@@ -17,10 +17,22 @@
     <string name="gray_button">Gray</string>
 
     <string name="average_button">Average</string>
+    <string name="average_3_button">3*3</string>
+    <string name="average_7_button">7*7</string>
+    <string name="average_15_button">15*15</string>
+
     <string name="gaussian_button">Gaussian 5*5</string>
+
+    <string name="laplacian_button">Laplacian</string>
+    <string name="laplacian_4_button">4cx</string>
+    <string name="laplacian_8_button">8cx</string>
+
     <string name="prewitt_button">Prewitt</string>
     <string name="sobel_button">Sobel</string>
-    <string name="laplacian_button">Laplacian</string>
+    <string name="horizontal_filter">Horizontal</string>
+    <string name="vertical_filter">Vertical</string>
+    <string name="hor_ver_filter">All</string>
+
 
     <string name="return_button">Return</string>
     <string name="camera_string">camera</string>
