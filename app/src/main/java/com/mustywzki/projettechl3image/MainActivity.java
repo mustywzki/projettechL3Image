@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,17 @@ import com.mustywzki.projettechl3image.Algorithms.Contrast;
 import com.mustywzki.projettechl3image.Algorithms.Convolution;
 import com.mustywzki.projettechl3image.Algorithms.Functions;
 import com.mustywzki.projettechl3image.Algorithms.Tools;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE=1;
@@ -112,6 +124,34 @@ public class MainActivity extends AppCompatActivity {
         buttons_view.addView(button_scroll);
     }
 
+    public void onClickSave(View v){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissions, PERMISSION_CODE);
+            }
+        }
+
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        System.out.println(root);
+        File myDir = new File(root + "/piceditor");
+        myDir.mkdirs();
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String fname = "PicEditor_"+ timeStamp +".jpg";
+
+        File file = new File(myDir, fname);
+        if (file.exists()) file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            processedBmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+    }
+   
     public void onClickReturnFilters(View v){
         currentAlgorithm = null;
         currentBmp = processedBmp;
@@ -141,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
                 buttons_view.removeAllViews();
                 buttons_view.addView(laplacien_view);
                 break;
-
         }
     }
 
@@ -245,6 +284,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case NEGATIVE:
                 Functions.negative(processedBmp);
+                currentBmp = processedBmp;
+                currentAlgorithm = null;
                 break;
             case SATURATION:
                 Functions.change_saturation(processedBmp,bar1.getProgress());
