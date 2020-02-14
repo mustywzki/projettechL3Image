@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE=1;
     static final int RESULT_LOAD_IMG=1000;
     private static final int PERMISSION_CODE = 1001;
-
+    Uri image_uri = null;
     // Seekbar tab
     private View slider_bars, filter_view, average_view, laplacien_view, prewitt_view, sobel_view;
     private FrameLayout buttons_view;
@@ -425,20 +426,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            savedBmp = (Bitmap) extras.get("data");
+            try {
+                savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
         }
         else if(requestCode == RESULT_LOAD_IMG){
             Uri uri = data.getData();
             try{
                 savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+
             }
             catch (Exception e){
 
             }
         }
         currentBmp = savedBmp;
-        imageView.setImageBitmap(savedBmp);
+        imageView.setImageURI(image_uri);
+
 
     }
 
@@ -493,7 +501,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void launchCamera(){
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        ContentValues values= new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "New Picture");
+        values.put (MediaStore.Images.Media.DESCRIPTION, "From the Camera");
+        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 }
