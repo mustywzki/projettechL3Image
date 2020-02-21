@@ -19,11 +19,13 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.mustywzki.projettechl3image.Algorithms.Contrast;
 import com.mustywzki.projettechl3image.Algorithms.Convolution;
 import com.mustywzki.projettechl3image.Algorithms.Functions;
+import com.mustywzki.projettechl3image.Algorithms.FunctionsRS;
 import com.mustywzki.projettechl3image.Algorithms.Tools;
 
 import java.io.File;
@@ -44,11 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
     // Seekbar tab
     private View slider_bars, filter_view, average_view, laplacien_view, prewitt_view, sobel_view;
+    private Switch switchbutton;
     private FrameLayout buttons_view;
     private HorizontalScrollView button_scroll;
     private SeekBar bar1, bar2, bar3;
-    private boolean isSliding;
+    private boolean isSliding, isRenderscript;
     private AlgorithmType currentAlgorithm;
+    private FunctionsRS functionsRS;
 
     // GUI-related members
     private ImageView imageView;
@@ -100,9 +104,13 @@ public class MainActivity extends AppCompatActivity {
         gallery_button = findViewById(R.id.gallery_button);
         button_scroll = findViewById(R.id.button_scroll);
         buttons_view = findViewById(R.id.button_view);
+        switchbutton = findViewById(R.id.renderscript_switch);
+
+        functionsRS = new FunctionsRS();
 
         currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         savedBmp = currentBmp;
+
         
         setSeekBar();
         setGalleryButton();
@@ -124,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         buttons_view.addView(button_scroll);
     }
 
-    public void onClickSave(View v){
+    public void onClickSave(View v) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -139,10 +147,10 @@ public class MainActivity extends AppCompatActivity {
         myDir.mkdirs();
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String fname = "PicEditor_"+ timeStamp +".jpg";
+        String fname = "PicEditor_" + timeStamp + ".jpg";
 
         File file = new File(myDir, fname);
-        if (file.exists()) file.delete ();
+        if (file.exists()) file.delete();
         try {
             FileOutputStream out = new FileOutputStream(file);
             processedBmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
@@ -150,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
             out.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
     }
    
     public void onClickReturnFilters(View v){
@@ -185,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAlgorithms(View v) {
+        isRenderscript = switchbutton.isChecked();
         switch (v.getId()) {
             case R.id.gray_button:
                 currentAlgorithm = AlgorithmType.GRAY;
@@ -269,13 +279,19 @@ public class MainActivity extends AppCompatActivity {
 
         switch (currentAlgorithm){
             case GRAY:
-                Functions.toGray(processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
+                if (isRenderscript)
+                    functionsRS.toGrayRS(getApplicationContext(), processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
+                else
+                    Functions.toGray(processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
                 break;
             case COLORIZE:
                 Functions.colorize(processedBmp,bar1.getProgress());
                 break;
             case COLOR_RANGE:
-                Functions.keepColor(processedBmp,bar1.getProgress(),bar2.getProgress());
+                if (isRenderscript)
+                    functionsRS.keepColorRS(getApplicationContext(), processedBmp,bar1.getProgress(),bar2.getProgress());
+                else
+                    Functions.keepColor(processedBmp,bar1.getProgress(),bar2.getProgress());
                 break;
             case DYNAMIC_EXTENSION:
                 Contrast.linear_transformation(processedBmp);
