@@ -3,6 +3,8 @@ package com.mustywzki.projettechl3image.Algorithms;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+import java.sql.SQLOutput;
+
 public class Convolution {
 
     // TODO doesn't create a gray picture (there is yellow) when negative value, not in 0-255
@@ -35,7 +37,9 @@ public class Convolution {
                         int id_core = (int) (j * line + i);
 
                         newRed += Color.red(pixels[id_color]) * (core[id_core] / div);
+
                         newGreen += Color.green(pixels[id_color]) * (core[id_core] / div);
+
                         newBlue += Color.blue(pixels[id_color]) * (core[id_core] / div);
                     }
                 }

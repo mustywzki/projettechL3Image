@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE=1;
     static final int RESULT_LOAD_IMG=1000;
     private static final int PERMISSION_CODE = 1001;
-
+    Uri image_uri = null;
     // Seekbar tab
     private View slider_bars, filter_view, average_view, laplacien_view, prewitt_view, sobel_view;
     private Switch switchbutton;
@@ -84,9 +85,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        requestpermissions();
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
                 View.SYSTEM_UI_FLAG_FULLSCREEN |
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
@@ -110,11 +115,21 @@ public class MainActivity extends AppCompatActivity {
 
         currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         savedBmp = currentBmp;
-
+        processedBmp = currentBmp;
         
         setSeekBar();
         setGalleryButton();
         setCameraButton();
+    }
+
+    private void requestpermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permissions, PERMISSION_CODE);
+
+            }
+        }
     }
 
     /* --- OnClick functions --- */
@@ -139,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
                 requestPermissions(permissions, PERMISSION_CODE);
             }
         }
-
 
         String root = Environment.getExternalStorageDirectory().toString();
         System.out.println(root);
@@ -439,22 +453,31 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            savedBmp = (Bitmap) extras.get("data");
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data!=null) {
+            try {
+                savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
         }
-        else if(requestCode == RESULT_LOAD_IMG){
+
+        else if(requestCode == RESULT_LOAD_IMG && data!=null && resultCode==RESULT_OK){
             Uri uri = data.getData();
             try{
                 savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+
             }
             catch (Exception e){
 
+
             }
         }
+        imageView.setImageURI(image_uri);
         currentBmp = savedBmp;
+        processedBmp = savedBmp;
         imageView.setImageBitmap(savedBmp);
-
     }
 
     public void setGalleryButton(){
@@ -476,6 +499,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
             camera_button.setEnabled(false);
         }
@@ -491,8 +515,8 @@ public class MainActivity extends AppCompatActivity {
         camera_button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.CAMERA};
+                    if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
+                        String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
                         requestPermissions(permissions, PERMISSION_CODE);
                     }
                     else{
@@ -508,7 +532,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void launchCamera(){
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        ContentValues values= new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "New Picture");
+        values.put (MediaStore.Images.Media.DESCRIPTION, "From the Camera");
+        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 }

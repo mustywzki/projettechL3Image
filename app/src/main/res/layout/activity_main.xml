@@ -12,50 +12,65 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-
-        <Button
-            android:id="@+id/camera_button"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_buttons"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/camera_string"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/gallery_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/gallery_string"
-            app:layout_constraintEnd_toStartOf="@+id/reset_c_button"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/camera_button"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/save_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onClickSave"
-            android:text="@string/save_button"
-            app:layout_constraintEnd_toStartOf="@+id/reset_c_button"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/gallery_button"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/reset_c_button"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onClickReset"
-            android:text="@string/reset_c_button"
-            app:layout_constraintBottom_toTopOf="@+id/picture"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/camera_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/camera_string"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/save_button"
+                app:layout_constraintStart_toEndOf="@+id/gallery_button"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/gallery_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gallery_string"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/camera_button"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/save_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClickSave"
+                android:text="@string/save_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/reset_c_button"
+                app:layout_constraintStart_toEndOf="@+id/camera_button"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/reset_c_button"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClickReset"
+                android:text="@string/reset_c_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/save_button"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
             android:id="@+id/picture"
@@ -63,21 +78,22 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:contentDescription="@string/picture_description"
-            android:src="@drawable/multicolor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.24000001" />
-
-        <FrameLayout
-            android:id="@+id/button_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="32dp"
+            android:src="@drawable/lenna"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/picture">
+            app:layout_constraintTop_toBottomOf="@+id/top_buttons"
+            app:layout_constraintVertical_bias="0.100000024" />
+
+        <FrameLayout
+            android:id="@+id/button_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/picture"
+            app:layout_constraintVertical_bias="0.13">
 
             <HorizontalScrollView
                 android:id="@+id/button_scroll"
@@ -93,42 +109,42 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="onClickView"
-                        android:text="@string/filter_button"/>
+                        android:text="@string/filter_button" />
 
                     <Button
                         android:id="@+id/egalisation_histogram_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="onClickAlgorithms"
-                        android:text="@string/egalisation_histogram_button"/>
+                        android:text="@string/egalisation_histogram_button" />
 
                     <Button
                         android:id="@+id/saturation_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="onClickAlgorithms"
-                        android:text="@string/saturation_button"/>
+                        android:text="@string/saturation_button" />
 
                     <Button
                         android:id="@+id/brightness_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="onClickAlgorithms"
-                        android:text="@string/brightness_button"/>
+                        android:text="@string/brightness_button" />
 
                     <Button
                         android:id="@+id/selected_color_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="onClickAlgorithms"
-                        android:text="@string/selected_color_button"/>
+                        android:text="@string/selected_color_button" />
 
                     <Button
                         android:id="@+id/random_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="onClickAlgorithms"
-                        android:text="@string/random_button"/>
+                        android:text="@string/random_button" />
 
                     <Button
                         android:id="@+id/negative_button"
@@ -142,26 +158,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="onClickAlgorithms"
-                        android:text="@string/linear_transformation_button"/>
+                        android:text="@string/linear_transformation_button" />
 
                     <Button
                         android:id="@+id/gray_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="onClickAlgorithms"
-                        android:text="@string/gray_button"/>
+                        android:text="@string/gray_button" />
 
                 </LinearLayout>
 
             </HorizontalScrollView>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
         </FrameLayout>
 
