@@ -81,9 +81,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        requestpermissions();
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
                 View.SYSTEM_UI_FLAG_FULLSCREEN |
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
@@ -109,6 +113,16 @@ public class MainActivity extends AppCompatActivity {
         setSeekBar();
         setGalleryButton();
         setCameraButton();
+    }
+
+    private void requestpermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permissions, PERMISSION_CODE);
+
+            }
+        }
     }
 
     /* --- OnClick functions --- */
@@ -425,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data!=null) {
             try {
                 savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
             } catch (IOException e) {
@@ -434,13 +448,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-        else if(requestCode == RESULT_LOAD_IMG){
+
+        else if(requestCode == RESULT_LOAD_IMG && data!=null && resultCode==RESULT_OK){
             Uri uri = data.getData();
             try{
                 savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
 
             }
             catch (Exception e){
+
 
             }
         }
@@ -469,6 +485,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
             camera_button.setEnabled(false);
         }
@@ -484,8 +501,8 @@ public class MainActivity extends AppCompatActivity {
         camera_button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.CAMERA};
+                    if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
+                        String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
                         requestPermissions(permissions, PERMISSION_CODE);
                     }
                     else{
