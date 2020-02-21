@@ -72,29 +72,18 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ScrollView
-            android:id="@+id/picture_scroll"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/picture_description"
+            android:src="@drawable/lenna"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/top_buttons"
-            app:layout_constraintVertical_bias="0.37">
-
-            <ImageView
-                android:id="@+id/picture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/picture_description"
-                android:src="@drawable/lenna"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </ScrollView>
+            app:layout_constraintTop_toBottomOf="@+id/top_buttons"
+            app:layout_constraintVertical_bias="0.100000024" />
 
         <FrameLayout
             android:id="@+id/button_view"
@@ -103,8 +92,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/picture_scroll"
-            app:layout_constraintVertical_bias="0.110000014">
+            app:layout_constraintTop_toBottomOf="@+id/picture"
+            app:layout_constraintVertical_bias="0.13">
 
             <HorizontalScrollView
                 android:id="@+id/button_scroll"

@@ -444,10 +444,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-        currentBmp = savedBmp;
         imageView.setImageURI(image_uri);
-
-
+        currentBmp = savedBmp;
+        processedBmp = savedBmp;
+        imageView.setImageBitmap(savedBmp);
     }
 
     public void setGalleryButton(){
