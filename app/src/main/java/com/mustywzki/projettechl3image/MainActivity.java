@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         savedBmp = currentBmp;
         processedBmp = currentBmp;
-        
+
         setSeekBar();
         setGalleryButton();
         setCameraButton();
