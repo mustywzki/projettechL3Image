@@ -294,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
         switch (currentAlgorithm){
             case GRAY:
                 if (isRenderscript)
-                    functionsRS.toGrayRS(getApplicationContext(), processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
+                    functionsRS.toGrayRS(getApplicationContext(), processedBmp,bar1.getProgress(),bar2.getProgress(),bar3.getProgress());
                 else
                     Functions.toGray(processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
                 break;

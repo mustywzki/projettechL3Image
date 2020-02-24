@@ -16,8 +16,6 @@ import androidx.renderscript.RenderScript;
 public class FunctionsRS extends Activity {
 
 
-    private Context ctx;
-
     public FunctionsRS(){
     }
 
@@ -50,6 +48,8 @@ public class FunctionsRS extends Activity {
         Allocation input = Allocation.createFromBitmap(rs,bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
         ScriptC_keepColor keepColorScript = new ScriptC_keepColor(rs);
+        keepColorScript.set_hue(hue);
+        keepColorScript.set_chromakey(chromakey);
         keepColorScript.forEach_keepColor(input, output);
         output.copyTo(bmp);
         input.destroy();
