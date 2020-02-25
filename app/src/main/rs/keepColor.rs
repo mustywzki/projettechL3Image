@@ -7,8 +7,8 @@ float hue, chromakey;
 uchar4 RS_KERNEL keepColor(uchar4 in){
 
 
-    //hue = hue % 360f;
-    //chromakey = chromakey % 180f;
+    hue = MODULO(hue,360);
+    chromakey = MODULO(chromakey,180);
     uchar4 out;
     float h,s,v;
     float R=(float)((float)(in.r)/255.0);
@@ -28,12 +28,16 @@ uchar4 RS_KERNEL keepColor(uchar4 in){
     } else if(Cmax==B){
     h=(float)(60.0*(((R-G)/delta)+1.0));
     }
-    //float diff = fabs(h - hue);
+    float diff = fabs(h - hue);
 
-    //if (!(fmin(diff, 360f - diff) <= chromakey)) {
-    //}
+    if (!(fmin(diff, 360 - diff) <= chromakey)) {
+        out=in;
+        out.r=(in.r+in.g+in.b)/3;
+        out.g=(in.r+in.g+in.b)/3;
+        out.b=(in.r+in.g+in.b)/3;
+    }
 
-     if(h>30 && h<330){
+   /*  if(h>30 && h<330){
     out=in;
     out.r=(in.r+in.g+in.b)/3;
     out.g=(in.r+in.g+in.b)/3;
@@ -41,7 +45,8 @@ uchar4 RS_KERNEL keepColor(uchar4 in){
     return out;
      }
 
-     return in;
+     return in;*/
+     return out;
 }
 
 /*

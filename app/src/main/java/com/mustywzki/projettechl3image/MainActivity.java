@@ -455,7 +455,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data!=null) {
             try {
-                savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
+                    savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
