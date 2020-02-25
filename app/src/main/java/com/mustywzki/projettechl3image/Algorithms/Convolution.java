@@ -52,41 +52,25 @@ public class Convolution {
         bmp.setPixels(colors,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
     }
 
-    private static double[] center_color(double newRed, double newGreen, double newBlue){
-        double min = newRed;
-        double max = newRed;
-        if (newGreen < min){
-            min = newGreen;
-        }
-        if (newBlue < min){
-            min = newBlue;
-        }
-        if (newGreen > max){
-            max = newGreen;
-        }
-        if (newBlue > max){
-            max = newBlue;
-        }
-        double newColor[] = new double[3];
-        newColor[0] = newRed;
-        newColor[1] = newGreen;
-        newColor[2] = newBlue;
+    private static void mix_bmp(Bitmap bmp, Bitmap bmp1, Bitmap bmp2){
+        int[] pixels_1 = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp1.getPixels(pixels_1, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
 
-        if (min < 0 && max > 255){
-            newColor[0] = newRed * (-128) / min;
-            newColor[1] = newGreen * (-128) / min;
-            newColor[2] = newBlue * (-128) / min;
+        int[] pixels_2 = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp2.getPixels(pixels_2, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
 
-            newRed = newRed * 128 / max;
-            newGreen = newGreen * 128 / max;
-            newBlue = newBlue * 128 / max;
+        int[] colors = new int[bmp.getWidth() * bmp.getHeight()];
 
-            newColor[0] = (newColor[0] + newRed)/2 + 128;
-            newColor[1] = (newColor[1] + newGreen)/2 + 128;
-            newColor[2] = (newColor[2] + newBlue)/2 + 128;
+        for (int i = 0; i < pixels_1.length; i++) {
+            int red1 = Color.red(pixels_1[i]);
+            int red2 = Color.red(pixels_2[i]);
+            int green1 = Color.green(pixels_1[i]);
+            int green2 = Color.green(pixels_2[i]);
+            int blue1 = Color.blue(pixels_1[i]);
+            int blue2 = Color.blue(pixels_2[i]);
+            colors[i] = Color.rgb((red1 + red2)/2, (green1 + green2)/2, (blue1+blue2)/2);
         }
-
-        return newColor;
+        bmp.setPixels(colors, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
     public static void filter_Moyenneur(Bitmap bmp, int size){
@@ -109,8 +93,15 @@ public class Convolution {
     /* --- Prewitt --- */
 
     public static void filter_Prewitt(Bitmap bmp){
-        filter_Prewitt_horizontal(bmp);
-        filter_Prewitt_vertical(bmp);
+        Bitmap p_modif_ver = bmp;
+        p_modif_ver = p_modif_ver.copy(p_modif_ver.getConfig(), true);
+
+        Bitmap p_modif_hor = bmp;
+        p_modif_hor = p_modif_hor.copy(p_modif_hor.getConfig(), true);
+
+        filter_Prewitt_horizontal(p_modif_hor);
+        filter_Prewitt_vertical(p_modif_ver);
+        mix_bmp(bmp, p_modif_hor, p_modif_ver);
     }
 
     public static void filter_Prewitt_horizontal(Bitmap bmp){
@@ -130,9 +121,15 @@ public class Convolution {
     /* --- Sobel --- */
 
     public static void filter_Sobel(Bitmap bmp){
-        filter_Prewitt_horizontal(bmp);
-        filter_Prewitt_vertical(bmp);
+        Bitmap p_modif_ver = bmp;
+        p_modif_ver = p_modif_ver.copy(p_modif_ver.getConfig(), true);
 
+        Bitmap p_modif_hor = bmp;
+        p_modif_hor = p_modif_hor.copy(p_modif_hor.getConfig(), true);
+
+        filter_Sobel_horizontal(p_modif_hor);
+        filter_Sobel_vertical(p_modif_ver);
+        mix_bmp(bmp, p_modif_hor, p_modif_ver);
     }
 
     public static void filter_Sobel_horizontal(Bitmap bmp){

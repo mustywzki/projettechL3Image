@@ -14,7 +14,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Menu;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
@@ -23,29 +25,20 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.mustywzki.projettechl3image.Algorithms.Contrast;
-import com.mustywzki.projettechl3image.Algorithms.Convolution;
-import com.mustywzki.projettechl3image.Algorithms.Functions;
-import com.mustywzki.projettechl3image.Algorithms.FunctionsRS;
-import com.mustywzki.projettechl3image.Algorithms.Tools;
+import com.mustywzki.projettechl3image.Algorithms.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE=1;
     static final int RESULT_LOAD_IMG=1000;
     private static final int PERMISSION_CODE = 1001;
     Uri image_uri = null;
-    // Seekbar tab
+
     private View slider_bars, filter_view, average_view, laplacien_view, prewitt_view, sobel_view;
     private Switch switchbutton;
     private FrameLayout buttons_view;
@@ -86,9 +79,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         requestpermissions();
@@ -105,8 +95,6 @@ public class MainActivity extends AppCompatActivity {
         sobel_view = View.inflate(this, R.layout.sobel_filter_view, null);
 
         imageView = findViewById(R.id.picture);
-        camera_button = findViewById(R.id.camera_button);
-        gallery_button = findViewById(R.id.gallery_button);
         button_scroll = findViewById(R.id.button_scroll);
         buttons_view = findViewById(R.id.button_view);
         switchbutton = findViewById(R.id.renderscript_switch);
@@ -118,8 +106,12 @@ public class MainActivity extends AppCompatActivity {
         processedBmp = currentBmp;
 
         setSeekBar();
-        setGalleryButton();
-        setCameraButton();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
     }
 
     private void requestpermissions() {
@@ -147,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         buttons_view.addView(button_scroll);
     }
 
-    public void onClickSave(View v) {
+    public void onClickSave() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -174,7 +166,43 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-   
+
+    public void onClickCamera(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
+                String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissions, PERMISSION_CODE);
+            }
+            else{
+                launchCamera();
+            }
+
+        }
+        else{
+            launchCamera();
+        }
+    }
+
+    public void onClickGallery (){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
+                String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permissions, PERMISSION_CODE);
+            }
+            else{
+                getImageFromGallery();
+            }
+
+        }
+        else{
+            getImageFromGallery();
+        }
+
+        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+            camera_button.setEnabled(false);
+        }
+    }
+
     public void onClickReturnFilters(View v){
         currentAlgorithm = null;
         currentBmp = processedBmp;
@@ -288,6 +316,8 @@ public class MainActivity extends AppCompatActivity {
         applyProcessings();
     }
 
+    /* --- Apply functions --- */
+
     public void applyProcessings(){
         processedBmp = currentBmp.copy(currentBmp.getConfig(),true);
 
@@ -365,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
         imageView.setImageBitmap(processedBmp);
     }
 
-    /* --- SeekBar functions --- */
+    /* --- SeekBar --- */
 
     public void setSeekBar(){
         // Option sliders listeners
@@ -449,7 +479,7 @@ public class MainActivity extends AppCompatActivity {
         buttons_view.addView(slider_bars);
     }
 
-    /* --- Camera and Gallery buttons --- */
+    /* --- Camera and Gallery --- */
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -480,30 +510,6 @@ public class MainActivity extends AppCompatActivity {
         imageView.setImageBitmap(savedBmp);
     }
 
-    public void setGalleryButton(){
-        gallery_button.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else{
-                        getImageFromGallery();
-                    }
-
-                }
-                else{
-                    getImageFromGallery();
-                }
-            }
-        });
-
-
-        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-            camera_button.setEnabled(false);
-        }
-    }
 
     public void getImageFromGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -511,25 +517,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, RESULT_LOAD_IMG);
     }
 
-    public void setCameraButton(){
-        camera_button.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else{
-                        launchCamera();
-                    }
-
-                }
-                else{
-                    launchCamera();
-                }
-            }
-        });
-    }
 
     public void launchCamera(){
         ContentValues values= new ContentValues();
@@ -539,5 +526,24 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    /* --- Menu --- */
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.gallery:
+                onClickGallery();
+                break;
+            case R.id.camera:
+                onClickCamera();
+                break;
+            case R.id.save:
+                onClickSave();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 }
