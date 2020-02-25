@@ -39,9 +39,9 @@ import java.util.Date;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    static final int REQUEST_IMAGE_CAPTURE=1;
     static final int RESULT_LOAD_IMG=1000;
     private static final int PERMISSION_CODE = 1001;
+    static final int RESULT_IMAGE_CAPTURE=1002;
     Uri image_uri = null;
     // Seekbar tab
     private View slider_bars, filter_view, average_view, laplacien_view, prewitt_view, sobel_view;
@@ -439,31 +439,32 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data!=null) {
+        if (requestCode == 1002 && resultCode == RESULT_OK) {
+
             try {
                 savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-
         }
 
         else if(requestCode == RESULT_LOAD_IMG && data!=null && resultCode==RESULT_OK){
-            Uri uri = data.getData();
+             image_uri = data.getData();
             try{
-                savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-
+                savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
             }
             catch (Exception e){
 
 
             }
+
         }
         imageView.setImageURI(image_uri);
         currentBmp = savedBmp;
         processedBmp = savedBmp;
-        imageView.setImageBitmap(savedBmp);
+
+
     }
 
     public void setGalleryButton(){
@@ -524,6 +525,6 @@ public class MainActivity extends AppCompatActivity {
         image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+        startActivityForResult(intent, RESULT_IMAGE_CAPTURE);
     }
 }
