@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/picture_description"
-                    android:src="@drawable/lenna" />
+                    android:src="@drawable/multicolor" />
             </LinearLayout>
         </ScrollView>
 
