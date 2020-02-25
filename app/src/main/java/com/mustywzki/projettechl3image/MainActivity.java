@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
         switch (currentAlgorithm){
             case GRAY:
                 if (isRenderscript)
-                    functionsRS.toGrayRS(getApplicationContext(), processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
+                    functionsRS.toGrayRS(getApplicationContext(), processedBmp,bar1.getProgress(),bar2.getProgress(),bar3.getProgress());
                 else
                     Functions.toGray(processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
                 break;
@@ -485,7 +485,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data!=null) {
             try {
-                savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
+                    savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
