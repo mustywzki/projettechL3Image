@@ -341,6 +341,7 @@ public class MainActivity extends AppCompatActivity {
                 Contrast.linear_transformation(processedBmp);
                 break;
             case HIST_EQUALIZER:
+                Contrast.histogramEqualizer(Tools.getHistogram(processedBmp), processedBmp);
                 break;
             case NEGATIVE:
                 Functions.negative(processedBmp);
