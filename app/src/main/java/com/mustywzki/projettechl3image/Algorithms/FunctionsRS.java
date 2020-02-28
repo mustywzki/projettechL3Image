@@ -57,5 +57,4 @@ public class FunctionsRS extends Activity {
         keepColorScript.destroy();
         rs.destroy();
     }
-
 }
