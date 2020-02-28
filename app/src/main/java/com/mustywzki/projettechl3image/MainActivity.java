@@ -2,6 +2,7 @@ package com.mustywzki.projettechl3image;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 import android.Manifest;
 import android.content.ContentValues;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mustywzki.projettechl3image.Algorithms.*;
 
@@ -94,7 +96,9 @@ public class MainActivity extends AppCompatActivity {
         prewitt_view = View.inflate(this, R.layout.prewitt_filter_view, null);
         sobel_view = View.inflate(this, R.layout.sobel_filter_view, null);
 
-        imageView = findViewById(R.id.picture);
+        imageView = (ImageView)findViewById(R.id.picture);
+        PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
+        photoView.update();
         button_scroll = findViewById(R.id.button_scroll);
         buttons_view = findViewById(R.id.button_view);
         switchbutton = findViewById(R.id.renderscript_switch);
@@ -165,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Toast.makeText(this,"Image saved", Toast.LENGTH_SHORT).show();
     }
 
     public void onClickCamera(){
