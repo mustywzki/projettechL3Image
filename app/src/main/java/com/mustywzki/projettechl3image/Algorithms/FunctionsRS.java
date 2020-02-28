@@ -3,8 +3,9 @@ package com.mustywzki.projettechl3image.Algorithms;
 import android.app.Activity;
 import android.graphics.Bitmap;
 
-import com.android.rssample.ScriptC_keepColor;
+import com.mustywzki.imageandroidproj.ScriptC_colorize;
 import com.mustywzki.imageandroidproj.ScriptC_gray;
+import com.mustywzki.imageandroidproj.ScriptC_keepColor;
 import com.mustywzki.projettechl3image.MainActivity;
 
 import android.content.Context;
@@ -55,6 +56,20 @@ public class FunctionsRS extends Activity {
         input.destroy();
         output.destroy();
         keepColorScript.destroy();
+        rs.destroy();
+    }
+
+    public void colorizeRS(Context ctx, Bitmap bmp, float hue){
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs,bmp);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+        ScriptC_colorize colorizeScript = new ScriptC_colorize(rs);
+        colorizeScript.set_hue(hue);
+        colorizeScript.forEach_colorize(input, output);
+        output.copyTo(bmp);
+        input.destroy();
+        output.destroy();
+        colorizeScript.destroy();
         rs.destroy();
     }
 

@@ -299,7 +299,10 @@ public class MainActivity extends AppCompatActivity {
                     Functions.toGray(processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
                 break;
             case COLORIZE:
-                Functions.colorize(processedBmp,bar1.getProgress());
+                if (isRenderscript)
+                    functionsRS.colorizeRS(getApplicationContext(), processedBmp, bar1.getProgress());
+                else
+                    Functions.colorize(processedBmp,bar1.getProgress());
                 break;
             case COLOR_RANGE:
                 if (isRenderscript)
