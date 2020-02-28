@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private AlgorithmType currentAlgorithm;
     private FunctionsRS functionsRS;
 
+
+    private Button gray, keepColor;
     // GUI-related members
     private ImageView imageView;
     private Bitmap currentBmp, processedBmp, savedBmp;
@@ -102,6 +106,23 @@ public class MainActivity extends AppCompatActivity {
         button_scroll = findViewById(R.id.button_scroll);
         buttons_view = findViewById(R.id.button_view);
         switchbutton = findViewById(R.id.renderscript_switch);
+        gray = findViewById(R.id.gray_button);
+        keepColor = findViewById(R.id.selected_color_button);
+
+
+        switchbutton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isRenderscript = isChecked;
+                if (isRenderscript) {
+                    gray.setTextColor(Color.RED);
+                    keepColor.setTextColor(Color.RED);
+                } else {
+                    gray.setTextColor(Color.BLACK);
+                    keepColor.setTextColor(Color.BLACK);
+                }
+            }
+        });
 
         functionsRS = new FunctionsRS();
 
@@ -241,7 +262,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAlgorithms(View v) {
-        isRenderscript = switchbutton.isChecked();
         switch (v.getId()) {
             case R.id.gray_button:
                 currentAlgorithm = AlgorithmType.GRAY;
