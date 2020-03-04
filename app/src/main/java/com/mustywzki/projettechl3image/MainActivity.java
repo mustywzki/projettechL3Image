@@ -86,51 +86,51 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main);
         requestpermissions();
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                View.SYSTEM_UI_FLAG_FULLSCREEN |
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_IMMERSIVE);
-
-        slider_bars = View.inflate(this,R.layout.seekbar_view,null);
-        filter_view = View.inflate(this, R.layout.filter_view, null);
-        average_view = View.inflate(this, R.layout.average_filter_view, null);
-        laplacien_view = View.inflate(this, R.layout.laplacien_filter_view, null);
-        prewitt_view = View.inflate(this, R.layout.prewitt_filter_view, null);
-        sobel_view = View.inflate(this, R.layout.sobel_filter_view, null);
-
-        imageView = (ImageView)findViewById(R.id.picture);
-        PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
-        photoView.update();
-        button_scroll = findViewById(R.id.button_scroll);
-        buttons_view = findViewById(R.id.button_view);
-        switchbutton = findViewById(R.id.renderscript_switch);
-        gray = findViewById(R.id.gray_button);
-        keepColor = findViewById(R.id.selected_color_button);
-
-
-        switchbutton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isRenderscript = isChecked;
-                if (isRenderscript) {
-                    gray.setTextColor(Color.RED);
-                    keepColor.setTextColor(Color.RED);
-                } else {
-                    gray.setTextColor(Color.BLACK);
-                    keepColor.setTextColor(Color.BLACK);
-                }
-            }
-        });
-
-        functionsRS = new FunctionsRS();
-
-        currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        savedBmp = currentBmp;
-        processedBmp = currentBmp;
-
-        setSeekBar();
+//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+//                View.SYSTEM_UI_FLAG_FULLSCREEN |
+//                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+//                View.SYSTEM_UI_FLAG_IMMERSIVE);
+//
+//        slider_bars = View.inflate(this,R.layout.seekbar_view,null);
+//        filter_view = View.inflate(this, R.layout.filter_view, null);
+//        average_view = View.inflate(this, R.layout.average_filter_view, null);
+//        laplacien_view = View.inflate(this, R.layout.laplacien_filter_view, null);
+//        prewitt_view = View.inflate(this, R.layout.prewitt_filter_view, null);
+//        sobel_view = View.inflate(this, R.layout.sobel_filter_view, null);
+//
+//        imageView = (ImageView)findViewById(R.id.picture);
+//        PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
+//        photoView.update();
+//        button_scroll = findViewById(R.id.button_scroll);
+//        buttons_view = findViewById(R.id.button_view);
+//        switchbutton = findViewById(R.id.renderscript_switch);
+//        gray = findViewById(R.id.gray_button);
+//        keepColor = findViewById(R.id.selected_color_button);
+//
+//
+//        switchbutton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                isRenderscript = isChecked;
+//                if (isRenderscript) {
+//                    gray.setTextColor(Color.RED);
+//                    keepColor.setTextColor(Color.RED);
+//                } else {
+//                    gray.setTextColor(Color.BLACK);
+//                    keepColor.setTextColor(Color.BLACK);
+//                }
+//            }
+//        });
+//
+//        functionsRS = new FunctionsRS();
+//
+//        currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+//        savedBmp = currentBmp;
+//        processedBmp = currentBmp;
+//
+//        setSeekBar();
     }
 
     @Override
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this,"Image saved", Toast.LENGTH_SHORT).show();
     }
 
-    public void onClickCamera(){
+    public void onClickCamera(View v){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
                 String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickGallery (){
+    public void onClickGallery (View v){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
                 String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -560,10 +560,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.gallery:
-                onClickGallery();
+                //onClickGallery();
                 break;
             case R.id.camera:
-                onClickCamera();
+                //onClickCamera();
                 break;
             case R.id.save:
                 onClickSave();

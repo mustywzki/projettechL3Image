@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Picture_Editor</string>
+    <string name="app_name">PicEditor</string>
 
     <string name="picture_description">picture</string>
     <string name="change_picture_button">Change picture</string>
