@@ -15,10 +15,6 @@ import androidx.renderscript.RenderScript;
 
 public class FunctionsRS extends Activity {
 
-
-    public FunctionsRS(){
-    }
-
     public void toGrayRS(Context ctx, Bitmap bmp, double red_coef, double green_coef, double blue_coef){
         RenderScript rs = RenderScript.create(ctx) ;
         // 2) Creer des Allocations pour passer les donnees

@@ -9,7 +9,6 @@ import javax.xml.transform.sax.SAXSource;
 
 public class Convolution {
 
-    // TODO doesn't create a gray picture (there is yellow) when negative value, not in 0-255
     private static void applyfilter(Bitmap bmp, double[] core, double div){
         int[] pixels = new int[bmp.getWidth()*bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());

@@ -1,6 +1,5 @@
 #pragma version(1)
-#pragma rs java_package_name(com.android.rssample)
-#define MODULO(x,y) (x-  ( ( (int)(x/y) ) * y)  )
+#pragma rs java_package_name(com.mustywzki.projettechl3image)
 
 float hue, chromakey;
 

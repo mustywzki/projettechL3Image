@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     Uri image_uri = null;
 
     private View slider_bars, filter_view, average_view, laplacien_view, prewitt_view, sobel_view;
-    private Switch switchbutton;
+    private Switch button_switch;
     private FrameLayout buttons_view;
     private HorizontalScrollView button_scroll;
     private SeekBar bar1, bar2, bar3;
@@ -87,50 +87,50 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        requestpermissions();
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-//                View.SYSTEM_UI_FLAG_FULLSCREEN |
-//                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-//                View.SYSTEM_UI_FLAG_IMMERSIVE);
-//
-//        slider_bars = View.inflate(this,R.layout.seekbar_view,null);
-//        filter_view = View.inflate(this, R.layout.filter_view, null);
-//        average_view = View.inflate(this, R.layout.average_filter_view, null);
-//        laplacien_view = View.inflate(this, R.layout.laplacien_filter_view, null);
-//        prewitt_view = View.inflate(this, R.layout.prewitt_filter_view, null);
-//        sobel_view = View.inflate(this, R.layout.sobel_filter_view, null);
-//
-//        imageView = (ImageView)findViewById(R.id.picture);
-//        PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
-//        photoView.update();
-//        button_scroll = findViewById(R.id.button_scroll);
-//        buttons_view = findViewById(R.id.button_view);
-//        switchbutton = findViewById(R.id.renderscript_switch);
-//        gray = findViewById(R.id.gray_button);
-//        keepColor = findViewById(R.id.selected_color_button);
-//
-//
-//        switchbutton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                isRenderscript = isChecked;
-//                if (isRenderscript) {
-//                    gray.setTextColor(Color.RED);
-//                    keepColor.setTextColor(Color.RED);
-//                } else {
-//                    gray.setTextColor(Color.BLACK);
-//                    keepColor.setTextColor(Color.BLACK);
-//                }
-//            }
-//        });
-//
-//        functionsRS = new FunctionsRS();
-//
-//        currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-//        savedBmp = currentBmp;
-//        processedBmp = currentBmp;
-//
-//        setSeekBar();
+        requestPermissions();
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                View.SYSTEM_UI_FLAG_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                View.SYSTEM_UI_FLAG_IMMERSIVE);
+
+        slider_bars = View.inflate(this,R.layout.seekbar_view,null);
+        filter_view = View.inflate(this, R.layout.filter_view, null);
+        average_view = View.inflate(this, R.layout.average_filter_view, null);
+        laplacien_view = View.inflate(this, R.layout.laplacien_filter_view, null);
+        prewitt_view = View.inflate(this, R.layout.prewitt_filter_view, null);
+        sobel_view = View.inflate(this, R.layout.sobel_filter_view, null);
+
+        imageView = (ImageView)findViewById(R.id.picture);
+        PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
+        photoView.update();
+        button_scroll = findViewById(R.id.button_scroll);
+        buttons_view = findViewById(R.id.button_view);
+        button_switch = findViewById(R.id.renderscript_switch);
+        gray = findViewById(R.id.gray_button);
+        keepColor = findViewById(R.id.selected_color_button);
+
+
+        button_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isRenderscript = isChecked;
+                if (isRenderscript) {
+                    gray.setTextColor(Color.RED);
+                    keepColor.setTextColor(Color.RED);
+                } else {
+                    gray.setTextColor(Color.BLACK);
+                    keepColor.setTextColor(Color.BLACK);
+                }
+            }
+        });
+
+        functionsRS = new FunctionsRS();
+
+        currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        savedBmp = currentBmp;
+        processedBmp = currentBmp;
+
+        setSeekBar();
     }
 
     @Override
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void requestpermissions() {
+    private void requestPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
             getImageFromGallery();
         }
 
-        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)){
             camera_button.setEnabled(false);
         }
     }
@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
         switch (currentAlgorithm){
             case GRAY:
                 if (isRenderscript)
-                    functionsRS.toGrayRS(getApplicationContext(), processedBmp,bar1.getProgress(),bar2.getProgress(),bar3.getProgress());
+                    functionsRS.toGrayRS(getApplicationContext(), processedBmp, bar1.getProgress(), bar2.getProgress(), bar3.getProgress());
                 else
                     Functions.toGray(processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
                 break;
@@ -358,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case COLOR_RANGE:
                 if (isRenderscript)
-                    functionsRS.keepColorRS(getApplicationContext(), processedBmp,bar1.getProgress(),bar2.getProgress());
+                    functionsRS.keepColorRS(getApplicationContext(), processedBmp, bar1.getProgress(), bar2.getProgress());
                 else
                     Functions.keepColor(processedBmp,bar1.getProgress(),bar2.getProgress());
                 break;
@@ -446,7 +446,6 @@ public class MainActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 isSliding = false;
             }
-
         });
         bar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -464,7 +463,6 @@ public class MainActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 isSliding = false;
             }
-
         });
         bar3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -482,9 +480,7 @@ public class MainActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 isSliding = false;
             }
-
         });
-
     }
 
     public void seekbars_load(boolean visible1, String text1, int maxVal1, boolean visible2, String text2, int maxVal2, boolean visible3, String text3, int maxVal3) {
@@ -533,17 +529,13 @@ public class MainActivity extends AppCompatActivity {
         imageView.setImageURI(image_uri);
         currentBmp = savedBmp;
         processedBmp = savedBmp;
-
-
     }
-
 
     public void getImageFromGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, RESULT_LOAD_IMG);
     }
-
 
     public void launchCamera(){
         ContentValues values= new ContentValues();
