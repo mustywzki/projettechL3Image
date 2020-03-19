@@ -1,16 +1,13 @@
 #pragma version(1)
-#pragma rs java_package_name(com.mustywzki.projettechl3image.Algorithms)
+#pragma rs java_package_name(com.mustywzki.projettechl3image)
 
 float hue, chromakey;
 
-static float modulo(float x, float y){
-    return x-((x/y)*y);
-}
-
 uchar4 RS_KERNEL keepColor(uchar4 in){
 
-    hue = modulo(hue,360);
-    chromakey = modulo(chromakey,180);
+
+    hue = MODULO(hue,360);
+    chromakey = MODULO(chromakey,180);
     uchar4 out;
     float h,s,v;
     float R=(float)((float)(in.r)/255.0);
@@ -21,10 +18,10 @@ uchar4 RS_KERNEL keepColor(uchar4 in){
     float delta = (float)(Cmax-Cmin);
     h=-1.0;
 
-   if(delta==0){
+    if(delta==0){
         h=0.0;
     } else if(Cmax==R){
-    h = (float) ( 60.0* ( (int) ( modulo( ((G - B)/ delta),6)) ) );
+    h = (float) ( 60.0* ( (int) ( MODULO( ((G - B)/ delta),6)) ) );
     } else if(Cmax==G){
     h = (float)(60.0 * (((B - R) / delta) + 2.0));
     } else if(Cmax==B){
