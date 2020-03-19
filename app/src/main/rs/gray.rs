@@ -1,5 +1,5 @@
 #pragma version(1)
-#pragma rs java_package_name(com.mustywzki.projettechl3image)
+#pragma rs java_package_name(com.mustywzki.projettechl3image.Algorithms)
 
 double newr, newg, newb;
 
