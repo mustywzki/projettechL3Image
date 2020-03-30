@@ -5,9 +5,8 @@ float hue, chromakey;
 
 uchar4 RS_KERNEL keepColor(uchar4 in){
 
-
-    hue = MODULO(hue,360);
-    chromakey = MODULO(chromakey,180);
+    hue = fmod(hue,360);
+    chromakey = fmod(chromakey,180);
     uchar4 out;
     float h,s,v;
     float R=(float)((float)(in.r)/255.0);
@@ -21,7 +20,7 @@ uchar4 RS_KERNEL keepColor(uchar4 in){
     if(delta==0){
         h=0.0;
     } else if(Cmax==R){
-    h = (float) ( 60.0* ( (int) ( MODULO( ((G - B)/ delta),6)) ) );
+    h = (float) ( 60.0* ((int) (fmod( ((G - B)/ delta),6))));
     } else if(Cmax==G){
     h = (float)(60.0 * (((B - R) / delta) + 2.0));
     } else if(Cmax==B){

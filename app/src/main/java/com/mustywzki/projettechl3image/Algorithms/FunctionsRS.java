@@ -3,9 +3,7 @@ package com.mustywzki.projettechl3image.Algorithms;
 import android.app.Activity;
 import android.graphics.Bitmap;
 
-import com.android.rssample.ScriptC_keepColor;
-import com.mustywzki.imageandroidproj.ScriptC_gray;
-import com.mustywzki.projettechl3image.MainActivity;
+import com.mustywzki.projettechl3image.*;
 
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;

@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
         setContentView(R.layout.home);
         requestPermissions();
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
@@ -132,53 +131,51 @@ public class MainActivity extends AppCompatActivity {
         processedBmp = currentBmp;
 
         setSeekBar();
-=======
         setContentView(R.layout.main);
-        requestpermissions();
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-//                View.SYSTEM_UI_FLAG_FULLSCREEN |
-//                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-//                View.SYSTEM_UI_FLAG_IMMERSIVE);
-//
-//        slider_bars = View.inflate(this,R.layout.seekbar_view,null);
-//        filter_view = View.inflate(this, R.layout.filter_view, null);
-//        average_view = View.inflate(this, R.layout.average_filter_view, null);
-//        laplacien_view = View.inflate(this, R.layout.laplacien_filter_view, null);
-//        prewitt_view = View.inflate(this, R.layout.prewitt_filter_view, null);
-//        sobel_view = View.inflate(this, R.layout.sobel_filter_view, null);
-//
-//        imageView = (ImageView)findViewById(R.id.picture);
-//        PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
-//        photoView.update();
-//        button_scroll = findViewById(R.id.button_scroll);
-//        buttons_view = findViewById(R.id.button_view);
-//        switchbutton = findViewById(R.id.renderscript_switch);
-//        gray = findViewById(R.id.gray_button);
-//        keepColor = findViewById(R.id.selected_color_button);
-//
-//
-//        switchbutton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                isRenderscript = isChecked;
-//                if (isRenderscript) {
-//                    gray.setTextColor(Color.RED);
-//                    keepColor.setTextColor(Color.RED);
-//                } else {
-//                    gray.setTextColor(Color.BLACK);
-//                    keepColor.setTextColor(Color.BLACK);
-//                }
-//            }
-//        });
-//
-//        functionsRS = new FunctionsRS();
-//
-//        currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-//        savedBmp = currentBmp;
-//        processedBmp = currentBmp;
-//
-//        setSeekBar();
->>>>>>> parent of ad5f79e... Nouveau fichier xml
+        requestPermissions();
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                View.SYSTEM_UI_FLAG_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                View.SYSTEM_UI_FLAG_IMMERSIVE);
+
+        slider_bars = View.inflate(this,R.layout.seekbar_view,null);
+        filter_view = View.inflate(this, R.layout.filter_view, null);
+        average_view = View.inflate(this, R.layout.average_filter_view, null);
+        laplacien_view = View.inflate(this, R.layout.laplacien_filter_view, null);
+        prewitt_view = View.inflate(this, R.layout.prewitt_filter_view, null);
+        sobel_view = View.inflate(this, R.layout.sobel_filter_view, null);
+
+        imageView = (ImageView)findViewById(R.id.picture);
+        photoView = new PhotoViewAttacher(imageView);
+        photoView.update();
+        button_scroll = findViewById(R.id.button_scroll);
+        buttons_view = findViewById(R.id.button_view);
+        button_switch = findViewById(R.id.renderscript_switch);
+        gray = findViewById(R.id.gray_button);
+        keepColor = findViewById(R.id.selected_color_button);
+
+
+        button_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isRenderscript = isChecked;
+                if (isRenderscript) {
+                    gray.setTextColor(Color.RED);
+                    keepColor.setTextColor(Color.RED);
+                } else {
+                    gray.setTextColor(Color.BLACK);
+                    keepColor.setTextColor(Color.BLACK);
+                }
+            }
+        });
+
+        functionsRS = new FunctionsRS();
+
+        currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        savedBmp = currentBmp;
+        processedBmp = currentBmp;
+
+        setSeekBar();
     }
 
     @Override
