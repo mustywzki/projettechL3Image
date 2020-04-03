@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home);
+        setContentView(R.layout.activity_main);
         requestPermissions();
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
                 View.SYSTEM_UI_FLAG_FULLSCREEN |
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         processedBmp = currentBmp;
 
         setSeekBar();
-        setContentView(R.layout.main);
+        //setContentView(R.layout.main);
         requestPermissions();
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
                 View.SYSTEM_UI_FLAG_FULLSCREEN |
@@ -399,7 +399,10 @@ public class MainActivity extends AppCompatActivity {
                     Functions.toGray(processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
                 break;
             case COLORIZE:
-                Functions.colorize(processedBmp,bar1.getProgress());
+                if (isRenderscript)
+                    functionsRS.colorize(getApplicationContext(),processedBmp, bar1.getProgress());
+                else
+                    Functions.colorize(processedBmp,bar1.getProgress());
                 break;
             case COLOR_RANGE:
                 if (isRenderscript)
