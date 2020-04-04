@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSliding, isRenderscript;
     private AlgorithmType currentAlgorithm;
     private FunctionsRS functionsRS;
+    private History history;
 
 
     private Button gray, keepColor;
@@ -108,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
         button_switch = findViewById(R.id.renderscript_switch);
         gray = findViewById(R.id.gray_button);
         keepColor = findViewById(R.id.selected_color_button);
+        functionsRS = new FunctionsRS();
+        currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        savedBmp = currentBmp;
+        processedBmp = currentBmp;
+        history = new History(10, currentBmp);
 
 
         button_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -123,58 +129,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        functionsRS = new FunctionsRS();
-
-        currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        savedBmp = currentBmp;
-        processedBmp = currentBmp;
-
-        setSeekBar();
-        //setContentView(R.layout.main);
-        requestPermissions();
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                View.SYSTEM_UI_FLAG_FULLSCREEN |
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_IMMERSIVE);
-
-        slider_bars = View.inflate(this,R.layout.seekbar_view,null);
-        filter_view = View.inflate(this, R.layout.filter_view, null);
-        average_view = View.inflate(this, R.layout.average_filter_view, null);
-        laplacien_view = View.inflate(this, R.layout.laplacien_filter_view, null);
-        prewitt_view = View.inflate(this, R.layout.prewitt_filter_view, null);
-        sobel_view = View.inflate(this, R.layout.sobel_filter_view, null);
-
-        imageView = (ImageView)findViewById(R.id.picture);
-        photoView = new PhotoViewAttacher(imageView);
-        photoView.update();
-        button_scroll = findViewById(R.id.button_scroll);
-        buttons_view = findViewById(R.id.button_view);
-        button_switch = findViewById(R.id.renderscript_switch);
-        gray = findViewById(R.id.gray_button);
-        keepColor = findViewById(R.id.selected_color_button);
-
-
-        button_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isRenderscript = isChecked;
-                if (isRenderscript) {
-                    gray.setTextColor(Color.RED);
-                    keepColor.setTextColor(Color.RED);
-                } else {
-                    gray.setTextColor(Color.BLACK);
-                    keepColor.setTextColor(Color.BLACK);
-                }
-            }
-        });
-
-        functionsRS = new FunctionsRS();
-
-        currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        savedBmp = currentBmp;
-        processedBmp = currentBmp;
-
         setSeekBar();
     }
 
@@ -200,13 +154,19 @@ public class MainActivity extends AppCompatActivity {
         currentBmp = savedBmp;
         processedBmp = savedBmp;
         imageView.setImageBitmap(savedBmp);
+        history.reset(currentBmp);
     }
 
     public void onClickReturn(View v) {
-        currentAlgorithm = null;
-        currentBmp = processedBmp;
         buttons_view.removeAllViews();
         buttons_view.addView(button_scroll);
+        apply();
+    }
+
+    private void apply(){
+        currentAlgorithm = null;
+        currentBmp = processedBmp;
+        history.addElement(currentBmp);
     }
 
     public void onClickSave() {
@@ -303,6 +263,20 @@ public class MainActivity extends AppCompatActivity {
                 buttons_view.removeAllViews();
                 buttons_view.addView(laplacien_view);
                 break;
+        }
+    }
+
+    public void onClickPrevious(View v){
+        if (history.getIndCurPicture() > 0){
+            history.setIndCurPicture(history.getIndCurPicture() -1);
+            imageView.setImageBitmap(history.getCur_picture());
+        }
+    }
+
+    public void onClickNext(View v){
+        if (history.getIndCurPicture() < history.getSize() -1){
+            history.setIndCurPicture(history.getIndCurPicture() +1);
+            imageView.setImageBitmap(history.getCur_picture());
         }
     }
 
@@ -412,14 +386,15 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case DYNAMIC_EXTENSION:
                 Contrast.linear_transformation(processedBmp);
+                apply();
                 break;
             case HIST_EQUALIZER:
                 Contrast.histogramEqualizer(Tools.getHistogram(processedBmp), processedBmp);
+                apply();
                 break;
             case NEGATIVE:
                 Functions.negative(processedBmp);
-                currentBmp = processedBmp;
-                currentAlgorithm = null;
+                apply();
                 break;
             case SATURATION:
                 Functions.change_saturation(processedBmp,bar1.getProgress());
@@ -570,9 +545,7 @@ public class MainActivity extends AppCompatActivity {
             }
             catch (Exception e){
 
-
             }
-
         }
         imageView.setImageURI(image_uri);
         currentBmp = savedBmp;
