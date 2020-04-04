@@ -44,16 +44,17 @@ public class History {
         history = new ArrayList<>();
         history.add(curPicture);
         indCurPicture = 0;
+        top = indCurPicture;
     }
 
 
 /* --- Functions --- */
     public boolean addElement(Bitmap picture){
-        if (indCurPicture < size-1){
+        if (top < size-1){
             indCurPicture++;
             history.add(picture);
         }
-        else if (indCurPicture == size-1){
+        else if (top == size-1){
             history.remove(0);
             history.add(picture);
         }
@@ -61,6 +62,7 @@ public class History {
             System.out.println("ERROR ! History ind_cur_picture is more than size !");
             return false;
         }
+        top = indCurPicture;
         return true;
     }
 
@@ -72,5 +74,6 @@ public class History {
         history.clear();
         history.add(cur_picture);
         indCurPicture = 0;
+        top = indCurPicture;
     }
 }

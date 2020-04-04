@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickNext(View v){
-        if (history.getIndCurPicture() < history.getSize() -1){
+        if (history.getIndCurPicture() < history.getTop()){
             history.setIndCurPicture(history.getIndCurPicture() +1);
             imageView.setImageBitmap(history.getCur_picture());
         }
