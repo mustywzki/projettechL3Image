@@ -1,40 +1,39 @@
 #pragma version(1)
 #pragma rs java_package_name(com.mustywzki.projettechl3image)
 
-uchar4  RS_KERNEL  rgb_to_hsv(uchar4  in) {
-
-  
-    float4 pixelf = rsUnpackColor8888(in);
-    uchar4 tempP;
-    uchar min = in.r; //min( in.r, min( in.g, in.b ) );
-    uchar max = in.g;//max( in.r, max( in.g, in.b ) );
-    float red = pixelf.r;
-    float blue = pixelf.b;
-    float green = pixelf.g;
+float4  RS_KERNEL RgbToHsv(uchar4  rgb_tab) {
 
 
-    if(max==min){
-        tempP.s0=0;
+    float4 rgb = rsUnpackColor8888(rgb_tab);
+    float red = rgb.r;
+    float blue = rgb.b;
+    float green = rgb.g;
+    float minimum = min( red, min( green, blue ) );
+    float maximum = max( red, max( green, blue ) );
+
+
+
+    if(maximum==minimum){
+        rgb.s0=0;
     }
-    else if (max== red){
-        tempP.s0 = fmod(((60 * (green - blue) / (max - min)) + 360),360);
-    } 
-    else if (max==green){
-        tempP.s0 = (60 * (blue - red) / (max - min)) + 120;
+    else if (maximum== red){
+        rgb.s0 = fmod(((60 * (green - blue) / (maximum - minimum)) + 360),360);
     }
-    else if(max==blue){
-        tempP.s0= (60 * (red - green) / (max - min)) + 240;
+    else if (maximum==green){
+        rgb.s0 = (60 * (blue - red) / (maximum - minimum)) + 120;
     }
-    
-    if(max == 0){
-        tempP.s1 = 0;
+    else if(maximum==blue){
+        rgb.s0= (60 * (red - green) / (maximum - minimum)) + 240;
+    }
+
+    if(maximum == 0){
+        rgb.s1 = 0;
     }
     else{
-        tempP.s1 = 1 - (min/max);
+        rgb.s1 = 1 - (minimum/maximum);
     }
 
-    tempP.s2 = max;
-    tempP.s3 = in.a;
+    rgb.s2= maximum;
 
-    return tempP;
+    return rgb;
 }
