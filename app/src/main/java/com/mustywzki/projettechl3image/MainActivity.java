@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
@@ -51,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSliding, isRenderscript;
     private AlgorithmType currentAlgorithm;
     private FunctionsRS functionsRS;
-    private History history;
 
+    private History history;
 
     private Button gray, keepColor;
     // GUI-related members
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         LAPLACIEN_8
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -156,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         currentBmp = savedBmp;
         processedBmp = savedBmp;
         imageView.setImageBitmap(savedBmp);
-        history.reset(currentBmp);
+        history.addElement(currentBmp);
     }
 
     public void onClickReturn(View v) {
@@ -206,14 +209,17 @@ public class MainActivity extends AppCompatActivity {
     public void onClickPrevious(View v){
         if (history.getIndCurPicture() > 0){
             history.setIndCurPicture(history.getIndCurPicture() -1);
-            imageView.setImageBitmap(history.getCur_picture());
+            currentBmp = history.getCur_picture();
+            imageView.setImageBitmap(currentBmp);
+
         }
     }
 
     public void onClickNext(View v){
         if (history.getIndCurPicture() < history.getTop()){
             history.setIndCurPicture(history.getIndCurPicture() +1);
-            imageView.setImageBitmap(history.getCur_picture());
+            currentBmp = history.getCur_picture();
+            imageView.setImageBitmap(currentBmp);
         }
     }
 
