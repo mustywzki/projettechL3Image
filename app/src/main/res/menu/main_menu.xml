@@ -12,9 +12,9 @@
         app:showAsAction="collapseActionView">
     </item>
 
-    <item android:id="@+id/save"
+    <item
+        android:id="@+id/save"
         android:title="@string/save_button"
-        app:showAsAction="collapseActionView">
-    </item>
+        app:showAsAction="collapseActionView"></item>
 
 </menu>

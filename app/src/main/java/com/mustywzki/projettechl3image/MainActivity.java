@@ -43,10 +43,10 @@ public class MainActivity extends AppCompatActivity {
     static final int RESULT_IMAGE_CAPTURE=1002;
     Uri image_uri = null;
 
-    private View slider_bars, filter_view, average_view, laplacien_view, prewitt_view, sobel_view;
-    private Switch button_switch;
-    private FrameLayout buttons_view;
-    private HorizontalScrollView button_scroll;
+    private View sliderBars, filterView, averageView, laplacienView, prewittView, sobelView;
+    private Switch buttonSwitch;
+    private FrameLayout buttonsView;
+    private HorizontalScrollView buttonScroll;
     private SeekBar bar1, bar2, bar3;
     private boolean isSliding, isRenderscript;
     private AlgorithmType currentAlgorithm;
@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     // GUI-related members
     private ImageView imageView;
     private Bitmap currentBmp, processedBmp, savedBmp;
-    Button camera_button, gallery_button;
 
     public enum AlgorithmType {
         GRAY,
@@ -94,19 +93,19 @@ public class MainActivity extends AppCompatActivity {
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                 View.SYSTEM_UI_FLAG_IMMERSIVE);
 
-        slider_bars = View.inflate(this,R.layout.seekbar_view,null);
-        filter_view = View.inflate(this, R.layout.filter_view, null);
-        average_view = View.inflate(this, R.layout.average_filter_view, null);
-        laplacien_view = View.inflate(this, R.layout.laplacien_filter_view, null);
-        prewitt_view = View.inflate(this, R.layout.prewitt_filter_view, null);
-        sobel_view = View.inflate(this, R.layout.sobel_filter_view, null);
+        sliderBars = View.inflate(this,R.layout.seekbar_view,null);
+        filterView = View.inflate(this, R.layout.filter_view, null);
+        averageView = View.inflate(this, R.layout.average_filter_view, null);
+        laplacienView = View.inflate(this, R.layout.laplacien_filter_view, null);
+        prewittView = View.inflate(this, R.layout.prewitt_filter_view, null);
+        sobelView = View.inflate(this, R.layout.sobel_filter_view, null);
 
         imageView = (ImageView)findViewById(R.id.picture);
         PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
         photoView.update();
-        button_scroll = findViewById(R.id.button_scroll);
-        buttons_view = findViewById(R.id.button_view);
-        button_switch = findViewById(R.id.renderscript_switch);
+        buttonScroll = findViewById(R.id.button_scroll);
+        buttonsView = findViewById(R.id.button_view);
+        buttonSwitch = findViewById(R.id.renderscript_switch);
         gray = findViewById(R.id.gray_button);
         keepColor = findViewById(R.id.selected_color_button);
         functionsRS = new FunctionsRS();
@@ -115,8 +114,12 @@ public class MainActivity extends AppCompatActivity {
         processedBmp = currentBmp;
         history = new History(10, currentBmp);
 
+        setButtonSwitch();
+        setSeekBar();
+    }
 
-        button_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void setButtonSwitch(){
+        buttonSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isRenderscript = isChecked;
@@ -129,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        setSeekBar();
     }
 
     @Override
@@ -158,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickReturn(View v) {
-        buttons_view.removeAllViews();
-        buttons_view.addView(button_scroll);
+        buttonsView.removeAllViews();
+        buttonsView.addView(buttonScroll);
         apply();
     }
 
@@ -169,99 +171,34 @@ public class MainActivity extends AppCompatActivity {
         history.addElement(currentBmp);
     }
 
-    public void onClickSave() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                requestPermissions(permissions, PERMISSION_CODE);
-            }
-        }
-
-        String root = Environment.getExternalStorageDirectory().toString();
-        System.out.println(root);
-        File myDir = new File(root + "/piceditor");
-        myDir.mkdirs();
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String fname = "PicEditor_" + timeStamp + ".jpg";
-
-        File file = new File(myDir, fname);
-        if (file.exists()) file.delete();
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            processedBmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Toast.makeText(this,"Image saved", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onClickCamera(View v){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
-                String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                requestPermissions(permissions, PERMISSION_CODE);
-            }
-            else{
-                launchCamera();
-            }
-
-        }
-        else{
-            launchCamera();
-        }
-    }
-
-    public void onClickGallery (View v){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
-                String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                requestPermissions(permissions, PERMISSION_CODE);
-            }
-            else{
-                getImageFromGallery();
-            }
-
-        }
-        else{
-            getImageFromGallery();
-        }
-
-        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)){
-            camera_button.setEnabled(false);
-        }
-    }
-
     public void onClickReturnFilters(View v){
         currentAlgorithm = null;
         currentBmp = processedBmp;
-        buttons_view.removeAllViews();
-        buttons_view.addView(filter_view);
+        buttonsView.removeAllViews();
+        buttonsView.addView(filterView);
     }
 
     public void onClickView(View v){
         switch (v.getId()){
             case R.id.filter_button:
-                buttons_view.removeAllViews();
-                buttons_view.addView(filter_view);
+                buttonsView.removeAllViews();
+                buttonsView.addView(filterView);
                 break;
             case R.id.average_button:
-                buttons_view.removeAllViews();
-                buttons_view.addView(average_view);
+                buttonsView.removeAllViews();
+                buttonsView.addView(averageView);
                 break;
             case R.id.prewitt_button:
-                buttons_view.removeAllViews();
-                buttons_view.addView(prewitt_view);
+                buttonsView.removeAllViews();
+                buttonsView.addView(prewittView);
                 break;
             case R.id.sobel_button:
-                buttons_view.removeAllViews();
-                buttons_view.addView(sobel_view);
+                buttonsView.removeAllViews();
+                buttonsView.addView(sobelView);
                 break;
             case R.id.laplacian_button:
-                buttons_view.removeAllViews();
-                buttons_view.addView(laplacien_view);
+                buttonsView.removeAllViews();
+                buttonsView.addView(laplacienView);
                 break;
         }
     }
@@ -449,9 +386,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void setSeekBar(){
         // Option sliders listeners
-        bar1 = slider_bars.findViewById(R.id.seekBar1);
-        bar2 = slider_bars.findViewById(R.id.seekBar2);
-        bar3 = slider_bars.findViewById(R.id.seekBar3);
+        bar1 = sliderBars.findViewById(R.id.seekBar1);
+        bar2 = sliderBars.findViewById(R.id.seekBar2);
+        bar3 = sliderBars.findViewById(R.id.seekBar3);
         isSliding = false;
 
         bar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -508,7 +445,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void seekbars_load(boolean visible1, String text1, int maxVal1, boolean visible2, String text2, int maxVal2, boolean visible3, String text3, int maxVal3) {
-        TextView t1 = slider_bars.findViewById(R.id.textView1), t2 = slider_bars.findViewById(R.id.textView2), t3 = slider_bars.findViewById(R.id.textView3);
+        TextView t1 = sliderBars.findViewById(R.id.textView1), t2 = sliderBars.findViewById(R.id.textView2), t3 = sliderBars.findViewById(R.id.textView3);
         bar1.setVisibility(visible1 ? View.VISIBLE : View.INVISIBLE);
         bar2.setVisibility(visible2 ? View.VISIBLE : View.INVISIBLE);
         bar3.setVisibility(visible3 ? View.VISIBLE : View.INVISIBLE);
@@ -521,8 +458,8 @@ public class MainActivity extends AppCompatActivity {
         t2.setText(text2);
         t3.setText(text3);
 
-        buttons_view.removeAllViews();
-        buttons_view.addView(slider_bars);
+        buttonsView.removeAllViews();
+        buttonsView.addView(sliderBars);
     }
 
     /* --- Camera and Gallery --- */
@@ -532,7 +469,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1002 && resultCode == RESULT_OK) {
 
             try {
-                    savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
+                savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -540,7 +477,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else if(requestCode == RESULT_LOAD_IMG && data!=null && resultCode==RESULT_OK){
-             image_uri = data.getData();
+            image_uri = data.getData();
             try{
                 savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
             }
@@ -574,13 +511,66 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.gallery:
-                //onClickGallery();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
+                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                        requestPermissions(permissions, PERMISSION_CODE);
+                    }
+                    else{
+                        getImageFromGallery();
+                    }
+
+                }
+                else{
+                    getImageFromGallery();
+                }
+                if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)){
+                    Button cameraButton = findViewById(R.id.gallery);
+                    cameraButton.setEnabled(false);
+                }
                 break;
             case R.id.camera:
-                //onClickCamera();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
+                        String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        requestPermissions(permissions, PERMISSION_CODE);
+                    }
+                    else{
+                        launchCamera();
+                    }
+
+                }
+                else{
+                    launchCamera();
+                }
                 break;
             case R.id.save:
-                onClickSave();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                        String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        requestPermissions(permissions, PERMISSION_CODE);
+                    }
+                }
+
+                String root = Environment.getExternalStorageDirectory().toString();
+                System.out.println(root);
+                File myDir = new File(root + "/piceditor");
+                myDir.mkdirs();
+
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                String fname = "PicEditor_" + timeStamp + ".jpg";
+
+                File file = new File(myDir, fname);
+                if (file.exists()) file.delete();
+                try {
+                    FileOutputStream out = new FileOutputStream(file);
+                    processedBmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(this,"Image saved", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
