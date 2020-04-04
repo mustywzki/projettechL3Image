@@ -400,7 +400,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case COLORIZE:
                 if (isRenderscript)
-                    functionsRS.colorize(getApplicationContext(),processedBmp, bar1.getProgress());
+                    functionsRS.colorize(getApplicationContext(), processedBmp,bar1.getProgress() );
+
                 else
                     Functions.colorize(processedBmp,bar1.getProgress());
                 break;

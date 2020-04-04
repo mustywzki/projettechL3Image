@@ -53,37 +53,6 @@ public class FunctionsRS extends Activity {
     }
 
 
-float[] RgbToHsv(Context ctx, Bitmap bmp ){
-        float[] hsv_tab= new float[4];
-       RenderScript rs = RenderScript.create(ctx);
-       Allocation input = Allocation.createFromBitmap(rs,bmp);
-       Allocation output = Allocation.createTyped(rs, input.getType());
-       ScriptC_RgbToHsv RgbToHsv = new ScriptC_RgbToHsv(rs);
-       RgbToHsv.forEach_rgb_to_hsv(input, output);
-        output.copyTo(hsv_tab);
-       input.destroy();
-       output.destroy();
-       RgbToHsv.destroy();
-       rs.destroy();
-       return hsv_tab;
-
-   }
-
-    int[] HsvToRgb(Context ctx, Bitmap bmp ){
-        int[] rgb_tab= new int[4];
-        RenderScript rs = RenderScript.create(ctx);
-        Allocation input = Allocation.createFromBitmap(rs,bmp);
-        Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_HsvToRgb HsvToRgb = new ScriptC_HsvToRgb(rs);
-        HsvToRgb.forEach_HsvToRgb(input, output);
-        output.copyTo(rgb_tab);
-        input.destroy();
-        output.destroy();
-        HsvToRgb.destroy();
-        rs.destroy();
-        return rgb_tab;
-
-    }
 
     public void colorize(Context ctx, Bitmap bmp, float hue) {
         RenderScript rs = RenderScript.create(ctx);
@@ -97,6 +66,7 @@ float[] RgbToHsv(Context ctx, Bitmap bmp ){
         output.destroy();
         colorizeScript.destroy();
         rs.destroy();
+
     }
 
 
