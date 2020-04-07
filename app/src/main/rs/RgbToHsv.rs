@@ -1,39 +1,49 @@
 #pragma version(1)
 #pragma rs java_package_name(com.mustywzki.projettechl3image)
-
-float4  RS_KERNEL RgbToHsv(uchar4  rgb_tab) {
-
-
-    float4 rgb = rsUnpackColor8888(rgb_tab);
-    float red = rgb.r;
-    float blue = rgb.b;
-    float green = rgb.g;
-    float minimum = min( red, min( green, blue ) );
-    float maximum = max( red, max( green, blue ) );
+#pragma rs_fp_relaxed
 
 
+float4  RS_KERNEL RgbToHsv(uchar4  rgb_tab){
 
-    if(maximum==minimum){
-        rgb.s0=0;
-    }
-    else if (maximum== red){
-        rgb.s0 = fmod(((60 * (green - blue) / (maximum - minimum)) + 360),360);
-    }
-    else if (maximum==green){
-        rgb.s0 = (60 * (blue - red) / (maximum - minimum)) + 120;
-    }
-    else if(maximum==blue){
-        rgb.s0= (60 * (red - green) / (maximum - minimum)) + 240;
-    }
+     float4 rgba = rsUnpackColor8888(rgb_tab);
+     float4 hsv;
+     float maximum =max(rgba[0], max(rgba[1],rgba[2]));
+     float minimum =min(rgba[0], min(rgba[1],rgba[2]));
+     float delta = maximum - minimum;
+     float red = rgba[0];
+     float green = rgba[1];
+     float blue = rgba[2];
 
-    if(maximum == 0){
-        rgb.s1 = 0;
-    }
-    else{
-        rgb.s1 = 1 - (minimum/maximum);
-    }
+            /* --- Hue calculation --- */
+            if (delta == 0){
+                hsv[0] = 0;
+            }
+            else if (maximum == red){
+                hsv[0] = fmod(((green - blue)/delta),6);
+            }
+            else if (maximum == green){
+                hsv[0] = (blue - red)/delta + 2;
+            }
+            else if (maximum == blue){
+                hsv[0] = (red - green)/delta + 4;
+            }
+            hsv[0] = round(hsv[0] * 60);
 
-    rgb.s2= maximum;
+            if (hsv[0] < 0){
+                hsv[0] += 360;
+            }
 
-    return rgb;
+            /* --- Saturation calculation --- */
+            if (maximum == 0){
+                hsv[1] = 0;
+            }
+            else{
+                hsv[1] = delta / maximum;
+            }
+
+            /* --- Value calculation --- */
+            hsv[2] = maximum;
+            hsv[3] = rgba[3];
+
+            return hsv;
 }

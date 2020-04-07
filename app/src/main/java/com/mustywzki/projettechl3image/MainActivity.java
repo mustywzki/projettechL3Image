@@ -1,6 +1,8 @@
+
 package com.mustywzki.projettechl3image;
 
 import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -320,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case COLORIZE:
                 if (isRenderscript)
-                    functionsRS.colorize(getApplicationContext(), processedBmp,bar1.getProgress() );
+                    functionsRS.colorize2(getApplicationContext(), processedBmp,bar1.getProgress() );
 
                 else
                     Functions.colorize(processedBmp,bar1.getProgress());

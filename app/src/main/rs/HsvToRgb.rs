@@ -2,28 +2,58 @@
 #pragma rs java_package_name(com.mustywzki.projettechl3image)
 
 uchar4  RS_KERNEL HsvToRgb(float4  hsv) {
-    float h = hsv.s0;
-    float s = hsv.s1;
-    float v = hsv.s2;
-    float alpha = hsv.s3;
+    float h = hsv[0];
+    float s = hsv[1];
+    float v = hsv[2];
+    float alpha = hsv[3];
+    float c = v * s;
+    float z= fmod( (h/60),2 );
+    float x = c * (1 - abs( (int) z-1 ) );
+    float r = 0;
+    float g = 0;
+    float b = 0;
 
-    float t = fmod((h / 60),6);
-    float f = (h / 60) - t;
-    float l = v * (1 - s);
-    float m =  (v * (1 - (f - s)));
-    float n = v * (1 - (1 - f) * s);
+    if (h >= 0){
+        if (h < 60){
+                    r = c;
+                    g = x;
+                    b = 0;
+                }
+                else if (h < 120){
+                    r = x;
+                    g = c;
+                    b = 0;
+                }
+                else if (h < 180){
+                    r = 0;
+                    g = c;
+                    b = x;
+                }
+                else if (h < 240){
+                    r = 0;
+                    g = x;
+                    b = c;
+                }
+                else if (h < 300){
+                    r = x;
+                    g = 0;
+                    b = c;
+                }
+                else if (h < 360){
+                    r = c;
+                    g = 0;
+                    b = x;
+                }
+            }
 
-        if (t == 0) {
-            return  rsPackColorTo8888(v, n, l,alpha);
-        } else if (t == 1) {
-            return  rsPackColorTo8888(m, v, l,alpha);
-        } else if (t == 2) {
-            return  rsPackColorTo8888(l, v, n, alpha);
-        } else if (t == 3) {
-            return  rsPackColorTo8888(l, m, v,alpha);
-        } else if (t == 4) {
-            return  rsPackColorTo8888(n, l, v, alpha);
-        }
-        return  rsPackColorTo8888(v, l, m,alpha);
+            float m = v - c;
+
+            float red, green, blue;
+
+            red =  ((r + m));
+            green =  ((g + m));
+            blue = ((b + m));
+            float4 rgba= {red, green, blue, hsv[3]};
+            return rsPackColorTo8888(rgba);
 
 }
