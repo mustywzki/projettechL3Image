@@ -2,10 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/gallery"
+    <item
+        android:id="@+id/gallery"
+        android:icon="@drawable/dossier"
         android:title="@string/gallery_string"
-        app:showAsAction="collapseActionView">
-    </item>
+        app:showAsAction="collapseActionView"></item>
 
     <item android:id="@+id/camera"
         android:title="@string/camera_string"

@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
@@ -91,12 +90,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         requestPermissions();
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                View.SYSTEM_UI_FLAG_FULLSCREEN |
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_IMMERSIVE);
+        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+        //        View.SYSTEM_UI_FLAG_FULLSCREEN |
+        //        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+        //        View.SYSTEM_UI_FLAG_IMMERSIVE);
 
-        sliderBars = View.inflate(this,R.layout.seekbar_view,null);
+        sliderBars = View.inflate(this,R.layout.slider_view,null);
         filterView = View.inflate(this, R.layout.filter_view, null);
         averageView = View.inflate(this, R.layout.average_filter_view, null);
         laplacienView = View.inflate(this, R.layout.laplacien_filter_view, null);
@@ -109,8 +108,6 @@ public class MainActivity extends AppCompatActivity {
         buttonScroll = findViewById(R.id.button_scroll);
         buttonsView = findViewById(R.id.button_view);
         buttonSwitch = findViewById(R.id.renderscript_switch);
-        gray = findViewById(R.id.gray_button);
-        keepColor = findViewById(R.id.selected_color_button);
         functionsRS = new FunctionsRS();
         currentBmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         savedBmp = currentBmp;
@@ -127,11 +124,11 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isRenderscript = isChecked;
                 if (isRenderscript) {
-                    gray.setTextColor(Color.RED);
-                    keepColor.setTextColor(Color.RED);
+                    ((TextView)findViewById(R.id.gray_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
+                    ((TextView)findViewById(R.id.keep_hue_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
                 } else {
-                    gray.setTextColor(Color.BLACK);
-                    keepColor.setTextColor(Color.BLACK);
+                    ((TextView)findViewById(R.id.gray_text)).setTextColor(getResources().getColor(R.color.colorAccent));
+                    ((TextView)findViewById(R.id.keep_hue_text)).setTextColor(getResources().getColor(R.color.colorAccent));
                 }
             }
         });
@@ -163,6 +160,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickReturn(View v) {
+        buttonsView.removeAllViews();
+        buttonsView.addView(buttonScroll);
+        imageView.setImageBitmap(currentBmp);
+    }
+
+    public void onClickValidate(View v){
         buttonsView.removeAllViews();
         buttonsView.addView(buttonScroll);
         apply();
@@ -227,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         switch (v.getId()) {
             case R.id.gray_button:
                 currentAlgorithm = AlgorithmType.GRAY;
-                seekbars_load(true,"Red",100,true,"Green",100,true,"Blue",100);
+                seekbars_load("Gray", true,"Red",100,true,"Green",100,true,"Blue",100);
                 // Default bars
                 bar1.setProgress(30);
                 bar2.setProgress(59);
@@ -235,12 +238,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.random_button:
                 currentAlgorithm = AlgorithmType.COLORIZE;
-                seekbars_load(true,"Hue",359,false,"",1,false, "",1);
+                seekbars_load("Colorise", true,"Hue",359,false,"",1,false, "",1);
                 bar1.setProgress((int) (Math.random() * 100));
                 break;
             case R.id.selected_color_button:
                 currentAlgorithm = AlgorithmType.COLOR_RANGE;
-                seekbars_load(true,"Hue",359,true,"Chroma Key",180,false,"",1);
+                seekbars_load("Keep Hue", true,"Hue",359,true,"Tolerance",180,false,"",1);
                 break;
             case R.id.linear_transformation_button:
                 currentAlgorithm = AlgorithmType.DYNAMIC_EXTENSION;
@@ -253,12 +256,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.saturation_button:
                 currentAlgorithm = AlgorithmType.SATURATION;
-                seekbars_load(true,"Hue",100,false,"",1,false, "",1);
+                seekbars_load("Saturation", true,"Hue",100,false,"",1,false, "",1);
                 bar1.setProgress(50);
                 break;
             case R.id.brightness_button:
                 currentAlgorithm = AlgorithmType.BRIGHTNESS;
-                seekbars_load(true,"Hue",100,false,"",1,false, "",1);
+                seekbars_load("Brightness", true,"Hue",100,false,"",1,false, "",1);
                 bar1.setProgress(50);
                 break;
             case R.id.average_3_button:
@@ -450,11 +453,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void seekbars_load(boolean visible1, String text1, int maxVal1, boolean visible2, String text2, int maxVal2, boolean visible3, String text3, int maxVal3) {
-        TextView t1 = sliderBars.findViewById(R.id.textView1), t2 = sliderBars.findViewById(R.id.textView2), t3 = sliderBars.findViewById(R.id.textView3);
-        bar1.setVisibility(visible1 ? View.VISIBLE : View.INVISIBLE);
-        bar2.setVisibility(visible2 ? View.VISIBLE : View.INVISIBLE);
-        bar3.setVisibility(visible3 ? View.VISIBLE : View.INVISIBLE);
+    public void seekbars_load(String name, boolean visible1, String text1, int maxVal1, boolean visible2, String text2, int maxVal2, boolean visible3, String text3, int maxVal3) {
+        TextView t1 = sliderBars.findViewById(R.id.textView1), t2 = sliderBars.findViewById(R.id.textView2), t3 = sliderBars.findViewById(R.id.textView3), t4 = sliderBars.findViewById(R.id.textView4);
+        bar1.setVisibility(visible1 ? View.VISIBLE : View.GONE);
+        bar2.setVisibility(visible2 ? View.VISIBLE : View.GONE);
+        bar3.setVisibility(visible3 ? View.VISIBLE : View.GONE);
 
         bar1.setMax(maxVal1);
         bar2.setMax(maxVal2);
@@ -463,6 +466,7 @@ public class MainActivity extends AppCompatActivity {
         t1.setText(text1);
         t2.setText(text2);
         t3.setText(text3);
+        t4.setText(name);
 
         buttonsView.removeAllViews();
         buttonsView.addView(sliderBars);

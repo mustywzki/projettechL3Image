@@ -8,10 +8,10 @@
 
     <string name="filter_button">Filters</string>
     <string name="egalisation_histogram_button">Egalisation histogram</string>
-    <string name="saturation_button">Change saturation</string>
-    <string name="brightness_button">Change brightness</string>
-    <string name="selected_color_button">Selected colors</string>
-    <string name="random_button">Random color</string>
+    <string name="saturation_button">Saturation</string>
+    <string name="brightness_button">Brightness</string>
+    <string name="selected_color_button">Keep Hue</string>
+    <string name="random_button">Colorise</string>
     <string name="negative_button">Negative</string>
     <string name="linear_transformation_button">Linear extansion</string>
     <string name="gray_button">Gray</string>
