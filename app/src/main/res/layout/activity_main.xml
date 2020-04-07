@@ -26,7 +26,6 @@
             android:layout_marginTop="3dp"
             android:layout_marginEnd="3dp"
             android:layout_marginRight="3dp"
-            android:layout_marginBottom="1dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,6 +40,9 @@
                 android:layout_height="wrap_content"
                 android:checked="@bool/switchRenderscript"
                 android:text="@string/renderscript_switch"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:typeface="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/previous_button"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -50,10 +52,10 @@
             <Button
                 android:id="@+id/reset_c_button"
                 style="@style/Widget.AppCompat.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/reset"
                 android:onClick="onClickReset"
-                android:text="@string/reset_c_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -88,13 +90,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
-            android:layout_width="0dp"
-            android:layout_height="407dp"
+            android:layout_width="416dp"
+            android:layout_height="332dp"
+            android:background="#00FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.19">
+            app:layout_constraintVertical_bias="0.32999998">
 
             <ImageButton
                 android:id="@+id/picture"
@@ -105,6 +108,7 @@
                 android:src="@drawable/multicolor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -113,6 +117,8 @@
             android:id="@+id/button_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            android:animateLayoutChanges="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -122,77 +128,278 @@
             <HorizontalScrollView
                 android:id="@+id/button_scroll"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:animateLayoutChanges="false">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    android:background="#00FFFFFF"
+                    android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/filter_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="onClickView"
-                        android:text="@string/filter_button" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/egalisation_histogram_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="onClickAlgorithms"
-                        android:text="@string/egalisation_histogram_button" />
+                        <Button
+                            android:id="@+id/filter_button"
+                            style="@style/Widget.AppCompat.Button"
+                            android:layout_width="59dp"
+                            android:layout_height="59dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/filtres"
+                            android:onClick="onClickView" />
 
-                    <Button
-                        android:id="@+id/saturation_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="onClickAlgorithms"
-                        android:text="@string/saturation_button" />
+                        <TextView
+                            android:id="@+id/filter_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:text="@string/filter_button"
+                            android:textColor="@color/colorAccent"
+                            android:textColorHint="#FFFFFF"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
-                    <Button
-                        android:id="@+id/brightness_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="onClickAlgorithms"
-                        android:text="@string/brightness_button" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/selected_color_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="onClickAlgorithms"
-                        android:text="@string/selected_color_button" />
+                        <Button
+                            android:id="@+id/egalisation_histogram_button"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:onClick="onClickAlgorithms" />
 
-                    <Button
-                        android:id="@+id/random_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="onClickAlgorithms"
-                        android:text="@string/random_button" />
+                        <TextView
+                            android:id="@+id/egalisation_histogram_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:text="@string/egalisation_histogram_button"
+                            android:textColor="@color/colorAccent"
+                            android:textColorHint="#FFFFFF"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
-                    <Button
-                        android:id="@+id/negative_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="onClickAlgorithms"
-                        android:text="@string/negative_button" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/linear_transformation_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="onClickAlgorithms"
-                        android:text="@string/linear_transformation_button" />
+                        <Button
+                            android:id="@+id/saturation_button"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:onClick="onClickAlgorithms" />
 
-                    <Button
-                        android:id="@+id/gray_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="onClickAlgorithms"
-                        android:text="@string/gray_button" />
+                        <TextView
+                            android:id="@+id/saturation_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:text="@string/saturation_button"
+                            android:textColor="@color/colorAccent"
+                            android:textColorHint="#FFFFFF"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/brightness_button"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:onClick="onClickAlgorithms" />
+
+                        <TextView
+                            android:id="@+id/brightness_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:text="@string/brightness_button"
+                            android:textColor="@color/colorAccent"
+                            android:textColorHint="#FFFFFF"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/gray_button"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:onClick="onClickAlgorithms" />
+
+                        <TextView
+                            android:id="@+id/gray_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:text="@string/gray_button"
+                            android:textColor="@color/colorAccent"
+                            android:textColorHint="#FFFFFF"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/linear_transformation_button"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:onClick="onClickAlgorithms" />
+
+                        <TextView
+                            android:id="@+id/libear_extension_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:text="@string/linear_transformation_button"
+                            android:textColor="@color/colorAccent"
+                            android:textColorHint="#FFFFFF"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/negative_button"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/inverser"
+                            android:onClick="onClickAlgorithms" />
+
+                        <TextView
+                            android:id="@+id/negative_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:text="@string/negative_button"
+                            android:textColor="@color/colorAccent"
+                            android:textColorHint="#FFFFFF"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/selected_color_button"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:onClick="onClickAlgorithms" />
+
+                        <TextView
+                            android:id="@+id/keep_hue_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:text="@string/selected_color_button"
+                            android:textColor="@color/colorAccent"
+                            android:textColorHint="#FFFFFF"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/random_button"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:onClick="onClickAlgorithms" />
+
+                        <TextView
+                            android:id="@+id/colorise_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="#00FFFFFF"
+                            android:text="@string/random_button"
+                            android:textColor="@color/colorAccent"
+                            android:textColorHint="#FFFFFF"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
                 </LinearLayout>
-
             </HorizontalScrollView>
 
         </FrameLayout>

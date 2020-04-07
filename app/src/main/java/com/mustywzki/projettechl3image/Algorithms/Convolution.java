@@ -80,6 +80,7 @@ public class Convolution {
         applyfilter(bmp, core, size);
     }
 
+    //TODO faire un sorte d'avoir un filtre adaptatif (à la taille demandée)
     public static void filter_Gaussien(Bitmap bmp){
         double[] core = {1.0, 2.0, 3.0, 2.0, 1.0
                         ,2.0, 6.0, 8.0, 6.0, 2.0
