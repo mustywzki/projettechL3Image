@@ -342,14 +342,23 @@ public class MainActivity extends AppCompatActivity {
                 apply();
                 break;
             case NEGATIVE:
-                Functions.negative(processedBmp);
-                apply();
+                if (isRenderscript)
+                    functionsRS.negative(getApplicationContext(),processedBmp);
+                else
+                    Functions.negative(processedBmp);
+                    apply();
                 break;
             case SATURATION:
-                Functions.change_saturation(processedBmp,bar1.getProgress());
+                if (isRenderscript)
+                    functionsRS.change_saturation(getApplicationContext(),processedBmp, (float)bar1.getProgress());
+                else
+                    Functions.change_saturation(processedBmp,bar1.getProgress());
                 break;
             case BRIGHTNESS:
-                Functions.change_brightness(processedBmp,bar1.getProgress());
+                if (isRenderscript)
+                    functionsRS.change_brightness(getApplicationContext(),processedBmp, (float)bar1.getProgress());
+                else
+                    Functions.change_brightness(processedBmp,bar1.getProgress());
                 break;
             case AVERAGE_3x3:
                 Convolution.filter_Moyenneur(processedBmp, 9);

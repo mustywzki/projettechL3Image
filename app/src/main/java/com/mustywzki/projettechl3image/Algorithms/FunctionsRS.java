@@ -7,9 +7,12 @@ import android.graphics.Bitmap;
 import androidx.renderscript.Allocation;
 import androidx.renderscript.RenderScript;
 
+import com.mustywzki.projettechl3image.ScriptC_change_brightness;
+import com.mustywzki.projettechl3image.ScriptC_change_saturation;
 import com.mustywzki.projettechl3image.ScriptC_colorize2;
 import com.mustywzki.projettechl3image.ScriptC_gray;
 import com.mustywzki.projettechl3image.ScriptC_keepColor;
+import com.mustywzki.projettechl3image.ScriptC_negative;
 
 public class FunctionsRS extends Activity {
 
@@ -68,6 +71,55 @@ public class FunctionsRS extends Activity {
         rs.destroy();
 
     }
+
+    public void change_saturation(Context ctx, Bitmap bmp, float saturation) {
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs,bmp);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+        ScriptC_change_saturation SaturationScript = new ScriptC_change_saturation(rs);
+        SaturationScript.set_saturation_change(saturation);
+        SaturationScript.forEach_change_saturation(input,output);
+        output.copyTo(bmp);
+        input.destroy();
+        output.destroy();
+        SaturationScript.destroy();
+        rs.destroy();
+
+    }
+
+
+    public void change_brightness(Context ctx, Bitmap bmp, float brightness) {
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs,bmp);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+        ScriptC_change_brightness BrightnessScript = new ScriptC_change_brightness(rs);
+        BrightnessScript.set_brightness_change(brightness);
+        BrightnessScript.forEach_change_brightness(input,output);
+        output.copyTo(bmp);
+        input.destroy();
+        output.destroy();
+        BrightnessScript.destroy();
+        rs.destroy();
+
+    }
+
+
+
+
+    public void negative(Context ctx, Bitmap bmp) {
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs,bmp);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+        ScriptC_negative NegativeScript = new ScriptC_negative(rs);
+        NegativeScript.forEach_negative(input,output);
+        output.copyTo(bmp);
+        input.destroy();
+        output.destroy();
+        NegativeScript.destroy();
+        rs.destroy();
+
+    }
+
 
 
 
