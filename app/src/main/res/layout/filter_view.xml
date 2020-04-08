@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="false"
     android:gravity="bottom"
     android:orientation="vertical">
 
@@ -13,10 +12,8 @@
 
         <Button
             android:id="@+id/backButton"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="start"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:background="@drawable/annuler"
             android:onClick="onClickReturn" />
 
@@ -58,49 +55,83 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/average_button"
+                android:id="@+id/gray_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onClickView"
-                android:text="@string/average_button">
-
-            </Button>
+                android:layout_gravity="center"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/colorPrimaryDark"
+                android:onClick="onClickAlgorithms"
+                android:text="@string/gray_button"
+                android:textColor="@color/colorAccent" />
 
             <Button
-                android:id="@+id/gaussian_button"
+                android:id="@+id/linear_transformation_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/colorPrimaryDark"
                 android:onClick="onClickAlgorithms"
-                android:text="@string/gaussian_button">
+                android:text="@string/linear_transformation_button"
+                android:textColor="@color/colorAccent" />
 
-            </Button>
+            <Button
+                android:id="@+id/egalisation_histogram_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/colorPrimaryDark"
+                android:onClick="onClickAlgorithms"
+                android:text="@string/egalisation_histogram_button"
+                android:textColor="@color/colorAccent" />
 
             <Button
                 android:id="@+id/prewitt_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/colorPrimaryDark"
                 android:onClick="onClickView"
-                android:text="@string/prewitt_button">
+                android:text="@string/prewitt_button"
+                android:textColor="@color/colorAccent">
 
             </Button>
 
             <Button
                 android:id="@+id/sobel_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/colorPrimaryDark"
                 android:onClick="onClickView"
-                android:text="@string/sobel_button">
+                android:text="@string/sobel_button"
+                android:textColor="@color/colorAccent">
 
             </Button>
 
             <Button
                 android:id="@+id/laplacian_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/colorPrimaryDark"
                 android:onClick="onClickView"
-                android:text="@string/laplacian_button">
-                match_parent
-            </Button>
+                android:text="@string/laplacian_button"
+                android:textColor="@color/colorAccent"></Button>
         </LinearLayout>
 
     </HorizontalScrollView>

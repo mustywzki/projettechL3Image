@@ -11,11 +11,10 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/backButtonFilter"
+            android:id="@+id/backButton"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="start"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:background="@drawable/annuler"
             android:onClick="onClickReturn" />
 
@@ -29,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/laplacian_button"
+            android:text="@string/blur_button"
             android:textColor="@color/colorAccent"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -42,47 +41,45 @@
         <Button
             android:id="@+id/validateButton"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:background="@drawable/valider"
             android:onClick="onClickValidate" />
     </LinearLayout>
 
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/average_button"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="onClickView"
+            android:text="@string/average_button"
+            android:textColor="@color/colorAccent">
 
-            <Button
-                android:id="@+id/laplacian_4_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="@color/colorPrimaryDark"
-                android:onClick="onClickAlgorithms"
-                android:text="@string/laplacian_4_button"
-                android:textColor="@color/colorAccent"></Button>
+        </Button>
 
-            <Button
-                android:id="@+id/laplacian_8_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="@color/colorPrimaryDark"
-                android:onClick="onClickAlgorithms"
-                android:text="@string/laplacian_8_button"
-                android:textColor="@color/colorAccent"></Button>
+        <Button
+            android:id="@+id/gaussian_button"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="onClickAlgorithms"
+            android:text="@string/gaussian_button"
+            android:textColor="@color/colorAccent">
 
-        </LinearLayout>
+        </Button>
 
-    </HorizontalScrollView>
+    </LinearLayout>
 
 </LinearLayout>

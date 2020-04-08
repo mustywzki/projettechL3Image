@@ -87,7 +87,6 @@ public class FunctionsRS extends Activity {
 
     }
 
-
     public void change_brightness(Context ctx, Bitmap bmp, float brightness) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs,bmp);
@@ -102,9 +101,6 @@ public class FunctionsRS extends Activity {
         rs.destroy();
 
     }
-
-
-
 
     public void negative(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);

@@ -52,8 +52,8 @@
             <Button
                 android:id="@+id/reset_c_button"
                 style="@style/Widget.AppCompat.Button"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@drawable/reset"
                 android:onClick="onClickReset"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -64,8 +64,8 @@
 
             <Button
                 android:id="@+id/previous_button"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@drawable/previous"
                 android:onClick="onClickPrevious"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -76,8 +76,8 @@
 
             <Button
                 android:id="@+id/next_button"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@drawable/next"
                 android:onClick="onClickNext"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -104,6 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
+                android:background="#00FFFFFF"
                 android:contentDescription="@string/picture_description"
                 android:src="@drawable/multicolor"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -149,8 +150,8 @@
                         <Button
                             android:id="@+id/filter_button"
                             style="@style/Widget.AppCompat.Button"
-                            android:layout_width="59dp"
-                            android:layout_height="59dp"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
                             android:layout_gravity="center"
                             android:background="@drawable/filtres"
                             android:onClick="onClickView" />
@@ -160,6 +161,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginBottom="7dp"
                             android:background="#00FFFFFF"
                             android:text="@string/filter_button"
                             android:textColor="@color/colorAccent"
@@ -176,40 +178,12 @@
                         android:orientation="vertical">
 
                         <Button
-                            android:id="@+id/egalisation_histogram_button"
-                            style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:onClick="onClickAlgorithms" />
-
-                        <TextView
-                            android:id="@+id/egalisation_histogram_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="#00FFFFFF"
-                            android:text="@string/egalisation_histogram_button"
-                            android:textColor="@color/colorAccent"
-                            android:textColorHint="#FFFFFF"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@color/colorPrimaryDark"
-                        android:orientation="vertical">
-
-                        <Button
                             android:id="@+id/saturation_button"
                             style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
                             android:layout_gravity="center"
-                            android:background="#00FFFFFF"
+                            android:background="@drawable/saturation"
                             android:onClick="onClickAlgorithms" />
 
                         <TextView
@@ -217,6 +191,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginBottom="7dp"
                             android:background="#00FFFFFF"
                             android:text="@string/saturation_button"
                             android:textColor="@color/colorAccent"
@@ -235,10 +210,10 @@
                         <Button
                             android:id="@+id/brightness_button"
                             style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
                             android:layout_gravity="center"
-                            android:background="#00FFFFFF"
+                            android:background="@drawable/brightness"
                             android:onClick="onClickAlgorithms" />
 
                         <TextView
@@ -246,6 +221,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginBottom="7dp"
                             android:background="#00FFFFFF"
                             android:text="@string/brightness_button"
                             android:textColor="@color/colorAccent"
@@ -262,68 +238,10 @@
                         android:orientation="vertical">
 
                         <Button
-                            android:id="@+id/gray_button"
-                            style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="#00FFFFFF"
-                            android:onClick="onClickAlgorithms" />
-
-                        <TextView
-                            android:id="@+id/gray_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="#00FFFFFF"
-                            android:text="@string/gray_button"
-                            android:textColor="@color/colorAccent"
-                            android:textColorHint="#FFFFFF"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@color/colorPrimaryDark"
-                        android:orientation="vertical">
-
-                        <Button
-                            android:id="@+id/linear_transformation_button"
-                            style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="#00FFFFFF"
-                            android:onClick="onClickAlgorithms" />
-
-                        <TextView
-                            android:id="@+id/libear_extension_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="#00FFFFFF"
-                            android:text="@string/linear_transformation_button"
-                            android:textColor="@color/colorAccent"
-                            android:textColorHint="#FFFFFF"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@color/colorPrimaryDark"
-                        android:orientation="vertical">
-
-                        <Button
                             android:id="@+id/negative_button"
                             style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
                             android:layout_gravity="center"
                             android:background="@drawable/inverser"
                             android:onClick="onClickAlgorithms" />
@@ -333,6 +251,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginBottom="7dp"
                             android:background="#00FFFFFF"
                             android:text="@string/negative_button"
                             android:textColor="@color/colorAccent"
@@ -352,10 +271,10 @@
                         <Button
                             android:id="@+id/selected_color_button"
                             style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
                             android:layout_gravity="center"
-                            android:background="#00FFFFFF"
+                            android:background="@drawable/couleur"
                             android:onClick="onClickAlgorithms" />
 
                         <TextView
@@ -365,6 +284,37 @@
                             android:layout_gravity="center"
                             android:background="#00FFFFFF"
                             android:text="@string/selected_color_button"
+                            android:textColor="@color/colorAccent"
+                            android:textColorHint="#FFFFFF"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="7dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/random_button"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/color"
+                            android:onClick="onClickAlgorithms" />
+
+                        <TextView
+                            android:id="@+id/colorise_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="7dp"
+                            android:background="#00FFFFFF"
+                            android:text="@string/random_button"
                             android:textColor="@color/colorAccent"
                             android:textColorHint="#FFFFFF"
                             android:textStyle="bold" />
@@ -379,21 +329,23 @@
                         android:orientation="vertical">
 
                         <Button
-                            android:id="@+id/random_button"
+                            android:id="@+id/blur_button"
                             style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
                             android:layout_gravity="center"
-                            android:background="#00FFFFFF"
-                            android:onClick="onClickAlgorithms" />
+                            android:background="@drawable/blur"
+                            android:onClick="onClickView" />
 
                         <TextView
-                            android:id="@+id/colorise_text"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/blur_text"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginBottom="7dp"
                             android:background="#00FFFFFF"
-                            android:text="@string/random_button"
+                            android:gravity="center"
+                            android:text="@string/blur_button"
                             android:textColor="@color/colorAccent"
                             android:textColorHint="#FFFFFF"
                             android:textStyle="bold" />

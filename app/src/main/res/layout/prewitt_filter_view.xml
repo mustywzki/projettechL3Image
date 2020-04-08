@@ -11,13 +11,13 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/backButton"
+            android:id="@+id/backButtonFilter"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="start"
             android:background="@drawable/annuler"
-            android:onClick="onClickReturnFilters" />
+            android:onClick="onClickReturn" />
 
         <Space
             android:layout_width="0dp"
@@ -59,24 +59,39 @@
 
             <Button
                 android:id="@+id/prewitt_hor_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/colorPrimaryDark"
                 android:onClick="onClickAlgorithms"
-                android:text="@string/horizontal_filter"></Button>
+                android:text="@string/horizontal_filter"
+                android:textColor="@color/colorAccent"></Button>
 
             <Button
                 android:id="@+id/prewitt_all_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/colorPrimaryDark"
                 android:onClick="onClickAlgorithms"
-                android:text="@string/hor_ver_filter"></Button>
+                android:text="@string/hor_ver_filter"
+                android:textColor="@color/colorAccent"></Button>
 
             <Button
                 android:id="@+id/prewitt_ver_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/colorPrimaryDark"
                 android:onClick="onClickAlgorithms"
-                android:text="@string/vertical_filter"></Button>
+                android:text="@string/vertical_filter"
+                android:textColor="@color/colorAccent"></Button>
 
         </LinearLayout>
 

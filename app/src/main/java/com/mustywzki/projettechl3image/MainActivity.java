@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     static final int RESULT_IMAGE_CAPTURE=1002;
     Uri image_uri = null;
 
-    private View sliderBars, filterView, averageView, laplacienView, prewittView, sobelView;
+    private View sliderBars, filterView, averageView, laplacienView, prewittView, sobelView, blurView;
     private Switch buttonSwitch;
     private FrameLayout buttonsView;
     private HorizontalScrollView buttonScroll;
@@ -54,10 +54,11 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSliding, isRenderscript;
     private AlgorithmType currentAlgorithm;
     private FunctionsRS functionsRS;
+    TextView keepHueText, brightnessText, saturationText, negativeText, coloriseText;
 
     private History history;
 
-    private Button gray, keepColor;
+    private Button grayButton, keepColor;
     // GUI-related members
     private ImageView imageView;
     private Bitmap currentBmp, processedBmp, savedBmp;
@@ -103,6 +104,15 @@ public class MainActivity extends AppCompatActivity {
         laplacienView = View.inflate(this, R.layout.laplacien_filter_view, null);
         prewittView = View.inflate(this, R.layout.prewitt_filter_view, null);
         sobelView = View.inflate(this, R.layout.sobel_filter_view, null);
+        blurView = View.inflate(this, R.layout.blur_view, null);
+
+        grayButton = findViewById(R.id.gray_button);
+
+        keepHueText = findViewById(R.id.keep_hue_text);
+        brightnessText = findViewById(R.id.brightness_text);
+        saturationText = findViewById(R.id.saturation_text);
+        negativeText = findViewById(R.id.negative_text);
+        coloriseText = findViewById(R.id.colorise_text);
 
         imageView = (ImageView)findViewById(R.id.picture);
         PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
@@ -126,19 +136,17 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isRenderscript = isChecked;
                 if (isRenderscript) {
-                    ((TextView)findViewById(R.id.gray_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
-                    ((TextView)findViewById(R.id.keep_hue_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
-                    ((TextView)findViewById(R.id.brightness_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
-                    ((TextView)findViewById(R.id.saturation_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
-                    ((TextView)findViewById(R.id.negative_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
-                    ((TextView)findViewById(R.id.colorise_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
+                    keepHueText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    brightnessText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    saturationText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    negativeText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    coloriseText.setTextColor(getResources().getColor(R.color.colorPrimary));
                 } else {
-                    ((TextView)findViewById(R.id.gray_text)).setTextColor(getResources().getColor(R.color.colorAccent));
-                    ((TextView)findViewById(R.id.keep_hue_text)).setTextColor(getResources().getColor(R.color.colorAccent));
-                    ((TextView)findViewById(R.id.brightness_text)).setTextColor(getResources().getColor(R.color.colorAccent));
-                    ((TextView)findViewById(R.id.saturation_text)).setTextColor(getResources().getColor(R.color.colorAccent));
-                    ((TextView)findViewById(R.id.negative_text)).setTextColor(getResources().getColor(R.color.colorAccent));
-                    ((TextView)findViewById(R.id.colorise_text)).setTextColor(getResources().getColor(R.color.colorAccent));
+                    keepHueText.setTextColor(getResources().getColor(R.color.colorAccent));
+                    brightnessText.setTextColor(getResources().getColor(R.color.colorAccent));
+                    saturationText.setTextColor(getResources().getColor(R.color.colorAccent));
+                    negativeText.setTextColor(getResources().getColor(R.color.colorAccent));
+                    coloriseText.setTextColor(getResources().getColor(R.color.colorAccent));
 
                 }
             }
@@ -172,7 +180,23 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickReturn(View v) {
         buttonsView.removeAllViews();
-        buttonsView.addView(buttonScroll);
+        switch (v.getId()){
+            case R.id.backButtonFilter:
+                buttonsView.addView(filterView);
+                break;
+            case R.id.backButtonBlur:
+                buttonsView.addView(blurView);
+                break;
+            default:
+                if (((TextView)sliderBars.findViewById(R.id.textView4)).getText().toString() == getResources().getString(R.string.gray_button)){
+                    buttonsView.addView(filterView);
+                }
+                else{
+
+                }
+                buttonsView.addView(buttonScroll);
+                break;
+        }
         imageView.setImageBitmap(currentBmp);
     }
 
@@ -186,13 +210,6 @@ public class MainActivity extends AppCompatActivity {
         currentAlgorithm = null;
         currentBmp = processedBmp;
         history.addElement(currentBmp);
-    }
-
-    public void onClickReturnFilters(View v){
-        currentAlgorithm = null;
-        currentBmp = processedBmp;
-        buttonsView.removeAllViews();
-        buttonsView.addView(filterView);
     }
 
     public void onClickView(View v){
@@ -217,6 +234,9 @@ public class MainActivity extends AppCompatActivity {
                 buttonsView.removeAllViews();
                 buttonsView.addView(laplacienView);
                 break;
+            case R.id.blur_button:
+                buttonsView.removeAllViews();
+                buttonsView.addView(blurView);
         }
     }
 

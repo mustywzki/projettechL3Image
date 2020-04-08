@@ -11,13 +11,12 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/backButton"
+            android:id="@+id/backButtonBlur"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="start"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:background="@drawable/annuler"
-            android:onClick="onClickReturnFilters" />
+            android:onClick="onClickReturn" />
 
         <Space
             android:layout_width="0dp"
@@ -42,8 +41,8 @@
         <Button
             android:id="@+id/validateButton"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:background="@drawable/valider"
             android:onClick="onClickValidate" />
     </LinearLayout>
@@ -59,24 +58,39 @@
 
             <Button
                 android:id="@+id/average_3_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@color/colorPrimaryDark"
                 android:onClick="onClickAlgorithms"
-                android:text="@string/average_3_button"></Button>
+                android:text="@string/average_3_button"
+                android:textColor="@color/colorAccent"></Button>
 
             <Button
                 android:id="@+id/average_7_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@color/colorPrimaryDark"
                 android:onClick="onClickAlgorithms"
-                android:text="@string/average_7_button"></Button>
+                android:text="@string/average_7_button"
+                android:textColor="@color/colorAccent"></Button>
 
             <Button
                 android:id="@+id/average_15_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@color/colorPrimaryDark"
                 android:onClick="onClickAlgorithms"
-                android:text="@string/average_15_button"></Button>
+                android:text="@string/average_15_button"
+                android:textColor="@color/colorAccent"></Button>
 
         </LinearLayout>
 
