@@ -128,9 +128,18 @@ public class MainActivity extends AppCompatActivity {
                 if (isRenderscript) {
                     ((TextView)findViewById(R.id.gray_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
                     ((TextView)findViewById(R.id.keep_hue_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
+                    ((TextView)findViewById(R.id.brightness_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
+                    ((TextView)findViewById(R.id.saturation_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
+                    ((TextView)findViewById(R.id.negative_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
+                    ((TextView)findViewById(R.id.colorise_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     ((TextView)findViewById(R.id.gray_text)).setTextColor(getResources().getColor(R.color.colorAccent));
                     ((TextView)findViewById(R.id.keep_hue_text)).setTextColor(getResources().getColor(R.color.colorAccent));
+                    ((TextView)findViewById(R.id.brightness_text)).setTextColor(getResources().getColor(R.color.colorAccent));
+                    ((TextView)findViewById(R.id.saturation_text)).setTextColor(getResources().getColor(R.color.colorAccent));
+                    ((TextView)findViewById(R.id.negative_text)).setTextColor(getResources().getColor(R.color.colorAccent));
+                    ((TextView)findViewById(R.id.colorise_text)).setTextColor(getResources().getColor(R.color.colorAccent));
+
                 }
             }
         });
@@ -323,7 +332,6 @@ public class MainActivity extends AppCompatActivity {
             case COLORIZE:
                 if (isRenderscript)
                     functionsRS.colorize2(getApplicationContext(), processedBmp,bar1.getProgress() );
-
                 else
                     Functions.colorize(processedBmp,bar1.getProgress());
                 break;

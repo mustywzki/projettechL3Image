@@ -3,9 +3,9 @@
 #include "RgbToHsv.rs"
 #include "HsvToRgb.rs"
 
-
 float rand;
 
+// TODO isn't smooth (instead of java version)
 uchar4 RS_KERNEL colorize(uchar4 in){
     float4 hsv = RgbToHsv(in);
     hsv[0] = rand;

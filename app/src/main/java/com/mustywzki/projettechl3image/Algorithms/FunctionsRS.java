@@ -16,6 +16,7 @@ import com.mustywzki.projettechl3image.ScriptC_negative;
 
 public class FunctionsRS extends Activity {
 
+    //TODO doesn't change with seekbar
     public void toGrayRS(Context ctx, Bitmap bmp, double red_coef, double green_coef, double blue_coef){
         RenderScript rs = RenderScript.create(ctx) ;
         // 2) Creer des Allocations pour passer les donnees
@@ -40,6 +41,7 @@ public class FunctionsRS extends Activity {
         rs.destroy();
     }
 
+    //TODO change picture to gray
     public void keepColorRS(Context ctx, Bitmap bmp, float hue, float chromakey) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs,bmp);
@@ -54,8 +56,6 @@ public class FunctionsRS extends Activity {
         keepColorScript.destroy();
         rs.destroy();
     }
-
-
 
     public void colorize2(Context ctx, Bitmap bmp, float hue) {
         RenderScript rs = RenderScript.create(ctx);
