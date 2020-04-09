@@ -1,27 +1,21 @@
 
 package com.mustywzki.projettechl3image;
 
-import androidx.annotation.Nullable;
-
-import androidx.appcompat.app.AppCompatActivity;
-import uk.co.senab.photoview.PhotoViewAttacher;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
@@ -32,13 +26,22 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mustywzki.projettechl3image.Algorithms.*;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.mustywzki.projettechl3image.Algorithms.Contrast;
+import com.mustywzki.projettechl3image.Algorithms.Convolution;
+import com.mustywzki.projettechl3image.Algorithms.Functions;
+import com.mustywzki.projettechl3image.Algorithms.FunctionsRS;
+import com.mustywzki.projettechl3image.Algorithms.Tools;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class MainActivity extends AppCompatActivity {
     static final int RESULT_LOAD_IMG=1000;
@@ -114,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         negativeText = findViewById(R.id.negative_text);
         coloriseText = findViewById(R.id.colorise_text);
 
-        imageView = (ImageView)findViewById(R.id.picture);
+        imageView = findViewById(R.id.picture);
         PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
         photoView.update();
         buttonScroll = findViewById(R.id.button_scroll);
@@ -366,8 +369,12 @@ public class MainActivity extends AppCompatActivity {
                 apply();
                 break;
             case HIST_EQUALIZER:
-                Contrast.histogramEqualizer(Tools.getHistogram(processedBmp), processedBmp);
-                apply();
+                if (isRenderscript)
+                functionsRS.HistogramEqualizer(getApplicationContext(),processedBmp);
+                else {
+                    Contrast.histogramEqualizer(Tools.getHistogram(processedBmp), processedBmp);
+                    apply();
+                }
                 break;
             case NEGATIVE:
                 if (isRenderscript)

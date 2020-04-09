@@ -5,31 +5,34 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import androidx.renderscript.Allocation;
+import androidx.renderscript.Element;
 import androidx.renderscript.RenderScript;
 
+import com.mustywzki.projettechl3image.ScriptC_HistogramEqualizer;
 import com.mustywzki.projettechl3image.ScriptC_change_brightness;
 import com.mustywzki.projettechl3image.ScriptC_change_saturation;
 import com.mustywzki.projettechl3image.ScriptC_colorize2;
 import com.mustywzki.projettechl3image.ScriptC_gray;
+import com.mustywzki.projettechl3image.ScriptC_histogramm;
 import com.mustywzki.projettechl3image.ScriptC_keepColor;
 import com.mustywzki.projettechl3image.ScriptC_negative;
 
 public class FunctionsRS extends Activity {
 
     //TODO doesn't change with seekbar
-    public void toGrayRS(Context ctx, Bitmap bmp, double red_coef, double green_coef, double blue_coef){
-        RenderScript rs = RenderScript.create(ctx) ;
+    public void toGrayRS(Context ctx, Bitmap bmp, double red_coef, double green_coef, double blue_coef) {
+        RenderScript rs = RenderScript.create(ctx);
         // 2) Creer des Allocations pour passer les donnees
-        Allocation input = Allocation.createFromBitmap (rs, bmp);
-        Allocation output = Allocation.createTyped ( rs , input.getType()) ;
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
+        Allocation output = Allocation.createTyped(rs, input.getType());
         // 3) Creer le script
         ScriptC_gray grayScript = new ScriptC_gray(rs);
         // 4) Copier les donnees dans les Allocations
         // ici inutile
         // 5) Initialiser les variables globales potentielles
-        grayScript.set_newr(red_coef);
-        grayScript.set_newg(green_coef);
-        grayScript.set_newb(blue_coef);
+        //grayScript.set_newr(red_coef);
+        //grayScript.set_newg(green_coef);
+        //grayScript.set_newb(blue_coef);
         // 6) Lancer le noyau
         grayScript.forEach_toGray(input, output);
         // 7) Recuperer les donnees des Allocation (s)
@@ -44,7 +47,7 @@ public class FunctionsRS extends Activity {
     //TODO change picture to gray
     public void keepColorRS(Context ctx, Bitmap bmp, float hue, float chromakey) {
         RenderScript rs = RenderScript.create(ctx);
-        Allocation input = Allocation.createFromBitmap(rs,bmp);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
         ScriptC_keepColor keepColorScript = new ScriptC_keepColor(rs);
         keepColorScript.set_hue(hue);
@@ -59,11 +62,11 @@ public class FunctionsRS extends Activity {
 
     public void colorize2(Context ctx, Bitmap bmp, float hue) {
         RenderScript rs = RenderScript.create(ctx);
-        Allocation input = Allocation.createFromBitmap(rs,bmp);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
         ScriptC_colorize2 colorizeScript = new ScriptC_colorize2(rs);
         colorizeScript.set_rand(hue);
-        colorizeScript.forEach_colorize(input,output);
+        colorizeScript.forEach_colorize(input, output);
         output.copyTo(bmp);
         input.destroy();
         output.destroy();
@@ -74,11 +77,11 @@ public class FunctionsRS extends Activity {
 
     public void change_saturation(Context ctx, Bitmap bmp, float saturation) {
         RenderScript rs = RenderScript.create(ctx);
-        Allocation input = Allocation.createFromBitmap(rs,bmp);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
         ScriptC_change_saturation SaturationScript = new ScriptC_change_saturation(rs);
         SaturationScript.set_saturation_change(saturation);
-        SaturationScript.forEach_change_saturation(input,output);
+        SaturationScript.forEach_change_saturation(input, output);
         output.copyTo(bmp);
         input.destroy();
         output.destroy();
@@ -89,11 +92,11 @@ public class FunctionsRS extends Activity {
 
     public void change_brightness(Context ctx, Bitmap bmp, float brightness) {
         RenderScript rs = RenderScript.create(ctx);
-        Allocation input = Allocation.createFromBitmap(rs,bmp);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
         ScriptC_change_brightness BrightnessScript = new ScriptC_change_brightness(rs);
         BrightnessScript.set_brightness_change(brightness);
-        BrightnessScript.forEach_change_brightness(input,output);
+        BrightnessScript.forEach_change_brightness(input, output);
         output.copyTo(bmp);
         input.destroy();
         output.destroy();
@@ -104,10 +107,10 @@ public class FunctionsRS extends Activity {
 
     public void negative(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
-        Allocation input = Allocation.createFromBitmap(rs,bmp);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
         ScriptC_negative NegativeScript = new ScriptC_negative(rs);
-        NegativeScript.forEach_negative(input,output);
+        NegativeScript.forEach_negative(input, output);
         output.copyTo(bmp);
         input.destroy();
         output.destroy();
@@ -116,7 +119,45 @@ public class FunctionsRS extends Activity {
 
     }
 
+//A revoir avec histogramm.rs
+    int [] histogramm(Context ctx, Bitmap bmp) {
+
+        int[] histo = new int[256];
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
+        Allocation output = Allocation.createSized(rs,  Element.I32(rs) , 256);
+        ScriptC_histogramm HistogrammScript = new ScriptC_histogramm(rs);
+        HistogrammScript.invoke_init_histogram();
+        HistogrammScript.get_histogram();
+        //output.copyTo(histo);
+        input.destroy();
+        HistogrammScript.destroy();
+        rs.destroy();
+        return Tools.cumulativeHistogram(histo);
+    }
+
+    public void HistogramEqualizer(Context ctx, Bitmap bmp) {
+        int[] histo = //histogramm(ctx,bmp)
+                new int[256];
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+        ScriptC_HistogramEqualizer HEScript= new ScriptC_HistogramEqualizer(rs);
+        HEScript.set_cumulative_histogramm(histo);
+
+        HEScript.set_tab_length(bmp.getWidth()*bmp.getHeight()-2);
+        HEScript.forEach_HistogramEqualize(input, output);
+
+        output.copyTo(bmp);
+        input.destroy();
+        output.destroy();
+        HEScript.destroy();
+        rs.destroy();
+
+    }
 
 
 
 }
+
+
