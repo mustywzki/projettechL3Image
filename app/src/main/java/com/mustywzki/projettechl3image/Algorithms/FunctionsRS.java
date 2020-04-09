@@ -121,15 +121,11 @@ public class FunctionsRS extends Activity {
 
 //A revoir avec histogramm.rs
     int [] histogramm(Context ctx, Bitmap bmp) {
-
-        int[] histo = new int[256];
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
-        Allocation output = Allocation.createSized(rs,  Element.I32(rs) , 256);
         ScriptC_histogramm HistogrammScript = new ScriptC_histogramm(rs);
-        HistogrammScript.invoke_init_histogram();
-        HistogrammScript.get_histogram();
-        //output.copyTo(histo);
+        int[] histo =  HistogrammScript.reduce_histogramm(input).get();
+
         input.destroy();
         HistogrammScript.destroy();
         rs.destroy();
@@ -137,8 +133,7 @@ public class FunctionsRS extends Activity {
     }
 
     public void HistogramEqualizer(Context ctx, Bitmap bmp) {
-        int[] histo = //histogramm(ctx,bmp)
-                new int[256];
+        int[] histo = histogramm(ctx,bmp);
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());

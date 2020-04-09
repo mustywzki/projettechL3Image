@@ -5,16 +5,26 @@
 #include "HsvToRgb.rs"
 
 //On déclare un tableau de 256 valeurs
-int32_t histogram[256];
+// Note that this kernel returns an array to Java
 
-void init_histogram() {
-	for(int i=0;i<256;i++)
-		histogram[i] = 0;
+
+#define ARRAY_SIZE 256
+typedef int32_t Histogram[ARRAY_SIZE];
+
+
+#pragma rs reduce(histogramm) \
+  accumulator(hsgAccum) combiner(hsgCombine)
+
+static void hsgAccum(Histogram *h, uchar4 in) {
+    float4 hsv = RgbToHsv(in);
+    uchar value =(uchar) (hsv[2] * (float)255);
+    ++(*h)[value];
+    }
+
+
+static void hsgCombine(Histogram *accum,
+                       const Histogram *addend) {
+  for (int i = 0; i < ARRAY_SIZE; ++i)
+    (*accum)[i] += (*addend)[i];
 }
 
-
- void  RS_KERNEL AccumHisto(uchar4 in) {
-        float4 hsv = RgbToHsv(in);
-        int value =(int) (hsv[2] * (float)10);
-        rsAtomicInc(&histogram[value]);
-}

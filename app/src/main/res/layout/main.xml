@@ -52,5 +52,5 @@
         android:layout_marginRight="136dp"
         android:layout_marginBottom="127dp"
         android:onClick="onClickGallery"
-        app:srcCompat="@drawable/gallery" />
+        app:srcCompat="@drawable/gallery_bleu" />
 </RelativeLayout>
