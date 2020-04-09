@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/gallery"
-        android:icon="@drawable/gallery"
+        android:icon="@drawable/gallery_bleu_contour"
         android:title="@string/gallery_string"
         app:showAsAction="ifRoom|collapseActionView"></item>
 
