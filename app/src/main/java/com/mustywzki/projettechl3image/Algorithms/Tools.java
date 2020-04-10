@@ -56,7 +56,7 @@ public class Tools {
         float v = hsv[2];
 
         float c = v * s;
-        float x = c * (1 - Math.abs((h/60) % 2 - 1));
+        float x = c * (1 - Math.abs(((h/60) % 2) - 1));
 
         float r = 0;
         float g = 0;

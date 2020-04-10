@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
         buttonsView.removeAllViews();
         switch (v.getId()){
             case R.id.backButtonFilter:
+                System.out.println("HERE");
                 buttonsView.addView(filterView);
                 break;
             case R.id.backButtonBlur:
@@ -387,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case SATURATION:
                 if (isRenderscript)
-                    functionsRS.change_saturation(getApplicationContext(),processedBmp, (float)bar1.getProgress());
+                    functionsRS.change_saturation(getApplicationContext(),processedBmp, bar1.getProgress());
                 else
                     Functions.change_saturation(processedBmp,bar1.getProgress());
                 break;
