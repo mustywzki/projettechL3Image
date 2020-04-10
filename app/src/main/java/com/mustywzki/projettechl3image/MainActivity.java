@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -191,13 +192,13 @@ public class MainActivity extends AppCompatActivity {
                 buttonsView.addView(blurView);
                 break;
             default:
-                if (((TextView)sliderBars.findViewById(R.id.textView4)).getText().toString() == getResources().getString(R.string.gray_button)){
+                if (((TextView)sliderBars.findViewById(R.id.textView4)).getText().toString().equals(getResources().getString(R.string.gray_button))){
                     buttonsView.addView(filterView);
+                    ((TextView) sliderBars.findViewById(R.id.textView4)).setText("abc");
                 }
                 else{
-
+                    buttonsView.addView(buttonScroll);
                 }
-                buttonsView.addView(buttonScroll);
                 break;
         }
         imageView.setImageBitmap(currentBmp);
