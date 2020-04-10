@@ -3,47 +3,49 @@
 #pragma rs_fp_relaxed
 
 
-float4  RS_KERNEL RgbToHsv(uchar4  rgb_tab){
+float4  RS_KERNEL RgbToHsv(uchar4 rgb_tab){
+    float4 hsv;
 
-     float4 rgba = rsUnpackColor8888(rgb_tab);
-     float4 hsv;
-     float maximum =max(rgba[0], max(rgba[1],rgba[2]));
-     float minimum =min(rgba[0], min(rgba[1],rgba[2]));
-     float delta = maximum - minimum;
-     float red = rgba[0];
-     float green = rgba[1];
-     float blue = rgba[2];
+    float4 rgba = rsUnpackColor8888(rgb_tab);
 
-            /* --- Hue calculation --- */
-            if (delta == 0){
-                hsv[0] = 0;
-            }
-            else if (maximum == red){
-                hsv[0] = fmod(((green - blue)/delta),6);
-            }
-            else if (maximum == green){
-                hsv[0] = (blue - red)/delta + 2;
-            }
-            else if (maximum == blue){
-                hsv[0] = (red - green)/delta + 4;
-            }
-            hsv[0] = round(hsv[0] * 60);
+    float red = rgba[0];
+    float green = rgba[1];
+    float blue = rgba[2];
 
-            if (hsv[0] < 0){
-                hsv[0] += 360;
-            }
+    float Cmax = fmax(red, fmax(green,blue));
+    float Cmin = fmin(red, fmin(green,blue));
+    float delta = Cmax - Cmin;
 
-            /* --- Saturation calculation --- */
-            if (maximum == 0){
-                hsv[1] = 0;
-            }
-            else{
-                hsv[1] = delta / maximum;
-            }
+    /* --- Hue calculation --- */
+    if (delta == 0){
+        hsv[0] = 0;
+    }
+    else if (Cmax == red){
+        hsv[0] = fmod(((green - blue)/delta),6);
+    }
+    else if (Cmax == green){
+        hsv[0] = (blue - red)/delta + 2;
+    }
+    else if (Cmax == blue){
+        hsv[0] = (red - green)/delta + 4;
+    }
+    hsv[0] = round(hsv[0] * 60);
 
-            /* --- Value calculation --- */
-            hsv[2] = maximum;
-            hsv[3] = rgba[3];
+    if (hsv[0] < 0){
+        hsv[0] += 360;
+    }
 
-            return hsv;
+    /* --- Saturation calculation --- */
+    if (Cmax == 0){
+        hsv[1] = 0;
+    }
+    else{
+        hsv[1] = delta / Cmax;
+    }
+
+    /* --- Value calculation --- */
+    hsv[2] = Cmax;
+    hsv[3] = rgba[3];
+
+    return hsv;
 }

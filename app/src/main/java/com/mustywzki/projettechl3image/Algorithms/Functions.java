@@ -68,7 +68,7 @@ public class Functions {
         bmp.setPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
-    // TODO change in red color when add
+    // TODO change in red color when add, maybe when > (not pb with HSV/RGB)
     public static void change_saturation(Bitmap bmp, float saturation_change){
         int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());

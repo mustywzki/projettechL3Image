@@ -7,16 +7,16 @@ float saturation_change;
 
 //TODO modification picture when called (pixel ?) maybe hsvtorgb and rgbtohsv modification
 uchar4 RS_KERNEL change_saturation(uchar4 in){
-        float4 hsv = RgbToHsv(in);
+    float4 hsv = RgbToHsv(in);
 
-        hsv[1] += (saturation_change - 50)*0.02;
-        if (hsv[1] < 0){
-           hsv[1] = 0;
-            }
+    hsv[1] += (saturation_change - 50)*0.02;
+    if (hsv[1] < 0){
+       hsv[1] = 0;
+    }
 
-        if (hsv[1] > 1){
-            hsv[1] = 1;
-           }
-        uchar4 output = HsvToRgb(hsv);
-        return output;
+    if (hsv[1] > 1){
+        hsv[1] = 1;
+    }
+    uchar4 output = HsvToRgb(hsv);
+    return output;
 }

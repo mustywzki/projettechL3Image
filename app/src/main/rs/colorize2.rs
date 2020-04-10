@@ -8,7 +8,7 @@ float rand;
 // TODO isn't smooth (instead of java version)
 uchar4 RS_KERNEL colorize(uchar4 in){
     float4 hsv = RgbToHsv(in);
-    hsv[0] = rand;
+    //hsv[0] = rand;
     const uchar4 rgb= HsvToRgb(hsv);
     return rgb;
 }
