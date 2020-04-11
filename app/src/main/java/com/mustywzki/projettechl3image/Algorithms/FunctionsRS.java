@@ -157,7 +157,6 @@ public class FunctionsRS extends Activity {
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         ScriptC_Max_Min max_minScript = new ScriptC_Max_Min(rs);
         int[] maxi_mini =max_minScript.reduce_MaxMin(input).get();
-        //System.out.println(maxi_mini[0]);
         input.destroy();
         max_minScript.destroy();
         rs.destroy();
@@ -167,8 +166,8 @@ public class FunctionsRS extends Activity {
     public void LinearExtention(Context ctx, Bitmap bmp) {
         int[] tab = max_min(ctx, bmp);
         int[] LUTred = Contrast.createLUTred(new int[]{tab[0], tab[1]});
-        int[] LUTblue = Contrast.createLUTred(new int[]{tab[2],tab[3]});
-        int[] LUTgreen = Contrast.createLUTred(new int[]{tab[4],tab[5]});
+        int[] LUTgreen = Contrast.createLUTgreen(new int[]{tab[2],tab[3]});
+        int[] LUTblue = Contrast.createLUTblue(new int[]{tab[4],tab[5]});
 
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);

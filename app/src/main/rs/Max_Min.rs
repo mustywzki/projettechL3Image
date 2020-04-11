@@ -4,12 +4,6 @@
 
 
 
-
-
-#pragma rs reduce(MaxMin) \
-  initializer(Init) accumulator(Accumulator) \
-  combiner(Combiner) outconverter(OutConverter)
-
 #define INT_MAX 255
 #define INT_MIN 0
 
@@ -22,6 +16,15 @@ typedef struct {
     int max_g, min_g;
     int max_b, min_b;
 } MinAndMax;
+
+
+
+
+
+
+#pragma rs reduce(MaxMin) \
+  initializer(Init) accumulator(Accumulator) \
+  combiner(Combiner) outconverter(OutConverter)
 
 
 
@@ -96,7 +99,7 @@ static void Combiner(MinAndMax *accum, const MinAndMax *val) {
 
 
 
-static void fMMOutConverter(tab * result, const MinAndMax *val) {
+static void OutConverter(tab * result, const MinAndMax *val) {
     (*result)[0] = (uchar) val->max_r;
     (*result)[1]= (uchar) val->min_r;
     (*result)[2] = (uchar) val->max_g;
