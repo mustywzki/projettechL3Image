@@ -7,12 +7,11 @@ int LUTblue[256];
 
 
 uchar4 RS_KERNEL linear_extention(uchar4 in) {
+            uchar4 output;
+            output[0] = (uchar) LUTred[(int)in[0]];
+            output[1] = (uchar) LUTgreen[(int)in[1]];
+            output[2]= (uchar) LUTblue[(int)in[2]];
+            output[3] = in[3];
 
-        //int LUTred[256]= createLUTred(Tools.max_min_red(pixels));
-        //int[] LUTgreen = createLUTgreen(Tools.max_min_green(pixels));
-        //int[] LUTblue = createLUTblue(Tools.max_min_blue(pixels));
-            in.r = LUTred[in.r];
-            in.g = LUTgreen[in.g];
-            in.b = LUTblue[in.b];
-        return in;
+        return output;
     }

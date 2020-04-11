@@ -53,7 +53,7 @@ public class Contrast {
         int[] LUTred = new int[256];
 
         for (int ng = 0; ng < 256; ng++){
-            if (max_red != min_red || max_red - min_red == 0) {
+            if (max_red != min_red || max_red - min_red != 0) {
                 LUTred[ng] = (255 * (ng - min_red) / (max_red - min_red));
             }
             else {
@@ -69,7 +69,7 @@ public class Contrast {
         int[] LUTgreen = new int[256];
 
         for (int ng = 0; ng < 256; ng++){
-            if (max_green != min_green || max_green - min_green == 0) {
+            if (max_green != min_green || max_green - min_green != 0) {
                 LUTgreen[ng] = (255 * (ng - min_green) / (max_green - min_green));
             }
             else {
@@ -85,7 +85,7 @@ public class Contrast {
         int[] LUTblue = new int[256];
 
         for (int ng = 0; ng < 256; ng++) {
-            if (max_blue != min_blue || max_blue - min_blue == 0) {
+            if (max_blue != min_blue || max_blue - min_blue != 0) {
                 LUTblue[ng] = (255 * (ng - min_blue) / (max_blue - min_blue));
             } else {
                 LUTblue[ng] = max_blue;

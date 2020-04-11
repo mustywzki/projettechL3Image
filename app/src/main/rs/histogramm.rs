@@ -4,10 +4,6 @@
 #include "RgbToHsv.rs"
 #include "HsvToRgb.rs"
 
-//On déclare un tableau de 256 valeurs
-// Note that this kernel returns an array to Java
-
-
 #define ARRAY_SIZE 256
 typedef int32_t Histogram[ARRAY_SIZE];
 

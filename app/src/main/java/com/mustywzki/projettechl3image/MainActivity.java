@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +25,6 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -356,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case COLORIZE:
                 if (isRenderscript){
-                    functionsRS.colorize2(getApplicationContext(), processedBmp,bar1.getProgress());
+                    functionsRS.colorize(getApplicationContext(), processedBmp,bar1.getProgress());
                 }
                 else
                     Functions.colorize(processedBmp,bar1.getProgress());
@@ -368,8 +366,12 @@ public class MainActivity extends AppCompatActivity {
                     Functions.keepColor(processedBmp,bar1.getProgress(),bar2.getProgress());
                 break;
             case DYNAMIC_EXTENSION:
-                Contrast.linear_transformation(processedBmp);
-                apply();
+                if(isRenderscript)
+                    functionsRS.LinearExtention(getApplicationContext(),processedBmp);
+                else {
+                    Contrast.linear_transformation(processedBmp);
+                    apply();
+                }
                 break;
             case HIST_EQUALIZER:
                 if (isRenderscript)
