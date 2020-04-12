@@ -1,5 +1,6 @@
 #pragma version(1)
 #pragma rs java_package_name(com.mustywzki.projettechl3image)
+#pragma rs_fp_relaxed
 
 float red_coef, blue_coef, green_coef;
 
@@ -36,8 +37,9 @@ uchar4 RS_KERNEL Gray(uchar4 in) {
         float4 tab = rsUnpackColor8888(in);
 
         float gray = red * tab[0];
-        gray += blue * tab[1];
-        gray += green * tab[2];
+        gray += green * tab[1];
+        gray += blue * tab[2];
+
 
         float4 out = {gray , gray, gray , tab[3]};
         uchar4 output = rsPackColorTo8888 (out );
