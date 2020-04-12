@@ -25,6 +25,7 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -350,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
         switch (currentAlgorithm){
             case GRAY:
                 if (isRenderscript)
-                    functionsRS.toGrayRS(getApplicationContext(), processedBmp, bar1.getProgress(), bar2.getProgress(), bar3.getProgress());
+                    functionsRS.toGrayRS(getApplicationContext(), processedBmp,  bar1.getProgress()/100f, bar2.getProgress()/100f,  bar3.getProgress()/100f);
                 else
                     Functions.toGray(processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
                 break;
