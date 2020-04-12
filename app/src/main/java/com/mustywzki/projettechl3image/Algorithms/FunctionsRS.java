@@ -14,7 +14,7 @@ import com.mustywzki.projettechl3image.ScriptC_change_saturation;
 import com.mustywzki.projettechl3image.ScriptC_colorize;
 import com.mustywzki.projettechl3image.ScriptC_gray;
 import com.mustywzki.projettechl3image.ScriptC_histogramm;
-import com.mustywzki.projettechl3image.ScriptC_keepColor;
+import com.mustywzki.projettechl3image.ScriptC_keepcolor;
 import com.mustywzki.projettechl3image.ScriptC_linear_extention;
 import com.mustywzki.projettechl3image.ScriptC_negative;
 
@@ -45,15 +45,15 @@ public class FunctionsRS extends Activity {
         rs.destroy();
     }
 
-    //TODO change picture to gray
-    public void keepColorRS(Context ctx, Bitmap bmp, float hue, float chromakey) {
+    
+    public void keepColorRS(Context ctx, Bitmap bmp, float hue, float tolerance) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_keepColor keepColorScript = new ScriptC_keepColor(rs);
+        ScriptC_keepcolor keepColorScript = new ScriptC_keepcolor(rs);
         keepColorScript.set_hue(hue);
-        keepColorScript.set_chromakey(chromakey);
-        keepColorScript.forEach_keepColor(input, output);
+        keepColorScript.set_tolerance(tolerance);
+        keepColorScript.forEach_keepcolor(input, output);
         output.copyTo(bmp);
         input.destroy();
         output.destroy();
