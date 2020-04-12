@@ -156,7 +156,7 @@ public class FunctionsRS extends Activity {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         ScriptC_Max_Min max_minScript = new ScriptC_Max_Min(rs);
-        int[] maxi_mini =max_minScript.reduce_MaxMin(input).get();
+        int[] maxi_mini = max_minScript.reduce_MaxMin(input).get();
         input.destroy();
         max_minScript.destroy();
         rs.destroy();

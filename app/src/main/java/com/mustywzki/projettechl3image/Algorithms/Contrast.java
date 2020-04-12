@@ -71,6 +71,12 @@ public class Contrast {
         return LUTred;
     }
 
+    public static int[] createLUTred (int[] max_min_red){
+        maxRed = max_min_red[0];
+        minRed = max_min_red[1];
+        return createLUTred();
+    }
+
     private static int[] createLUTgreen (){
         int[] LUTgreen = new int[256];
 
@@ -85,6 +91,12 @@ public class Contrast {
         return LUTgreen;
     }
 
+    public static int[] createLUTgreen (int[] max_min_green){
+        maxGreen = max_min_green[0];
+        minGreen = max_min_green[1];
+        return createLUTgreen();
+    }
+
     private static int[] createLUTblue () {
         int[] LUTblue = new int[256];
 
@@ -97,6 +109,12 @@ public class Contrast {
         }
         return LUTblue;
 
+    }
+
+    public static int[] createLUTblue (int[] max_min_blue){
+        maxBlue = max_min_blue[0];
+        minBlue = max_min_blue[1];
+        return createLUTblue();
     }
 
     private static void max_min_red (int[] pixels){
