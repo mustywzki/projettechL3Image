@@ -12,9 +12,9 @@ public class Contrast {
         int[] colors = new int[bmp.getWidth()*bmp.getHeight()];
         int red, green, blue;
 
-        int[] LUTred = createLUTred(Tools.max_min_red(pixels));
-        int[] LUTgreen = createLUTgreen(Tools.max_min_green(pixels));
-        int[] LUTblue = createLUTblue(Tools.max_min_blue(pixels));
+        int[] LUTred = createLUTred(max_min_red(pixels));
+        int[] LUTgreen = createLUTgreen(max_min_green(pixels));
+        int[] LUTblue = createLUTblue(max_min_blue(pixels));
 
         for (int i = 0; i < pixels.length; i++){
             red = Color.red(pixels[i]);
@@ -93,5 +93,47 @@ public class Contrast {
         }
         return LUTblue;
 
+    }
+
+    protected static int[] max_min_red (int[] pixels){
+        int max_red = 0, min_red = 255, red;
+
+        for (int i = 0; i < pixels.length; i++){
+            red = Color.red(pixels[i]);
+
+            if (red > max_red)
+                max_red = red;
+            if (red < min_red)
+                min_red = red;
+        }
+        return new int[] {max_red, min_red};
+    }
+
+    protected static int[] max_min_green (int[] pixels){
+        int max_green = 0, min_green = 255, green;
+
+        for (int i = 0; i < pixels.length; i++){
+            green = Color.green(pixels[i]);
+
+            if (green > max_green)
+                max_green = green;
+            if (green < min_green)
+                min_green = green;
+        }
+        return new int[] {max_green, min_green};
+    }
+
+    protected static int[] max_min_blue (int[] pixels){
+        int max_blue = 0, min_blue = 255, blue;
+
+        for (int i = 0; i < pixels.length; i++){
+            blue = Color.blue(pixels[i]);
+
+            if (blue > max_blue)
+                max_blue = blue;
+            if (blue < min_blue)
+                min_blue = blue;
+        }
+        return new int[] {max_blue, min_blue};
     }
 }

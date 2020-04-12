@@ -143,12 +143,14 @@ public class MainActivity extends AppCompatActivity {
                     saturationText.setTextColor(getResources().getColor(R.color.colorPrimary));
                     negativeText.setTextColor(getResources().getColor(R.color.colorPrimary));
                     coloriseText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    ((Button)filterView.findViewById(R.id.linear_transformation_button)).setTextColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     keepHueText.setTextColor(getResources().getColor(R.color.colorAccent));
                     brightnessText.setTextColor(getResources().getColor(R.color.colorAccent));
                     saturationText.setTextColor(getResources().getColor(R.color.colorAccent));
                     negativeText.setTextColor(getResources().getColor(R.color.colorAccent));
                     coloriseText.setTextColor(getResources().getColor(R.color.colorAccent));
+                    ((Button)filterView.findViewById(R.id.linear_transformation_button)).setTextColor(getResources().getColor(R.color.colorAccent));
 
                 }
             }
