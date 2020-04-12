@@ -5,6 +5,13 @@ import android.graphics.Color;
 
 public class Contrast {
 
+    private static int maxRed;
+    private static int minRed;
+    private static int maxGreen;
+    private static int minGreen;
+    private static int maxBlue;
+    private static int minBlue;
+
     // TODO contraste with HSV and linear extension less
     public static void linear_transformation(Bitmap bmp){
         int[] pixels = new int[bmp.getWidth()*bmp.getHeight()];
@@ -12,9 +19,12 @@ public class Contrast {
         int[] colors = new int[bmp.getWidth()*bmp.getHeight()];
         int red, green, blue;
 
-        int[] LUTred = createLUTred(max_min_red(pixels));
-        int[] LUTgreen = createLUTgreen(max_min_green(pixels));
-        int[] LUTblue = createLUTblue(max_min_blue(pixels));
+        max_min_red(pixels);
+        max_min_green(pixels);
+        max_min_blue(pixels);
+        int[] LUTred = createLUTred();
+        int[] LUTgreen = createLUTgreen();
+        int[] LUTblue = createLUTblue();
 
         for (int i = 0; i < pixels.length; i++){
             red = Color.red(pixels[i]);
@@ -47,55 +57,49 @@ public class Contrast {
         bmp.setPixels(pixels,0,bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
     }
 
-    protected static int[] createLUTred (int[] max_min_red){
-        int max_red = max_min_red[0];
-        int min_red = max_min_red[1];
+    private static int[] createLUTred (){
         int[] LUTred = new int[256];
 
         for (int ng = 0; ng < 256; ng++){
-            if (max_red != min_red || max_red - min_red != 0) {
-                LUTred[ng] = (255 * (ng - min_red) / (max_red - min_red));
+            if (maxRed != minRed || maxRed - minRed != 0) {
+                LUTred[ng] = (255 * (ng - minRed) / (maxRed - minRed));
             }
             else {
-                LUTred[ng] = max_red;
+                LUTred[ng] = maxRed;
             }
         }
         return LUTred;
     }
 
-    protected static int[] createLUTgreen (int[] max_min_green){
-        int max_green = max_min_green[0];
-        int min_green = max_min_green[1];
+    private static int[] createLUTgreen (){
         int[] LUTgreen = new int[256];
 
         for (int ng = 0; ng < 256; ng++){
-            if (max_green != min_green || max_green - min_green != 0) {
-                LUTgreen[ng] = (255 * (ng - min_green) / (max_green - min_green));
+            if (maxGreen != minGreen || maxGreen - minGreen != 0) {
+                LUTgreen[ng] = (255 * (ng - minGreen) / (maxGreen - minGreen));
             }
             else {
-                LUTgreen[ng] = max_green;
+                LUTgreen[ng] = maxGreen;
             }
         }
         return LUTgreen;
     }
 
-    protected static int[] createLUTblue (int[] max_min_blue) {
-        int max_blue = max_min_blue[0];
-        int min_blue = max_min_blue[1];
+    private static int[] createLUTblue () {
         int[] LUTblue = new int[256];
 
         for (int ng = 0; ng < 256; ng++) {
-            if (max_blue != min_blue || max_blue - min_blue != 0) {
-                LUTblue[ng] = (255 * (ng - min_blue) / (max_blue - min_blue));
+            if (maxBlue != minBlue || maxBlue - minBlue != 0) {
+                LUTblue[ng] = (255 * (ng - minBlue) / (maxBlue - minBlue));
             } else {
-                LUTblue[ng] = max_blue;
+                LUTblue[ng] = maxBlue;
             }
         }
         return LUTblue;
 
     }
 
-    protected static int[] max_min_red (int[] pixels){
+    private static void max_min_red (int[] pixels){
         int max_red = 0, min_red = 255, red;
 
         for (int i = 0; i < pixels.length; i++){
@@ -106,10 +110,11 @@ public class Contrast {
             if (red < min_red)
                 min_red = red;
         }
-        return new int[] {max_red, min_red};
+        maxRed = max_red;
+        minRed = min_red;
     }
 
-    protected static int[] max_min_green (int[] pixels){
+    private static void max_min_green (int[] pixels){
         int max_green = 0, min_green = 255, green;
 
         for (int i = 0; i < pixels.length; i++){
@@ -120,10 +125,11 @@ public class Contrast {
             if (green < min_green)
                 min_green = green;
         }
-        return new int[] {max_green, min_green};
+        minGreen = min_green;
+        maxGreen = max_green;
     }
 
-    protected static int[] max_min_blue (int[] pixels){
+    private static void max_min_blue (int[] pixels){
         int max_blue = 0, min_blue = 255, blue;
 
         for (int i = 0; i < pixels.length; i++){
@@ -134,6 +140,7 @@ public class Contrast {
             if (blue < min_blue)
                 min_blue = blue;
         }
-        return new int[] {max_blue, min_blue};
+        minBlue = min_blue;
+        maxBlue = max_blue;
     }
 }
