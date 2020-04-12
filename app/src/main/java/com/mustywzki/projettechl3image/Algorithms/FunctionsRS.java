@@ -20,8 +20,7 @@ import com.mustywzki.projettechl3image.ScriptC_negative;
 
 public class FunctionsRS extends Activity {
 
-    //TODO doesn't change with seekbar
-    public void toGrayRS(Context ctx, Bitmap bmp, float red_coef, float green_coef, float blue_coef) {
+    public void toGrayRS(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
         // 2) Creer des Allocations pour passer les donnees
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -29,11 +28,7 @@ public class FunctionsRS extends Activity {
         // 3) Creer le script
         ScriptC_Gray grayScript = new ScriptC_Gray(rs);
         // 4) Copier les donnees dans les Allocations
-        // ici inutile
         // 5) Initialiser les variables globales potentielles
-        grayScript.set_red_coef(red_coef);
-        grayScript.set_green_coef(green_coef);
-        grayScript.set_blue_coef(blue_coef);
         // 6) Lancer le noyau
         grayScript.forEach_Gray(input, output);
         // 7) Recuperer les donnees des Allocation (s)

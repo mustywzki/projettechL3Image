@@ -5,7 +5,6 @@
 
 float brightness_change;
 
-//TODO modification picture when called (pixel ?) maybe hsvtorgb and rgbtohsv modification
 uchar4 RS_KERNEL change_brightness(uchar4 in){
         float4 hsv = RgbToHsv(in);
         hsv[2] += (brightness_change - 50)*0.02;

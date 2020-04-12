@@ -7,17 +7,12 @@ public class Functions {
 
     /* --- Method --- */
 
-    public static void toGray(Bitmap bmp, double red_coef, double green_coef, double blue_coef){
+    public static void toGray(Bitmap bmp){
 
         // Scaling RGB values to the specific range (equalizer)
-        red_coef = red_coef > 1.0 ? 1.0 : red_coef;
-        red_coef = red_coef < 0.0 ? 0.0 : red_coef;
-
-        blue_coef = blue_coef > 1.0 ? 1.0 : blue_coef;
-        blue_coef = blue_coef < 0.0 ? 0.0 : blue_coef;
-
-        green_coef = green_coef > 1.0 ? 1.0 : green_coef;
-        green_coef = green_coef < 0.0 ? 0.0 : green_coef;
+        double red_coef = 0.3;
+        double green_coef = 0.59;
+        double blue_coef = 0.11;
 
         // Copying the bitmap bmp's pixels into a int[] in order to perform the algorithm faster using getPixels()
         int[] tmpCopy = new int[bmp.getHeight()*bmp.getWidth()];
@@ -138,5 +133,36 @@ public class Functions {
         }
 
         bmp.setPixels(colors,0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+    }
+
+    public static void setRGB(Bitmap bmp, double red_coef, double green_coef, double blue_coef){
+
+        red_coef = (red_coef - 50)*0.02;
+        green_coef = (green_coef - 50)*0.02;
+        blue_coef = (blue_coef - 50)*0.02;
+
+        int[] pixels = new int[bmp.getHeight()*bmp.getWidth()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0,0,bmp.getWidth(),bmp.getHeight());
+
+        // Applying gray filter
+        for(int i = 0; i < pixels.length; i++) {
+            double redValue = Color.red(pixels[i]);
+            redValue += 255*red_coef;
+            if (redValue < 0) redValue = 0;
+            if (redValue > 255) redValue = 255;
+
+            double blueValue = Color.blue(pixels[i]);
+            blueValue += 255*blue_coef;
+            if (blueValue < 0) blueValue = 0;
+            if (blueValue > 255) blueValue = 255;
+
+            double greenValue = Color.green(pixels[i]);
+            greenValue += 255*green_coef;
+            if (greenValue < 0) greenValue = 0;
+            if (greenValue > 255) greenValue = 255;
+
+            pixels[i] = Color.rgb((int)redValue, (int)greenValue, (int)blueValue);
+        }
+        bmp.setPixels(pixels,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
     }
 }

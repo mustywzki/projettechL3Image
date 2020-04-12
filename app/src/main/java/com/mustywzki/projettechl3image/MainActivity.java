@@ -86,7 +86,8 @@ public class MainActivity extends AppCompatActivity {
         SOBEL_VER,
         SOBEL_ALL,
         LAPLACIEN_4,
-        LAPLACIEN_8
+        LAPLACIEN_8,
+        SETRGB
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -144,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                     saturationText.setTextColor(getResources().getColor(R.color.colorPrimary));
                     negativeText.setTextColor(getResources().getColor(R.color.colorPrimary));
                     coloriseText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    ((Button)filterView.findViewById(R.id.gray_button)).setTextColor(getResources().getColor(R.color.colorPrimary));
                     ((Button)filterView.findViewById(R.id.linear_transformation_button)).setTextColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     keepHueText.setTextColor(getResources().getColor(R.color.colorAccent));
@@ -152,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     negativeText.setTextColor(getResources().getColor(R.color.colorAccent));
                     coloriseText.setTextColor(getResources().getColor(R.color.colorAccent));
                     ((Button)filterView.findViewById(R.id.linear_transformation_button)).setTextColor(getResources().getColor(R.color.colorAccent));
+                    ((Button)filterView.findViewById(R.id.gray_button)).setTextColor(getResources().getColor(R.color.colorAccent));
 
                 }
             }
@@ -267,11 +270,6 @@ public class MainActivity extends AppCompatActivity {
         switch (v.getId()) {
             case R.id.gray_button:
                 currentAlgorithm = AlgorithmType.GRAY;
-                seekbars_load("Gray", true,"Red",100,true,"Green",100,true,"Blue",100);
-                // Default bars
-                bar1.setProgress(30);
-                bar2.setProgress(59);
-                bar3.setProgress(11);
                 break;
             case R.id.random_button:
                 currentAlgorithm = AlgorithmType.COLORIZE;
@@ -337,6 +335,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.laplacian_8_button:
                 currentAlgorithm = AlgorithmType.LAPLACIEN_8;
                 break;
+            case R.id.setRGB_button:
+                currentAlgorithm = AlgorithmType.SETRGB;
+                seekbars_load("Set RGB", true,"Red",100,true,"Green",100,true,"Blue",100);
+                // Default bars
+                bar1.setProgress(50);
+                bar2.setProgress(50);
+                bar3.setProgress(50);
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + v.getId());
         }
@@ -351,9 +357,9 @@ public class MainActivity extends AppCompatActivity {
         switch (currentAlgorithm){
             case GRAY:
                 if (isRenderscript)
-                    functionsRS.toGrayRS(getApplicationContext(), processedBmp,  bar1.getProgress()/100f, bar2.getProgress()/100f,  bar3.getProgress()/100f);
+                    functionsRS.toGrayRS(getApplicationContext(), processedBmp);
                 else
-                    Functions.toGray(processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
+                    Functions.toGray(processedBmp);
                 break;
             case COLORIZE:
                 if (isRenderscript){
@@ -438,6 +444,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case LAPLACIEN_8:
                 Convolution.filter_Laplacier_8(processedBmp);
+                break;
+            case SETRGB:
+                Functions.setRGB(processedBmp, bar1.getProgress(), bar2.getProgress(),  bar3.getProgress());
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + currentAlgorithm);
