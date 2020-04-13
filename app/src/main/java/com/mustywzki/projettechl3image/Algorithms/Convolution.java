@@ -9,6 +9,12 @@ import javax.xml.transform.sax.SAXSource;
 
 public class Convolution {
 
+    /**
+     * Apply filter in core to bitmap image by using div.
+     * @param bmp bitmap image
+     * @param core filter to pass
+     * @param div division to apply
+     */
     // Applique le filtre dans core à l'image bmp en divisant les pixels par div
     private static void applyfilter(Bitmap bmp, double[] core, double div){
         int[] pixels = new int[bmp.getWidth()*bmp.getHeight()];

@@ -7,6 +7,10 @@ public class Functions {
 
     /* --- Method --- */
 
+    /**
+     * Function that creates an image of shades of gray
+     * @param bmp Processed bitmap image
+     */
     public static void toGray(Bitmap bmp){
 
         // Scaling RGB values to the specific range (equalizer)
@@ -29,6 +33,11 @@ public class Functions {
         bmp.setPixels(tmpCopy,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
     }
 
+    /**
+     * Function that changes the hue value of an image and adapts it to the entire Bitmap image.
+     * @param bmp processed bitmap image
+     * @param hue hue value to append
+     */
     public static void colorize(Bitmap bmp, float hue) {
 
         // Copying the bitmap bmp's pixels into a int[] in order to perform the algorithm faster using getPixels()
@@ -45,6 +54,12 @@ public class Functions {
         bmp.setPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
+    /**
+     * Generate an image which only changes color for a certain range of hue between hue & chromakey.
+     * @param bmp processed bitmap image
+     * @param hue initial hue value
+     * @param chromakey closing hue value
+     */
     public static void keepColor(Bitmap bmp, float hue, float chromakey) {
         hue = hue % 360f;
         chromakey = chromakey % 180f;
@@ -63,6 +78,11 @@ public class Functions {
         bmp.setPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
+    /**
+     * Generates an image with a different saturation
+     * @param bmp processed bitmap image
+     * @param saturation_change value of saturation to append
+     */
     // TODO change in red color when add, maybe when > (not pb with HSV/RGB)
     public static void change_saturation(Bitmap bmp, float saturation_change){
         int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
@@ -89,6 +109,11 @@ public class Functions {
         bmp.setPixels(colors, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
+    /**
+     * Change brightness of the processed bitmap image
+     * @param bmp processed bitmap image
+     * @param brightness_change brightness value (V from HSV)
+     */
     public static void change_brightness (Bitmap bmp, float brightness_change){
         int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
@@ -114,6 +139,10 @@ public class Functions {
         bmp.setPixels(colors, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
+    /**
+     * Generates the negative of a bitmap image
+     * @param bmp processed bitmap image
+     */
     public static void negative(Bitmap bmp){
         int[] pixels = new int[bmp.getWidth()*bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());

@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
     private Bitmap currentBmp, processedBmp, savedBmp;
 
+    /**
+     * Enum listing all types of processing done to the target image.
+     */
     public enum AlgorithmType {
         GRAY,
         COLORIZE,
@@ -179,6 +182,10 @@ public class MainActivity extends AppCompatActivity {
 
     /* --- OnClick functions --- */
 
+    /**
+     * onClick function which indicates when to reset the initial image.
+     * @param v Applied View for the Reset
+     */
     public void onClickReset(View v){
         currentBmp = savedBmp;
         processedBmp = savedBmp;
@@ -186,6 +193,10 @@ public class MainActivity extends AppCompatActivity {
         history.addElement(currentBmp);
     }
 
+    /**
+     * onClick function which indicates when to go backwards from one action.
+     * @param v Applied View for the Return
+     */
     public void onClickReturn(View v) {
         buttonsView.removeAllViews();
         switch (v.getId()){
@@ -209,18 +220,29 @@ public class MainActivity extends AppCompatActivity {
         imageView.setImageBitmap(currentBmp);
     }
 
+    /**
+     * onClick function which performs the algorithm if it has been validated.
+     * @param v Applied view for the validate
+     */
     public void onClickValidate(View v){
         buttonsView.removeAllViews();
         buttonsView.addView(buttonScroll);
         apply();
     }
 
+    /**
+     * Save the previous image in the history in order to keep track of the previous image version.
+     */
     private void apply(){
         currentAlgorithm = null;
         currentBmp = processedBmp;
         history.addElement(currentBmp);
     }
 
+    /**
+     * When clicking on buttons indiccating a modification, performs it.
+     * @param v View in which buttons are clickable and valid
+     */
     public void onClickView(View v){
         switch (v.getId()){
             case R.id.filter_button:
@@ -266,6 +288,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Generate the view that will be shown for each algorithm.
+     * @param v View in which buttons are clickable and valid
+     */
     public void onClickAlgorithms(View v) {
         switch (v.getId()) {
             case R.id.gray_button:
@@ -351,6 +377,9 @@ public class MainActivity extends AppCompatActivity {
 
     /* --- Apply functions --- */
 
+    /**
+     * Apply algorithm depending on which buttons has been pressed and if RenderScript is activated or not.
+     */
     public void applyProcessings(){
         processedBmp = currentBmp.copy(currentBmp.getConfig(),true);
 
@@ -456,6 +485,9 @@ public class MainActivity extends AppCompatActivity {
 
     /* --- SeekBar --- */
 
+    /**
+     * Tool function which set up all seek bars on the app start up.
+     */
     public void setSeekBar(){
         // Option sliders listeners
         bar1 = sliderBars.findViewById(R.id.seekBar1);
@@ -516,6 +548,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Tool function which helps setting up seekBars that we use for Algorithms views.
+     * @param name indicator to see which seekBar it is
+     * @param visible1 1st bar visibility
+     * @param text1 1st bar text
+     * @param maxVal1 1st bar max value settable
+     * @param visible2 2nd bar visibility
+     * @param text2 2nd bar text
+     * @param maxVal2 2nd bar max value settable
+     * @param visible3 3rd bar visibility
+     * @param text3 3rd bar text
+     * @param maxVal3 3rd bar max value settable
+     */
     public void seekbars_load(String name, boolean visible1, String text1, int maxVal1, boolean visible2, String text2, int maxVal2, boolean visible3, String text3, int maxVal3) {
         TextView t1 = sliderBars.findViewById(R.id.textView1), t2 = sliderBars.findViewById(R.id.textView2), t3 = sliderBars.findViewById(R.id.textView3), t4 = sliderBars.findViewById(R.id.textView4);
         bar1.setVisibility(visible1 ? View.VISIBLE : View.GONE);
@@ -537,6 +583,12 @@ public class MainActivity extends AppCompatActivity {
 
     /* --- Camera and Gallery --- */
 
+    /**
+     * Retrieve image from Camera and/or Gallery.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1002 && resultCode == RESULT_OK) {
@@ -563,12 +615,18 @@ public class MainActivity extends AppCompatActivity {
         processedBmp = savedBmp;
     }
 
+    /**
+     * Get Image from Gallery and load onActivityResult if succeed
+     */
     public void getImageFromGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, RESULT_LOAD_IMG);
     }
 
+    /**
+     * Launch Camera and wait for onActivityResult if succeed
+     */
     public void launchCamera(){
         ContentValues values= new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, "New Picture");
@@ -581,6 +639,11 @@ public class MainActivity extends AppCompatActivity {
 
     /* --- Menu --- */
 
+    /**
+     * Function that detects which button is selected between either Camera Roll or Gallery or saving a file.
+     * @param item
+     * @return
+     */
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.gallery:

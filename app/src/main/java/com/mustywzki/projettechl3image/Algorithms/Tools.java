@@ -6,6 +6,13 @@ import android.graphics.Color;
 
 public class Tools {
 
+    /**
+     * Convert RGB values to HSV
+     * @param red red channel
+     * @param green green channel
+     * @param blue blue channel
+     * @return HSV values
+     */
     protected static float[] RGBToHSV(int red, int green, int blue){
         float[] hsv = new float[3];
 
@@ -50,6 +57,12 @@ public class Tools {
         return hsv;
     }
 
+    /**
+     * Convert HSV values to RGB
+     * @param hsv hsv float containing H,S,V values
+     * @param alpha predefined alpha to set on the RGBa.
+     * @return int of a RGB value.
+     */
     protected static int HSVToRGB(float[] hsv, int alpha){
         float h = hsv[0];
         float s = hsv[1];
@@ -119,6 +132,11 @@ public class Tools {
         return (test >= start && test <= end);
     }
 
+    /**
+     * Generate and Returns Histogram from bitmap image
+     * @param bmp Bitmap Image
+     * @return Histogram
+     */
     public static int[] getHistogram(Bitmap bmp) {
         int[] hist = new int[256];
         int[] tmpCopy = new int[bmp.getWidth() * bmp.getHeight()];
@@ -131,6 +149,11 @@ public class Tools {
         return hist;
     }
 
+    /**
+     * Creates a cumulative Histogram from a base histogram
+     * @param hist Histogram
+     * @return Cumulative Histogram
+     */
     public static int[] cumulativeHistogram(int[] hist){
         int[] C = new int[256];
         C[0] = hist[0];
