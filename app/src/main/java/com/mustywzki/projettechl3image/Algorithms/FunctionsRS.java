@@ -17,6 +17,7 @@ import com.mustywzki.projettechl3image.ScriptC_histogramm;
 import com.mustywzki.projettechl3image.ScriptC_keepcolor;
 import com.mustywzki.projettechl3image.ScriptC_linear_extention;
 import com.mustywzki.projettechl3image.ScriptC_negative;
+import com.mustywzki.projettechl3image.ScriptC_set_rgb;
 
 public class FunctionsRS extends Activity {
 
@@ -180,10 +181,21 @@ public class FunctionsRS extends Activity {
 
     }
 
-
-
-
-
+    public void setRgbRS(Context ctx, Bitmap bmp, float red_coef, float green_coef, float blue_coef) {
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+        ScriptC_set_rgb setRgbScript = new ScriptC_set_rgb(rs);
+        setRgbScript.set_red_coef(red_coef);
+        setRgbScript.set_green_coef(green_coef);
+        setRgbScript.set_blue_coef(blue_coef);
+        setRgbScript.forEach_setRgb(input, output);
+        output.copyTo(bmp);
+        input.destroy();
+        output.destroy();
+        setRgbScript.destroy();
+        rs.destroy();
+    }
 }
 
 

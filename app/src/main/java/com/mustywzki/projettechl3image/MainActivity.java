@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSliding, isRenderscript;
     private AlgorithmType currentAlgorithm;
     private FunctionsRS functionsRS;
-    TextView keepHueText, brightnessText, saturationText, negativeText, coloriseText;
+    TextView keepHueText, brightnessText, saturationText, negativeText, coloriseText, setRgbText;
 
     private History history;
 
@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         saturationText = findViewById(R.id.saturation_text);
         negativeText = findViewById(R.id.negative_text);
         coloriseText = findViewById(R.id.colorise_text);
+        setRgbText = findViewById(R.id.setRgb_text);
 
         imageView = findViewById(R.id.picture);
         PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
@@ -148,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
                     saturationText.setTextColor(getResources().getColor(R.color.colorPrimary));
                     negativeText.setTextColor(getResources().getColor(R.color.colorPrimary));
                     coloriseText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    setRgbText.setTextColor(getResources().getColor(R.color.colorPrimary));
                     ((Button)filterView.findViewById(R.id.gray_button)).setTextColor(getResources().getColor(R.color.colorPrimary));
                     ((Button)filterView.findViewById(R.id.linear_transformation_button)).setTextColor(getResources().getColor(R.color.colorPrimary));
                 } else {
@@ -156,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     saturationText.setTextColor(getResources().getColor(R.color.colorAccent));
                     negativeText.setTextColor(getResources().getColor(R.color.colorAccent));
                     coloriseText.setTextColor(getResources().getColor(R.color.colorAccent));
+                    setRgbText.setTextColor(getResources().getColor(R.color.colorAccent));
                     ((Button)filterView.findViewById(R.id.linear_transformation_button)).setTextColor(getResources().getColor(R.color.colorAccent));
                     ((Button)filterView.findViewById(R.id.gray_button)).setTextColor(getResources().getColor(R.color.colorAccent));
 
@@ -481,7 +484,10 @@ public class MainActivity extends AppCompatActivity {
                 Convolution.filter_Laplacier_8(processedBmp);
                 break;
             case SETRGB:
-                Functions.setRGB(processedBmp, bar1.getProgress(), bar2.getProgress(),  bar3.getProgress());
+                if (isRenderscript)
+                    functionsRS.setRgbRS(getApplicationContext(), processedBmp, bar1.getProgress(), bar2.getProgress(),  bar3.getProgress());
+                else
+                    Functions.setRGB(processedBmp, bar1.getProgress(), bar2.getProgress(),  bar3.getProgress());
                 break;
             case REVERSEVER:
                 Functions.reverseVer(processedBmp);
