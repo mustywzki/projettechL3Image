@@ -29,7 +29,7 @@ public class Tools {
             hsv[0] = 0;
         }
         else if (Cmax == r){
-            hsv[0] = ((g - b)/delta) % 6;
+            hsv[0] = ((g - b)/delta)%6;
         }
         else if (Cmax == g){
             hsv[0] = (b - r)/delta + 2;
@@ -37,7 +37,7 @@ public class Tools {
         else if (Cmax == b){
             hsv[0] = (r - g)/delta + 4;
         }
-        hsv[0] = Math.round(hsv[0] * 60);
+        hsv[0] = hsv[0] * 60;
 
         if (hsv[0] < 0){
             hsv[0] += 360;
@@ -70,6 +70,7 @@ public class Tools {
 
         float c = v * s;
         float x = c * (1 - Math.abs(((h/60) % 2) - 1));
+        float m = v - c;
 
         float r = 0;
         float g = 0;
@@ -108,28 +109,11 @@ public class Tools {
             }
         }
 
-        float m = v - c;
-
-        int red, green, blue;
-
-        red = (int) ((r + m) * 255);
-        green = (int) ((g + m) * 255);
-        blue = (int) ((b + m) * 255);
+        int red = (int) ((r + m) * 255);
+        int green = (int) ((g + m) * 255);
+        int blue = (int) ((b + m) * 255);
 
         return Color.argb(alpha, red, green, blue);
-    }
-
-    protected static int colorToGray(int pixel){
-        double red = Color.red(pixel) * 0.3;
-        double green = Color.green(pixel) * 0.59;
-        double blue = Color.blue(pixel) * 0.11;
-        int tmp = (int) (red + green + blue);
-
-        return Color.rgb(tmp, tmp, tmp);
-    }
-
-    protected static boolean isInside(float test, int start, int end){
-        return (test >= start && test <= end);
     }
 
     /**

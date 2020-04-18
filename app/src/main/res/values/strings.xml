@@ -16,6 +16,8 @@
     <string name="linear_transformation_button">Linear extansion</string>
     <string name="gray_button">Gray</string>
     <string name="blur_button">Blur</string>
+    <string name="reverse_hor_button">H Mirror</string>
+    <string name="reverse_ver_button">V Mirror</string>
 
     <string name="average_button">Average</string>
     <string name="average_3_button">3*3</string>

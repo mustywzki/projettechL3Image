@@ -7,6 +7,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -86,7 +88,9 @@ public class MainActivity extends AppCompatActivity {
         SOBEL_ALL,
         LAPLACIEN_4,
         LAPLACIEN_8,
-        SETRGB
+        SETRGB,
+        REVERSEVER,
+        REVERSEHOR
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -365,6 +369,12 @@ public class MainActivity extends AppCompatActivity {
                 bar2.setProgress(50);
                 bar3.setProgress(50);
                 break;
+            case R.id.reverseVerButton:
+                currentAlgorithm = AlgorithmType.REVERSEVER;
+                break;
+            case R.id.reverseHorButton:
+                currentAlgorithm = AlgorithmType.REVERSEHOR;
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + v.getId());
         }
@@ -472,6 +482,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case SETRGB:
                 Functions.setRGB(processedBmp, bar1.getProgress(), bar2.getProgress(),  bar3.getProgress());
+                break;
+            case REVERSEVER:
+                Functions.reverseVer(processedBmp);
+                apply();
+                break;
+            case REVERSEHOR:
+                Functions.reverseHor(processedBmp);
+                apply();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + currentAlgorithm);

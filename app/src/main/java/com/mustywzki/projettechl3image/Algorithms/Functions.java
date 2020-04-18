@@ -3,9 +3,9 @@ package com.mustywzki.projettechl3image.Algorithms;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-public class Functions {
+import javax.xml.transform.sax.SAXSource;
 
-    /* --- Method --- */
+public class Functions {
 
     /**
      * Function that creates an image of shades of gray
@@ -83,13 +83,13 @@ public class Functions {
      * @param bmp processed bitmap image
      * @param saturation_change value of saturation to append
      */
-    // TODO change in red color when add, maybe when > (not pb with HSV/RGB)
     public static void change_saturation(Bitmap bmp, float saturation_change){
         int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
         int[] colors = new int[bmp.getWidth() * bmp.getHeight()];
 
         int red, green, blue;
+        saturation_change = 100;
 
         for (int i = 0; i < pixels.length; i++) {
             red = Color.red(pixels[i]);
@@ -193,5 +193,37 @@ public class Functions {
             pixels[i] = Color.rgb((int)redValue, (int)greenValue, (int)blueValue);
         }
         bmp.setPixels(pixels,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
+    }
+
+    public static void reverseVer(Bitmap bmp){
+        int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+        for (int y = 0; y < bmp.getHeight(); y++){
+            int ind_right = bmp.getWidth() * (y +1) - 1;
+            int ind_left = bmp.getWidth() * y;
+            for (int x = 0; x < bmp.getWidth()/2; x++){
+                int tmp = pixels[ind_left];
+                pixels[ind_left] = pixels[ind_right];
+                pixels[ind_right] = tmp;
+                ind_left++;
+                ind_right--;
+            }
+        }
+        bmp.setPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+    }
+
+    public static void reverseHor(Bitmap bmp){
+        int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+        for (int x = 0; x < bmp.getWidth(); x++){
+            for (int y = 0; y < bmp.getHeight()/2; y++){
+                int ind_bot = bmp.getWidth() * y + x;
+                int ind_top = bmp.getWidth() * (bmp.getHeight()-y-1) + x;
+                int tmp = pixels[ind_bot];
+                pixels[ind_bot] = pixels[ind_top];
+                pixels[ind_top] = tmp;
+            }
+        }
+        bmp.setPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 }
