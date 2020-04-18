@@ -14,7 +14,8 @@
             android:id="@+id/backButton"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:background="@drawable/annuler" />
+            android:background="@drawable/annuler"
+            android:onClick="onClickReturn" />
 
         <Space
             android:layout_width="0dp"
