@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     static final int RESULT_IMAGE_CAPTURE=1002;
     Uri image_uri = null;
 
-    private View sliderBars, filterView, averageView, laplacienView, prewittView, sobelView, blurView;
+    private View sliderBars, filterView, averageView, laplacienView, prewittView, sobelView, blurView, transformationView;
     private Switch buttonSwitch;
     private FrameLayout buttonsView;
     private HorizontalScrollView buttonScroll;
@@ -90,7 +90,9 @@ public class MainActivity extends AppCompatActivity {
         LAPLACIEN_8,
         SETRGB,
         REVERSEVER,
-        REVERSEHOR
+        REVERSEHOR,
+        ROTATELEFT,
+        ROTATERIGHT
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -112,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         prewittView = View.inflate(this, R.layout.prewitt_filter_view, null);
         sobelView = View.inflate(this, R.layout.sobel_filter_view, null);
         blurView = View.inflate(this, R.layout.blur_view, null);
+        transformationView = View.inflate(this, R.layout.transformation_view, null);
 
         grayButton = findViewById(R.id.gray_button);
 
@@ -271,6 +274,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.blur_button:
                 buttonsView.removeAllViews();
                 buttonsView.addView(blurView);
+                break;
+            case R.id.transform_button:
+                buttonsView.removeAllViews();
+                buttonsView.addView(transformationView);
         }
     }
 
@@ -377,6 +384,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.reverseHorButton:
                 currentAlgorithm = AlgorithmType.REVERSEHOR;
+                break;
+            case R.id.rotate_left_button:
+                currentAlgorithm = AlgorithmType.ROTATELEFT;
+                break;
+            case R.id.rotate_right_button:
+                currentAlgorithm = AlgorithmType.ROTATERIGHT;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + v.getId());
@@ -495,6 +508,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case REVERSEHOR:
                 Functions.reverseHor(processedBmp);
+                apply();
+                break;
+            case ROTATELEFT:
+                processedBmp = Functions.rotateLeft(processedBmp);
+                apply();
+                break;
+            case ROTATERIGHT:
+                processedBmp = Functions.rotateRight(processedBmp);
                 apply();
                 break;
             default:

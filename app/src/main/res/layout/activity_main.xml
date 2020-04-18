@@ -140,63 +140,30 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:layout_marginEnd="5dp"
                         android:background="@color/colorPrimaryDark"
                         android:orientation="vertical">
 
                         <Button
-                            android:id="@+id/reverseHorButton"
+                            android:id="@+id/transform_button"
+                            style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:layout_gravity="center"
-                            android:background="@drawable/inverser2"
-                            android:onClick="onClickAlgorithms" />
+                            android:background="@drawable/transformation"
+                            android:onClick="onClickView" />
 
                         <TextView
-                            android:id="@+id/filter_text2"
+                            android:id="@+id/textView5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginBottom="7dp"
                             android:background="#00FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/reverse_hor_button"
-                            android:textAlignment="viewStart"
+                            android:text="@string/transformation_button"
                             android:textColor="@color/colorAccent"
-                            android:textColorHint="#FFFFFF"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="5dp"
-                        android:background="@color/colorPrimaryDark"
-                        android:orientation="vertical">
-
-                        <Button
-                            android:id="@+id/reverseVerButton"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:layout_gravity="center"
-                            android:background="@drawable/inverser"
-                            android:onClick="onClickAlgorithms" />
-
-                        <TextView
-                            android:id="@+id/filter_text3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="7dp"
-                            android:background="#00FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/reverse_ver_button"
-                            android:textAlignment="viewStart"
-                            android:textColor="@color/colorAccent"
-                            android:textColorHint="#FFFFFF"
                             android:textStyle="bold" />
                     </LinearLayout>
 

@@ -1,7 +1,9 @@
 package com.mustywzki.projettechl3image.Algorithms;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 
 import javax.xml.transform.sax.SAXSource;
 
@@ -193,6 +195,46 @@ public class Functions {
             pixels[i] = Color.rgb((int)redValue, (int)greenValue, (int)blueValue);
         }
         bmp.setPixels(pixels,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
+    }
+
+    public static Bitmap rotateLeft(Bitmap bmp){
+        Bitmap newBmp = Bitmap.createBitmap(bmp.getHeight(), bmp.getWidth(), bmp.getConfig());
+
+        int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+
+        int[] new_pixels = new int[newBmp.getWidth() * newBmp.getHeight()];
+
+        int ind_pixels = 0;
+        for (int x = 0; x < newBmp.getWidth(); x++){
+            for (int y = newBmp.getHeight() -1; y >= 0; y--){
+                int ind_pixels_new = y * newBmp.getWidth() + x;
+                new_pixels[ind_pixels_new] = pixels[ind_pixels];
+                ind_pixels++;
+            }
+        }
+        newBmp.setPixels(new_pixels,0, newBmp.getWidth(),0,0,newBmp.getWidth(),newBmp.getHeight());
+        return newBmp;
+    }
+
+    public static Bitmap rotateRight(Bitmap bmp){
+        Bitmap newBmp = Bitmap.createBitmap(bmp.getHeight(), bmp.getWidth(), bmp.getConfig());
+
+        int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+
+        int[] new_pixels = new int[newBmp.getWidth() * newBmp.getHeight()];
+
+        int ind_pixels = 0;
+        for (int x = newBmp.getWidth() - 1; x >= 0; x--){
+            for (int y = 0; y < newBmp.getHeight(); y++){
+                int ind_pixels_new = y * newBmp.getWidth() + x;
+                new_pixels[ind_pixels_new] = pixels[ind_pixels];
+                ind_pixels++;
+            }
+        }
+        newBmp.setPixels(new_pixels,0, newBmp.getWidth(),0,0,newBmp.getWidth(),newBmp.getHeight());
+        return newBmp;
     }
 
     public static void reverseVer(Bitmap bmp){
