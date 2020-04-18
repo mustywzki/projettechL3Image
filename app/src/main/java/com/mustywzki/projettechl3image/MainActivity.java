@@ -29,11 +29,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mustywzki.projettechl3image.Algorithms.Contrast;
-import com.mustywzki.projettechl3image.Algorithms.Convolution;
-import com.mustywzki.projettechl3image.Algorithms.Functions;
-import com.mustywzki.projettechl3image.Algorithms.FunctionsRS;
-import com.mustywzki.projettechl3image.Algorithms.Tools;
+import com.mustywzki.projettechl3image.Algorithms.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
