@@ -411,11 +411,11 @@ public class MainActivity extends AppCompatActivity {
                     functionsRS.toGrayRS(getApplicationContext(), processedBmp);
                 else
                     Functions.toGray(processedBmp);
+                apply();
                 break;
             case COLORIZE:
-                if (isRenderscript){
+                if (isRenderscript)
                     functionsRS.colorize(getApplicationContext(), processedBmp,bar1.getProgress());
-                }
                 else
                     Functions.colorize(processedBmp,bar1.getProgress());
                 break;
@@ -428,25 +428,23 @@ public class MainActivity extends AppCompatActivity {
             case DYNAMIC_EXTENSION:
                 if(isRenderscript)
                     functionsRS.LinearExtention(getApplicationContext(),processedBmp);
-                else {
+                else
                     Contrast.linear_transformation(processedBmp);
-                    apply();
-                }
+                apply();
                 break;
             case HIST_EQUALIZER:
                 if (isRenderscript)
-                functionsRS.HistogramEqualizer(getApplicationContext(),processedBmp);
-                else {
+                    functionsRS.HistogramEqualizer(getApplicationContext(),processedBmp);
+                else
                     Contrast.histogramEqualizer(Tools.getHistogram(processedBmp), processedBmp);
-                    apply();
-                }
+                apply();
                 break;
             case NEGATIVE:
                 if (isRenderscript)
                     functionsRS.negative(getApplicationContext(),processedBmp);
                 else
                     Functions.negative(processedBmp);
-                    apply();
+                apply();
                 break;
             case SATURATION:
                 if (isRenderscript)
@@ -471,6 +469,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case GAUSSIAN_5x5:
                 Convolution.filter_Gaussien(processedBmp);
+                apply();
                 break;
             case PREWITT_HOR:
                 Convolution.filter_Prewitt_horizontal(processedBmp);
