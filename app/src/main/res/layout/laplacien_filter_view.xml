@@ -75,7 +75,7 @@
                     android:onClick="onClickAlgorithms" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/laplacian_4_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -107,7 +107,7 @@
                     android:onClick="onClickAlgorithms" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/laplacian_8_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

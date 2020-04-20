@@ -75,6 +75,7 @@
                     android:onClick="onClickAlgorithms" />
 
                 <TextView
+                    android:id="@+id/average_3_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -106,6 +107,7 @@
                     android:onClick="onClickAlgorithms" />
 
                 <TextView
+                    android:id="@+id/average_7_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -137,6 +139,7 @@
                     android:onClick="onClickAlgorithms" />
 
                 <TextView
+                    android:id="@+id/average_15_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

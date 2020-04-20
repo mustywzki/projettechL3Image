@@ -76,6 +76,7 @@
                     android:onClick="onClickAlgorithms" />
 
                 <TextView
+                    android:id="@+id/sobel_hor_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -139,7 +140,7 @@
                     android:onClick="onClickAlgorithms" />
 
                 <TextView
-                    android:id="@+id/textView10"
+                    android:id="@+id/sobel_ver_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

@@ -35,8 +35,6 @@ import com.mustywzki.projettechl3image.Algorithms.Functions;
 import com.mustywzki.projettechl3image.Algorithms.FunctionsRS;
 import com.mustywzki.projettechl3image.Algorithms.Tools;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -60,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSliding, isRenderscript;
     private AlgorithmType currentAlgorithm;
     private FunctionsRS functionsRS;
-    private TextView keepHueText, brightnessText, saturationText, negativeText, coloriseText, setRgbText, mirrorText,
-            grayText, linearText, EqualisationText, prewittHorText;
     private ArrayList<TextView> rsTexts = new ArrayList<>();
 
     private History history;
@@ -122,31 +118,35 @@ public class MainActivity extends AppCompatActivity {
         blurView = View.inflate(this, R.layout.blur_view, null);
         transformationView = View.inflate(this, R.layout.transformation_view, null);
 
-        keepHueText = findViewById(R.id.keep_hue_text);
-        rsTexts.add(keepHueText);
-        brightnessText = findViewById(R.id.brightness_text);
-        rsTexts.add(brightnessText);
-        saturationText = findViewById(R.id.saturation_text);
-        rsTexts.add(saturationText);
-        negativeText = findViewById(R.id.negative_text);
-        rsTexts.add(negativeText);
-        coloriseText = findViewById(R.id.colorise_text);
-        rsTexts.add(coloriseText);
-        setRgbText = findViewById(R.id.setRgb_text);
-        rsTexts.add(setRgbText);
+        rsTexts.add((TextView) findViewById(R.id.keep_hue_text));
+        rsTexts.add((TextView) findViewById(R.id.brightness_text));
+        rsTexts.add((TextView) findViewById(R.id.saturation_text));
+        rsTexts.add((TextView) findViewById(R.id.negative_text));
+        rsTexts.add((TextView) findViewById(R.id.colorise_text));
+        rsTexts.add((TextView) findViewById(R.id.setRgb_text));
 
-        grayText = filterView.findViewById(R.id.gray_text);
-        rsTexts.add(grayText);
-        linearText = filterView.findViewById(R.id.linear_transformation_text);
-        rsTexts.add(linearText);
-        EqualisationText = filterView.findViewById(R.id.egalisation_text);
-        rsTexts.add(EqualisationText);
+        rsTexts.add((TextView) filterView.findViewById(R.id.gray_text));
+        rsTexts.add((TextView) filterView.findViewById(R.id.linear_transformation_text));
+        rsTexts.add((TextView) filterView.findViewById(R.id.egalisation_text));
+        rsTexts.add((TextView) filterView.findViewById(R.id.laplacian_text));
 
-        prewittHorText = prewittView.findViewById(R.id.prewitt_hor_text);
-        rsTexts.add(prewittHorText);
+        rsTexts.add((TextView) prewittView.findViewById(R.id.prewitt_hor_text));
+        rsTexts.add((TextView) prewittView.findViewById(R.id.prewitt_ver_text));
 
-        mirrorText = transformationView.findViewById(R.id.mirror_text);
-        rsTexts.add(mirrorText);
+        rsTexts.add((TextView) sobelView.findViewById(R.id.sobel_hor_text));
+        rsTexts.add((TextView) sobelView.findViewById(R.id.sobel_ver_text));
+
+        rsTexts.add((TextView) laplacienView.findViewById(R.id.laplacian_4_text));
+        rsTexts.add((TextView) laplacienView.findViewById(R.id.laplacian_8_text));
+
+        rsTexts.add((TextView) transformationView.findViewById(R.id.mirror_text));
+
+        rsTexts.add((TextView) blurView.findViewById(R.id.gaussian_text));
+        rsTexts.add((TextView) blurView.findViewById(R.id.average_text));
+
+        rsTexts.add((TextView) averageView.findViewById(R.id.average_3_text));
+        rsTexts.add((TextView) averageView.findViewById(R.id.average_7_text));
+        rsTexts.add((TextView) averageView.findViewById(R.id.average_15_text));
 
         imageView = findViewById(R.id.picture);
         PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
@@ -471,16 +471,49 @@ public class MainActivity extends AppCompatActivity {
                     Functions.change_brightness(processedBmp,bar1.getProgress());
                 break;
             case AVERAGE_3x3:
-                Convolution.filter_Moyenneur(processedBmp, 9);
+                if(isRenderscript){
+                    float[] core = new float[9];
+                    for (int i = 0; i < core.length; i++){
+                        core[i] = 1;
+                    }
+                    functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 9);
+                }
+                else
+                    Convolution.filter_Moyenneur(processedBmp, 9);
                 break;
             case AVERAGE_7x7:
-                Convolution.filter_Moyenneur(processedBmp, 49);
+                if(isRenderscript){
+                    float[] core = new float[49];
+                    for (int i = 0; i < core.length; i++){
+                        core[i] = 1;
+                    }
+                    functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 49);
+                }
+                else
+                    Convolution.filter_Moyenneur(processedBmp, 49);
                 break;
             case AVERAGE_15x15:
-                Convolution.filter_Moyenneur(processedBmp, 225);
+                if(isRenderscript){
+                    float[] core = new float[225];
+                    for (int i = 0; i < core.length; i++){
+                        core[i] = 1;
+                    }
+                    functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 225);
+                }
+                else
+                    Convolution.filter_Moyenneur(processedBmp, 225);
                 break;
             case GAUSSIAN_5x5:
-                Convolution.filter_Gaussien(processedBmp);
+                if(isRenderscript){
+                    float[] core = {1, 2, 3, 2, 1
+                            ,2, 6, 8, 6, 2
+                            ,3, 8, 10, 8, 3
+                            ,2, 6, 8, 6, 2
+                            ,1, 2, 3, 2, 1};
+                    functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 98);
+                }
+                else
+                    Convolution.filter_Gaussien(processedBmp);
                 apply();
                 break;
             case PREWITT_HOR:
@@ -490,30 +523,66 @@ public class MainActivity extends AppCompatActivity {
                             ,-1, 0, 1};
                     functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 1);
                 }
-                else {
+                else
                     Convolution.filter_Prewitt_horizontal(processedBmp);
-                }
                 break;
             case PREWITT_VER:
-                Convolution.filter_Prewitt_vertical(processedBmp);
+                if(isRenderscript){
+                    float[] core = {-1, -1, -1
+                            ,0, 0, 0
+                            ,1, 1, 1};
+                    functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 1);
+                }
+                else
+                    Convolution.filter_Prewitt_vertical(processedBmp);
                 break;
             case PREWITT_ALL:
+                //TODO rs
                 Convolution.filter_Prewitt(processedBmp);
                 break;
             case SOBEL_HOR:
-                Convolution.filter_Sobel_horizontal(processedBmp);
+                if(isRenderscript){
+                    float[] core = {-1, 0, 1
+                            ,-2, 0, 2
+                            ,-1, 0, 1};
+                    functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 1);
+                }
+                else
+                    Convolution.filter_Sobel_horizontal(processedBmp);
                 break;
             case SOBEL_VER:
-                Convolution.filter_Sobel_vertical(processedBmp);
+                if(isRenderscript){
+                    float[] core = {-1, -2, -1
+                            ,0, 0, 0
+                            ,1, 2, 1};
+                    functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 1);
+                }
+                else
+                    Convolution.filter_Sobel_vertical(processedBmp);
                 break;
             case SOBEL_ALL:
+                //TODO RS
                 Convolution.filter_Sobel(processedBmp);
                 break;
             case LAPLACIEN_4:
-                Convolution.filter_Laplacier_4(processedBmp);
+                if(isRenderscript){
+                    float[] core = {0, 1, 0
+                            ,1, -4, 1
+                            ,0, 1, 0};
+                    functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 1);
+                }
+                else
+                    Convolution.filter_Laplacier_4(processedBmp);
                 break;
             case LAPLACIEN_8:
-                Convolution.filter_Laplacier_8(processedBmp);
+                if(isRenderscript){
+                    float[] core = {1, 1, 1
+                            ,1, -8, 1
+                            ,1, 1, 1};
+                    functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 1);
+                }
+                else
+                    Convolution.filter_Laplacier_8(processedBmp);
                 break;
             case SETRGB:
                 if (isRenderscript)
@@ -522,28 +591,26 @@ public class MainActivity extends AppCompatActivity {
                     Functions.setRGB(processedBmp, bar1.getProgress(), bar2.getProgress(),  bar3.getProgress());
                 break;
             case REVERSEVER:
-                if(isRenderscript) {
+                if(isRenderscript)
                     functionsRS.reverseVer(getApplicationContext(), processedBmp);
-                }
-                else{
-                Functions.reverseVer(processedBmp);
+                else
+                    Functions.reverseVer(processedBmp);
                 apply();
-                }
                 break;
             case REVERSEHOR:
-                if(isRenderscript){
+                if(isRenderscript)
                     functionsRS.reverseHor(getApplicationContext(),processedBmp);
-                }else{
+                else
                     Functions.reverseHor(processedBmp);
-                    apply();
-                }
-
+                apply();
                 break;
             case ROTATELEFT:
+                //TODO RS
                 processedBmp = Functions.rotateLeft(processedBmp);
                 apply();
                 break;
             case ROTATERIGHT:
+                //TODO RS
                 processedBmp = Functions.rotateRight(processedBmp);
                 apply();
                 break;

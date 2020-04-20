@@ -237,7 +237,7 @@
                     android:onClick="onClickView" />
 
                 <TextView
-                    android:id="@+id/rs_function"
+                    android:id="@+id/laplacian_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
