@@ -509,12 +509,22 @@ public class MainActivity extends AppCompatActivity {
                     Functions.setRGB(processedBmp, bar1.getProgress(), bar2.getProgress(),  bar3.getProgress());
                 break;
             case REVERSEVER:
+                if(isRenderscript) {
+                    functionsRS.reverseVer(getApplicationContext(), processedBmp);
+                }
+                else{
                 Functions.reverseVer(processedBmp);
                 apply();
+                }
                 break;
             case REVERSEHOR:
-                Functions.reverseHor(processedBmp);
-                apply();
+                if(isRenderscript){
+                    functionsRS.reverseHor(getApplicationContext(),processedBmp);
+                }else{
+                    Functions.reverseHor(processedBmp);
+                    apply();
+                }
+
                 break;
             case ROTATELEFT:
                 processedBmp = Functions.rotateLeft(processedBmp);

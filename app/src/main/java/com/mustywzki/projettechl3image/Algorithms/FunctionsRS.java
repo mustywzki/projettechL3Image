@@ -20,6 +20,8 @@ import com.mustywzki.projettechl3image.ScriptC_keepcolor;
 import com.mustywzki.projettechl3image.ScriptC_linear_extention;
 import com.mustywzki.projettechl3image.ScriptC_mix_bmp;
 import com.mustywzki.projettechl3image.ScriptC_negative;
+import com.mustywzki.projettechl3image.ScriptC_reverseHor;
+import com.mustywzki.projettechl3image.ScriptC_reverseVer;
 import com.mustywzki.projettechl3image.ScriptC_set_rgb;
 
 public class FunctionsRS extends Activity {
@@ -119,11 +121,11 @@ public class FunctionsRS extends Activity {
 
     }
 
-    int [] histogramm(Context ctx, Bitmap bmp) {
+    int[] histogramm(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         ScriptC_histogramm HistogrammScript = new ScriptC_histogramm(rs);
-        int[] histo =  HistogrammScript.reduce_histogramm(input).get();
+        int[] histo = HistogrammScript.reduce_histogramm(input).get();
 
         input.destroy();
         HistogrammScript.destroy();
@@ -133,14 +135,14 @@ public class FunctionsRS extends Activity {
 
 
     public void HistogramEqualizer(Context ctx, Bitmap bmp) {
-        int[] histo = histogramm(ctx,bmp);
+        int[] histo = histogramm(ctx, bmp);
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_HistogramEqualizer HEScript= new ScriptC_HistogramEqualizer(rs);
+        ScriptC_HistogramEqualizer HEScript = new ScriptC_HistogramEqualizer(rs);
         HEScript.set_cumulative_histogramm(histo);
 
-        HEScript.set_tab_length(bmp.getWidth()*bmp.getHeight());
+        HEScript.set_tab_length(bmp.getWidth() * bmp.getHeight());
         HEScript.forEach_HistogramEqualize(input, output);
 
         output.copyTo(bmp);
@@ -165,13 +167,13 @@ public class FunctionsRS extends Activity {
     public void LinearExtention(Context ctx, Bitmap bmp) {
         int[] tab = max_min(ctx, bmp);
         int[] LUTred = Contrast.createLUTred(new int[]{tab[0], tab[1]});
-        int[] LUTgreen = Contrast.createLUTgreen(new int[]{tab[2],tab[3]});
-        int[] LUTblue = Contrast.createLUTblue(new int[]{tab[4],tab[5]});
+        int[] LUTgreen = Contrast.createLUTgreen(new int[]{tab[2], tab[3]});
+        int[] LUTblue = Contrast.createLUTblue(new int[]{tab[4], tab[5]});
 
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_linear_extention LeScript= new ScriptC_linear_extention(rs);
+        ScriptC_linear_extention LeScript = new ScriptC_linear_extention(rs);
         LeScript.set_LUTred(LUTred);
         LeScript.set_LUTgreen(LUTgreen);
         LeScript.set_LUTblue(LUTblue);
@@ -215,7 +217,7 @@ public class FunctionsRS extends Activity {
 
         apf_script.set_div(div);
         apf_script.set_gIn(input);
-        apf_script.forEach_apply_filter(input,output);
+        apf_script.forEach_apply_filter(input, output);
         output.copyTo(bmp);
         output.destroy();
         core_tab.destroy();
@@ -225,10 +227,10 @@ public class FunctionsRS extends Activity {
 
     }
 
-    public void mix_bmp (Context ctx,Bitmap bmp, Bitmap bmp1, Bitmap bmp2){
+    public void mix_bmp(Context ctx, Bitmap bmp, Bitmap bmp1, Bitmap bmp2) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
-        Allocation  A1= Allocation.createFromBitmap(rs, bmp1);
+        Allocation A1 = Allocation.createFromBitmap(rs, bmp1);
         Allocation A2 = Allocation.createFromBitmap(rs, bmp2);
         Allocation output = Allocation.createTyped(rs, A1.getType());
         ScriptC_mix_bmp Mbmp_Script = new ScriptC_mix_bmp(rs);
@@ -247,6 +249,38 @@ public class FunctionsRS extends Activity {
 
     }
 
+    public void reverseHor(Context ctx, Bitmap bmp) {
+
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+        ScriptC_reverseHor RhScript = new ScriptC_reverseHor(rs);
+        RhScript.set_gIn(input);
+        RhScript.set_height(bmp.getHeight());
+        RhScript.forEach_reverseHor(input, output);
+        output.copyTo(bmp);
+        input.destroy();
+        output.destroy();
+        RhScript.destroy();
+        rs.destroy();
+    }
+
+
+    public void reverseVer(Context ctx, Bitmap bmp) {
+
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+        ScriptC_reverseVer RvScript = new ScriptC_reverseVer(rs);
+        RvScript.set_gIn(input);
+        RvScript.set_width(bmp.getWidth());
+        RvScript.forEach_reverseHor(input, output);
+        output.copyTo(bmp);
+        input.destroy();
+        output.destroy();
+        RvScript.destroy();
+        rs.destroy();
+    }
 
 }
 

@@ -3,9 +3,9 @@
 #pragma rs_fp_relaxed
 
 rs_allocation gIn;
-int height;
+int width;
 
 uchar4 RS_KERNEL reverseHor(uchar4 in, uint32_t x, uint32_t y) {
-    return rsGetElementAt_uchar4(gIn, x, height - y - 1);
+    return rsGetElementAt_uchar4(gIn, width - x - 1, y);
 
 }
