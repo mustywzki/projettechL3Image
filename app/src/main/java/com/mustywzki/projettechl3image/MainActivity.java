@@ -7,8 +7,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -31,7 +29,11 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mustywzki.projettechl3image.Algorithms.*;
+import com.mustywzki.projettechl3image.Algorithms.Contrast;
+import com.mustywzki.projettechl3image.Algorithms.Convolution;
+import com.mustywzki.projettechl3image.Algorithms.Functions;
+import com.mustywzki.projettechl3image.Algorithms.FunctionsRS;
+import com.mustywzki.projettechl3image.Algorithms.Tools;
 
 import java.io.File;
 import java.io.FileOutputStream;

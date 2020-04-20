@@ -2,7 +2,7 @@
 #pragma rs java_package_name(com.mustywzki.projettechl3image)
 #include "RgbToHsv.rs"
 #include "HsvToRgb.rs"
-
+#pragma rs_fp_relaxed
 float brightness_change;
 
 uchar4 RS_KERNEL change_brightness(uchar4 in){

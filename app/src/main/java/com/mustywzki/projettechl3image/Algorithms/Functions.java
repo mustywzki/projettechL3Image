@@ -1,11 +1,7 @@
 package com.mustywzki.projettechl3image.Algorithms;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
-
-import javax.xml.transform.sax.SAXSource;
 
 public class Functions {
 

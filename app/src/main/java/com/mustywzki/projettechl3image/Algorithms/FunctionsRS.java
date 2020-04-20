@@ -10,6 +10,7 @@ import androidx.renderscript.RenderScript;
 import com.mustywzki.projettechl3image.ScriptC_Gray;
 import com.mustywzki.projettechl3image.ScriptC_HistogramEqualizer;
 import com.mustywzki.projettechl3image.ScriptC_Max_Min;
+import com.mustywzki.projettechl3image.ScriptC_apply_filter;
 import com.mustywzki.projettechl3image.ScriptC_change_brightness;
 import com.mustywzki.projettechl3image.ScriptC_change_saturation;
 import com.mustywzki.projettechl3image.ScriptC_colorize;
@@ -180,6 +181,32 @@ public class FunctionsRS extends Activity {
         rs.destroy();
 
     }
+
+    public void apply_filter(Context ctx, Bitmap bmp) {
+
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+        ScriptC_apply_filter apf_script = new ScriptC_apply_filter(rs);
+        apf_script.set_width(bmp.getWidth());
+        apf_script.set_height(bmp.getHeight());
+        apf_script.set_core_length(9);
+        apf_script.set_div(1);
+        float[] core = {-1, 0, 1
+                ,-1, 0, 1
+                ,-1, 0, 1};
+        apf_script.set_core(core);
+        apf_script.set_gIn(input);
+        apf_script.forEach_apply_filter(input,output);
+        output.copyTo(bmp);
+        output.destroy();
+        input.destroy();
+        apf_script.destroy();
+        rs.destroy();
+
+    }
+
+
 
     public void setRgbRS(Context ctx, Bitmap bmp, float red_coef, float green_coef, float blue_coef) {
         RenderScript rs = RenderScript.create(ctx);

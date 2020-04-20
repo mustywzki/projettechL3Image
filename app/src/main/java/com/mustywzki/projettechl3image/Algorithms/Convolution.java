@@ -3,10 +3,6 @@ package com.mustywzki.projettechl3image.Algorithms;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import java.sql.SQLOutput;
-
-import javax.xml.transform.sax.SAXSource;
-
 public class Convolution {
 
     /**
