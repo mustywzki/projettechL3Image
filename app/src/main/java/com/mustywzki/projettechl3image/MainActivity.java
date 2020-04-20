@@ -35,10 +35,13 @@ import com.mustywzki.projettechl3image.Algorithms.Functions;
 import com.mustywzki.projettechl3image.Algorithms.FunctionsRS;
 import com.mustywzki.projettechl3image.Algorithms.Tools;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -57,8 +60,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSliding, isRenderscript;
     private AlgorithmType currentAlgorithm;
     private FunctionsRS functionsRS;
-    TextView keepHueText, brightnessText, saturationText, negativeText, coloriseText, setRgbText, mirrorText,
+    private TextView keepHueText, brightnessText, saturationText, negativeText, coloriseText, setRgbText, mirrorText,
             grayText, linearText, EqualisationText, prewittHorText;
+    private ArrayList<TextView> rsTexts = new ArrayList<>();
 
     private History history;
 
@@ -119,19 +123,30 @@ public class MainActivity extends AppCompatActivity {
         transformationView = View.inflate(this, R.layout.transformation_view, null);
 
         keepHueText = findViewById(R.id.keep_hue_text);
+        rsTexts.add(keepHueText);
         brightnessText = findViewById(R.id.brightness_text);
+        rsTexts.add(brightnessText);
         saturationText = findViewById(R.id.saturation_text);
+        rsTexts.add(saturationText);
         negativeText = findViewById(R.id.negative_text);
+        rsTexts.add(negativeText);
         coloriseText = findViewById(R.id.colorise_text);
+        rsTexts.add(coloriseText);
         setRgbText = findViewById(R.id.setRgb_text);
+        rsTexts.add(setRgbText);
 
         grayText = filterView.findViewById(R.id.gray_text);
+        rsTexts.add(grayText);
         linearText = filterView.findViewById(R.id.linear_transformation_text);
+        rsTexts.add(linearText);
         EqualisationText = filterView.findViewById(R.id.egalisation_text);
+        rsTexts.add(EqualisationText);
 
         prewittHorText = prewittView.findViewById(R.id.prewitt_hor_text);
+        rsTexts.add(prewittHorText);
 
         mirrorText = transformationView.findViewById(R.id.mirror_text);
+        rsTexts.add(mirrorText);
 
         imageView = findViewById(R.id.picture);
         PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
@@ -155,29 +170,13 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isRenderscript = isChecked;
                 if (isRenderscript) {
-                    keepHueText.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    brightnessText.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    saturationText.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    negativeText.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    coloriseText.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    setRgbText.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    mirrorText.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    grayText.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    linearText.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    EqualisationText.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    prewittHorText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    for (int i = 0; i < rsTexts.size(); i++){
+                        rsTexts.get(i).setTextColor(getResources().getColor(R.color.colorPrimary));
+                    }
                 } else {
-                    keepHueText.setTextColor(getResources().getColor(R.color.colorAccent));
-                    brightnessText.setTextColor(getResources().getColor(R.color.colorAccent));
-                    saturationText.setTextColor(getResources().getColor(R.color.colorAccent));
-                    negativeText.setTextColor(getResources().getColor(R.color.colorAccent));
-                    coloriseText.setTextColor(getResources().getColor(R.color.colorAccent));
-                    setRgbText.setTextColor(getResources().getColor(R.color.colorAccent));
-                    mirrorText.setTextColor(getResources().getColor(R.color.colorAccent));
-                    grayText.setTextColor(getResources().getColor(R.color.colorAccent));
-                    linearText.setTextColor(getResources().getColor(R.color.colorAccent));
-                    EqualisationText.setTextColor(getResources().getColor(R.color.colorAccent));
-                    prewittHorText.setTextColor(getResources().getColor(R.color.colorAccent));
+                    for (int i = 0; i < rsTexts.size(); i++){
+                        rsTexts.get(i).setTextColor(getResources().getColor(R.color.colorAccent));
+                    }
                 }
             }
         });
