@@ -72,6 +72,7 @@
                     android:onClick="onClickAlgorithms" />
 
                 <TextView
+                    android:id="@+id/gray_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -104,6 +105,7 @@
                     android:onClick="onClickAlgorithms" />
 
                 <TextView
+                    android:id="@+id/linear_transformation_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -136,6 +138,7 @@
                     android:onClick="onClickAlgorithms" />
 
                 <TextView
+                    android:id="@+id/egalisation_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -168,6 +171,7 @@
                     android:onClick="onClickView" />
 
                 <TextView
+                    android:id="@+id/prewitt_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -200,6 +204,7 @@
                     android:onClick="onClickView" />
 
                 <TextView
+                    android:id="@+id/sobel_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -232,6 +237,7 @@
                     android:onClick="onClickView" />
 
                 <TextView
+                    android:id="@+id/rs_function"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

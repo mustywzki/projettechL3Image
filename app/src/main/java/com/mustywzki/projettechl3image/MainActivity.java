@@ -57,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSliding, isRenderscript;
     private AlgorithmType currentAlgorithm;
     private FunctionsRS functionsRS;
-    TextView keepHueText, brightnessText, saturationText, negativeText, coloriseText, setRgbText;
+    TextView keepHueText, brightnessText, saturationText, negativeText, coloriseText, setRgbText, mirrorText,
+            grayText, linearText, EqualisationText, prewittHorText;
 
     private History history;
 
@@ -124,6 +125,14 @@ public class MainActivity extends AppCompatActivity {
         coloriseText = findViewById(R.id.colorise_text);
         setRgbText = findViewById(R.id.setRgb_text);
 
+        grayText = filterView.findViewById(R.id.gray_text);
+        linearText = filterView.findViewById(R.id.linear_transformation_text);
+        EqualisationText = filterView.findViewById(R.id.egalisation_text);
+
+        prewittHorText = prewittView.findViewById(R.id.prewitt_hor_text);
+
+        mirrorText = transformationView.findViewById(R.id.mirror_text);
+
         imageView = findViewById(R.id.picture);
         PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
         photoView.update();
@@ -152,8 +161,11 @@ public class MainActivity extends AppCompatActivity {
                     negativeText.setTextColor(getResources().getColor(R.color.colorPrimary));
                     coloriseText.setTextColor(getResources().getColor(R.color.colorPrimary));
                     setRgbText.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    ((Button)filterView.findViewById(R.id.gray_button)).setTextColor(getResources().getColor(R.color.colorPrimary));
-                    ((Button)filterView.findViewById(R.id.linear_transformation_button)).setTextColor(getResources().getColor(R.color.colorPrimary));
+                    mirrorText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    grayText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    linearText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    EqualisationText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    prewittHorText.setTextColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     keepHueText.setTextColor(getResources().getColor(R.color.colorAccent));
                     brightnessText.setTextColor(getResources().getColor(R.color.colorAccent));
@@ -161,9 +173,11 @@ public class MainActivity extends AppCompatActivity {
                     negativeText.setTextColor(getResources().getColor(R.color.colorAccent));
                     coloriseText.setTextColor(getResources().getColor(R.color.colorAccent));
                     setRgbText.setTextColor(getResources().getColor(R.color.colorAccent));
-                    ((Button)filterView.findViewById(R.id.linear_transformation_button)).setTextColor(getResources().getColor(R.color.colorAccent));
-                    ((Button)filterView.findViewById(R.id.gray_button)).setTextColor(getResources().getColor(R.color.colorAccent));
-
+                    mirrorText.setTextColor(getResources().getColor(R.color.colorAccent));
+                    grayText.setTextColor(getResources().getColor(R.color.colorAccent));
+                    linearText.setTextColor(getResources().getColor(R.color.colorAccent));
+                    EqualisationText.setTextColor(getResources().getColor(R.color.colorAccent));
+                    prewittHorText.setTextColor(getResources().getColor(R.color.colorAccent));
                 }
             }
         });
