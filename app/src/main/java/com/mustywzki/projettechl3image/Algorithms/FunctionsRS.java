@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import androidx.renderscript.Allocation;
+import androidx.renderscript.Element;
 import androidx.renderscript.RenderScript;
 
 import com.mustywzki.projettechl3image.ScriptC_Gray;
@@ -182,20 +183,20 @@ public class FunctionsRS extends Activity {
 
     }
 
-    public void apply_filter(Context ctx, Bitmap bmp) {
+    public void apply_filter(Context ctx, Bitmap bmp, float[] core, int core_length, int div) {
 
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
+        Allocation core_tab = Allocation.createSized(rs, Element.F32(rs), core_length);
+        core_tab.copyFrom(core);
         ScriptC_apply_filter apf_script = new ScriptC_apply_filter(rs);
         apf_script.set_width(bmp.getWidth());
         apf_script.set_height(bmp.getHeight());
-        apf_script.set_core_length(9);
-        apf_script.set_div(1);
-        float[] core = {-1, 0, 1
-                ,-1, 0, 1
-                ,-1, 0, 1};
-        apf_script.set_core(core);
+        apf_script.set_core_length(core_length);
+        apf_script.bind_core(core_tab);
+
+        apf_script.set_div(div);
         apf_script.set_gIn(input);
         apf_script.forEach_apply_filter(input,output);
         output.copyTo(bmp);

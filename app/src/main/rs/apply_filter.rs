@@ -4,7 +4,7 @@
 
 int width, height;
 
-float core[9];
+float* core;
 int core_length;
 float div;
 rs_allocation gIn;

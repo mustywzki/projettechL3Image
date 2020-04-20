@@ -474,7 +474,15 @@ public class MainActivity extends AppCompatActivity {
                 apply();
                 break;
             case PREWITT_HOR:
-                Convolution.filter_Prewitt_horizontal(processedBmp);
+                if(isRenderscript){
+                    float[] core = {-1, 0, 1
+                            ,-1, 0, 1
+                            ,-1, 0, 1};
+                    functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 1);
+                }
+                else {
+                    Convolution.filter_Prewitt_horizontal(processedBmp);
+                }
                 break;
             case PREWITT_VER:
                 Convolution.filter_Prewitt_vertical(processedBmp);
