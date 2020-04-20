@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
     private History history;
 
-    private Button grayButton, keepColor;
     // GUI-related members
     private ImageView imageView;
     private Bitmap currentBmp, processedBmp, savedBmp;
@@ -117,8 +116,6 @@ public class MainActivity extends AppCompatActivity {
         sobelView = View.inflate(this, R.layout.sobel_filter_view, null);
         blurView = View.inflate(this, R.layout.blur_view, null);
         transformationView = View.inflate(this, R.layout.transformation_view, null);
-
-        grayButton = findViewById(R.id.gray_button);
 
         keepHueText = findViewById(R.id.keep_hue_text);
         brightnessText = findViewById(R.id.brightness_text);

@@ -153,6 +153,9 @@
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
                             android:background="@drawable/transformation"
                             android:onClick="onClickView" />
 
@@ -161,6 +164,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:background="#00FFFFFF"
                             android:text="@string/transformation_button"
                             android:textColor="@color/colorAccent"
@@ -180,6 +185,9 @@
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
                             android:background="@drawable/filtres"
                             android:onClick="onClickView" />
 
@@ -188,6 +196,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:layout_marginBottom="7dp"
                             android:background="#00FFFFFF"
                             android:text="@string/filter_button"
@@ -209,6 +219,9 @@
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
                             android:background="@drawable/saturation"
                             android:onClick="onClickAlgorithms" />
 
@@ -217,6 +230,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:layout_marginBottom="7dp"
                             android:background="#00FFFFFF"
                             android:text="@string/saturation_button"
@@ -238,6 +253,9 @@
                             style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
                             android:background="@drawable/values"
                             android:onClick="onClickAlgorithms" />
 
@@ -246,6 +264,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:background="#00FFFFFF"
                             android:text="@string/setRGB"
                             android:textColor="@color/colorAccent"
@@ -265,6 +285,9 @@
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
                             android:background="@drawable/brightness"
                             android:onClick="onClickAlgorithms" />
 
@@ -273,6 +296,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:layout_marginBottom="7dp"
                             android:background="#00FFFFFF"
                             android:text="@string/brightness_button"
@@ -294,6 +319,9 @@
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
                             android:background="@drawable/textures"
                             android:onClick="onClickAlgorithms" />
 
@@ -302,6 +330,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:layout_marginBottom="7dp"
                             android:background="#00FFFFFF"
                             android:text="@string/negative_button"
@@ -324,6 +354,9 @@
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
                             android:background="@drawable/couleur"
                             android:onClick="onClickAlgorithms" />
 
@@ -332,6 +365,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:layout_marginBottom="7dp"
                             android:background="#00FFFFFF"
                             android:text="@string/selected_color_button"
@@ -353,6 +388,9 @@
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
                             android:background="@drawable/color"
                             android:onClick="onClickAlgorithms" />
 
@@ -361,6 +399,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:layout_marginBottom="7dp"
                             android:background="#00FFFFFF"
                             android:text="@string/random_button"
@@ -382,6 +422,9 @@
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
                             android:background="@drawable/blur"
                             android:onClick="onClickView" />
 
@@ -390,6 +433,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:layout_marginBottom="7dp"
                             android:background="#00FFFFFF"
                             android:gravity="center"

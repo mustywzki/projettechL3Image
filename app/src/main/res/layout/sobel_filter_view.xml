@@ -54,43 +54,103 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/sobel_hor_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/colorPrimaryDark"
-                android:onClick="onClickAlgorithms"
-                android:text="@string/horizontal_filter"
-                android:textColor="@color/colorAccent"></Button>
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/sobel_all_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
+                <Button
+                    android:id="@+id/sobel_hor_button"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/sobel_hor"
+                    android:onClick="onClickAlgorithms" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="#00FFFFFF"
+                    android:text="@string/horizontal_filter"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/colorPrimaryDark"
-                android:onClick="onClickAlgorithms"
-                android:text="@string/hor_ver_filter"
-                android:textColor="@color/colorAccent"></Button>
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/sobel_ver_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
+                <Button
+                    android:id="@+id/sobel_all_button"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/sobel"
+                    android:onClick="onClickAlgorithms" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="#00FFFFFF"
+                    android:text="@string/hor_ver_filter"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/colorPrimaryDark"
-                android:onClick="onClickAlgorithms"
-                android:text="@string/vertical_filter"
-                android:textColor="@color/colorAccent"></Button>
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/sobel_ver_button"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/sobel_ver"
+                    android:onClick="onClickAlgorithms" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="#00FFFFFF"
+                    android:text="@string/vertical_filter"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
         </LinearLayout>
 
