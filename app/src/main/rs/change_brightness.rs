@@ -2,7 +2,7 @@
 #pragma rs java_package_name(com.mustywzki.projettechl3image)
 #include "RgbToHsv.rs"
 #include "HsvToRgb.rs"
-
+#pragma rs_fp_relaxed
 float brightness_change;
 
 //TODO modification picture when called (pixel ?) maybe hsvtorgb and rgbtohsv modification
