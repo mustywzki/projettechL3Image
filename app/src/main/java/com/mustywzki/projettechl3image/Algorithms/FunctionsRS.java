@@ -267,7 +267,6 @@ public class FunctionsRS extends Activity {
 
 
     public void reverseVer(Context ctx, Bitmap bmp) {
-
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
@@ -281,6 +280,8 @@ public class FunctionsRS extends Activity {
         RvScript.destroy();
         rs.destroy();
     }
+
+
 
 }
 
