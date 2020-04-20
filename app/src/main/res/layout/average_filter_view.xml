@@ -56,41 +56,98 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/average_3_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/colorPrimaryDark"
-                android:onClick="onClickAlgorithms"
-                android:text="@string/average_3_button"
-                android:textColor="@color/colorAccent"></Button>
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/average_7_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="@color/colorPrimaryDark"
-                android:onClick="onClickAlgorithms"
-                android:text="@string/average_7_button"
-                android:textColor="@color/colorAccent"></Button>
+                <Button
+                    android:id="@+id/average_3_button"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/average_3"
+                    android:onClick="onClickAlgorithms" />
 
-            <Button
-                android:id="@+id/average_15_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="#00FFFFFF"
+                    android:text="@string/average_3_button"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/colorPrimaryDark"
-                android:onClick="onClickAlgorithms"
-                android:text="@string/average_15_button"
-                android:textColor="@color/colorAccent"></Button>
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/average_7_button"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/average_7"
+                    android:onClick="onClickAlgorithms" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="#00FFFFFF"
+                    android:text="@string/average_7_button"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/average_15_button"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/average_15"
+                    android:onClick="onClickAlgorithms" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="#00FFFFFF"
+                    android:text="@string/average_15_button"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
         </LinearLayout>
 
