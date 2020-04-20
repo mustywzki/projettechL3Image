@@ -5,7 +5,6 @@
 
 float rand;
 
-
 uchar4 RS_KERNEL colorize(uchar4 in){
     float4 hsv = RgbToHsv(in);
     hsv[0] = rand;

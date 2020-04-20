@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     static final int RESULT_IMAGE_CAPTURE=1002;
     Uri image_uri = null;
 
-    private View sliderBars, filterView, averageView, laplacienView, prewittView, sobelView, blurView;
+    private View sliderBars, filterView, averageView, laplacienView, prewittView, sobelView, blurView, transformationView;
     private Switch buttonSwitch;
     private FrameLayout buttonsView;
     private HorizontalScrollView buttonScroll;
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSliding, isRenderscript;
     private AlgorithmType currentAlgorithm;
     private FunctionsRS functionsRS;
-    TextView keepHueText, brightnessText, saturationText, negativeText, coloriseText;
+    TextView keepHueText, brightnessText, saturationText, negativeText, coloriseText, setRgbText;
 
     private History history;
 
@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
     private Bitmap currentBmp, processedBmp, savedBmp;
 
+    /**
+     * Enum listing all types of processing done to the target image.
+     */
     public enum AlgorithmType {
         GRAY,
         COLORIZE,
@@ -86,7 +89,12 @@ public class MainActivity extends AppCompatActivity {
         SOBEL_VER,
         SOBEL_ALL,
         LAPLACIEN_4,
-        LAPLACIEN_8
+        LAPLACIEN_8,
+        SETRGB,
+        REVERSEVER,
+        REVERSEHOR,
+        ROTATELEFT,
+        ROTATERIGHT
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -108,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         prewittView = View.inflate(this, R.layout.prewitt_filter_view, null);
         sobelView = View.inflate(this, R.layout.sobel_filter_view, null);
         blurView = View.inflate(this, R.layout.blur_view, null);
+        transformationView = View.inflate(this, R.layout.transformation_view, null);
 
         grayButton = findViewById(R.id.gray_button);
 
@@ -116,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
         saturationText = findViewById(R.id.saturation_text);
         negativeText = findViewById(R.id.negative_text);
         coloriseText = findViewById(R.id.colorise_text);
+        setRgbText = findViewById(R.id.setRgb_text);
 
         imageView = findViewById(R.id.picture);
         PhotoViewAttacher photoView = new PhotoViewAttacher(imageView);
@@ -144,6 +154,8 @@ public class MainActivity extends AppCompatActivity {
                     saturationText.setTextColor(getResources().getColor(R.color.colorPrimary));
                     negativeText.setTextColor(getResources().getColor(R.color.colorPrimary));
                     coloriseText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    setRgbText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    ((Button)filterView.findViewById(R.id.gray_button)).setTextColor(getResources().getColor(R.color.colorPrimary));
                     ((Button)filterView.findViewById(R.id.linear_transformation_button)).setTextColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     keepHueText.setTextColor(getResources().getColor(R.color.colorAccent));
@@ -151,7 +163,9 @@ public class MainActivity extends AppCompatActivity {
                     saturationText.setTextColor(getResources().getColor(R.color.colorAccent));
                     negativeText.setTextColor(getResources().getColor(R.color.colorAccent));
                     coloriseText.setTextColor(getResources().getColor(R.color.colorAccent));
+                    setRgbText.setTextColor(getResources().getColor(R.color.colorAccent));
                     ((Button)filterView.findViewById(R.id.linear_transformation_button)).setTextColor(getResources().getColor(R.color.colorAccent));
+                    ((Button)filterView.findViewById(R.id.gray_button)).setTextColor(getResources().getColor(R.color.colorAccent));
 
                 }
             }
@@ -176,6 +190,10 @@ public class MainActivity extends AppCompatActivity {
 
     /* --- OnClick functions --- */
 
+    /**
+     * onClick function which indicates when to reset the initial image.
+     * @param v Applied View for the Reset
+     */
     public void onClickReset(View v){
         currentBmp = savedBmp;
         processedBmp = savedBmp;
@@ -183,6 +201,10 @@ public class MainActivity extends AppCompatActivity {
         history.addElement(currentBmp);
     }
 
+    /**
+     * onClick function which indicates when to go backwards from one action.
+     * @param v Applied View for the Return
+     */
     public void onClickReturn(View v) {
         buttonsView.removeAllViews();
         switch (v.getId()){
@@ -206,18 +228,29 @@ public class MainActivity extends AppCompatActivity {
         imageView.setImageBitmap(currentBmp);
     }
 
+    /**
+     * onClick function which performs the algorithm if it has been validated.
+     * @param v Applied view for the validate
+     */
     public void onClickValidate(View v){
         buttonsView.removeAllViews();
         buttonsView.addView(buttonScroll);
         apply();
     }
 
+    /**
+     * Save the previous image in the history in order to keep track of the previous image version.
+     */
     private void apply(){
         currentAlgorithm = null;
         currentBmp = processedBmp;
         history.addElement(currentBmp);
     }
 
+    /**
+     * When clicking on buttons indiccating a modification, performs it.
+     * @param v View in which buttons are clickable and valid
+     */
     public void onClickView(View v){
         switch (v.getId()){
             case R.id.filter_button:
@@ -243,6 +276,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.blur_button:
                 buttonsView.removeAllViews();
                 buttonsView.addView(blurView);
+                break;
+            case R.id.transform_button:
+                buttonsView.removeAllViews();
+                buttonsView.addView(transformationView);
         }
     }
 
@@ -263,15 +300,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Generate the view that will be shown for each algorithm.
+     * @param v View in which buttons are clickable and valid
+     */
     public void onClickAlgorithms(View v) {
         switch (v.getId()) {
             case R.id.gray_button:
                 currentAlgorithm = AlgorithmType.GRAY;
-                seekbars_load("Gray", true,"Red",100,true,"Green",100,true,"Blue",100);
-                // Default bars
-                bar1.setProgress(30);
-                bar2.setProgress(59);
-                bar3.setProgress(11);
                 break;
             case R.id.random_button:
                 currentAlgorithm = AlgorithmType.COLORIZE;
@@ -337,6 +373,26 @@ public class MainActivity extends AppCompatActivity {
             case R.id.laplacian_8_button:
                 currentAlgorithm = AlgorithmType.LAPLACIEN_8;
                 break;
+            case R.id.setRGB_button:
+                currentAlgorithm = AlgorithmType.SETRGB;
+                seekbars_load("Set RGB", true,"Red",100,true,"Green",100,true,"Blue",100);
+                // Default bars
+                bar1.setProgress(50);
+                bar2.setProgress(50);
+                bar3.setProgress(50);
+                break;
+            case R.id.reverseVerButton:
+                currentAlgorithm = AlgorithmType.REVERSEVER;
+                break;
+            case R.id.reverseHorButton:
+                currentAlgorithm = AlgorithmType.REVERSEHOR;
+                break;
+            case R.id.rotate_left_button:
+                currentAlgorithm = AlgorithmType.ROTATELEFT;
+                break;
+            case R.id.rotate_right_button:
+                currentAlgorithm = AlgorithmType.ROTATERIGHT;
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + v.getId());
         }
@@ -345,20 +401,23 @@ public class MainActivity extends AppCompatActivity {
 
     /* --- Apply functions --- */
 
+    /**
+     * Apply algorithm depending on which buttons has been pressed and if RenderScript is activated or not.
+     */
     public void applyProcessings(){
         processedBmp = currentBmp.copy(currentBmp.getConfig(),true);
 
         switch (currentAlgorithm){
             case GRAY:
                 if (isRenderscript)
-                    functionsRS.toGrayRS(getApplicationContext(), processedBmp,  bar1.getProgress()/100f, bar2.getProgress()/100f,  bar3.getProgress()/100f);
+                    functionsRS.toGrayRS(getApplicationContext(), processedBmp);
                 else
-                    Functions.toGray(processedBmp,bar1.getProgress()/100.0,bar2.getProgress()/100.0,bar3.getProgress()/100.0);
+                    Functions.toGray(processedBmp);
+                apply();
                 break;
             case COLORIZE:
-                if (isRenderscript){
+                if (isRenderscript)
                     functionsRS.colorize(getApplicationContext(), processedBmp,bar1.getProgress());
-                }
                 else
                     Functions.colorize(processedBmp,bar1.getProgress());
                 break;
@@ -371,25 +430,23 @@ public class MainActivity extends AppCompatActivity {
             case DYNAMIC_EXTENSION:
                 if(isRenderscript)
                     functionsRS.LinearExtention(getApplicationContext(),processedBmp);
-                else {
+                else
                     Contrast.linear_transformation(processedBmp);
-                    apply();
-                }
+                apply();
                 break;
             case HIST_EQUALIZER:
                 if (isRenderscript)
-                functionsRS.HistogramEqualizer(getApplicationContext(),processedBmp);
-                else {
+                    functionsRS.HistogramEqualizer(getApplicationContext(),processedBmp);
+                else
                     Contrast.histogramEqualizer(Tools.getHistogram(processedBmp), processedBmp);
-                    apply();
-                }
+                apply();
                 break;
             case NEGATIVE:
                 if (isRenderscript)
                     functionsRS.negative(getApplicationContext(),processedBmp);
                 else
                     Functions.negative(processedBmp);
-                    apply();
+                apply();
                 break;
             case SATURATION:
                 if (isRenderscript)
@@ -414,6 +471,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case GAUSSIAN_5x5:
                 Convolution.filter_Gaussien(processedBmp);
+                apply();
                 break;
             case PREWITT_HOR:
                 Convolution.filter_Prewitt_horizontal(processedBmp);
@@ -439,6 +497,28 @@ public class MainActivity extends AppCompatActivity {
             case LAPLACIEN_8:
                 Convolution.filter_Laplacier_8(processedBmp);
                 break;
+            case SETRGB:
+                if (isRenderscript)
+                    functionsRS.setRgbRS(getApplicationContext(), processedBmp, bar1.getProgress(), bar2.getProgress(),  bar3.getProgress());
+                else
+                    Functions.setRGB(processedBmp, bar1.getProgress(), bar2.getProgress(),  bar3.getProgress());
+                break;
+            case REVERSEVER:
+                Functions.reverseVer(processedBmp);
+                apply();
+                break;
+            case REVERSEHOR:
+                Functions.reverseHor(processedBmp);
+                apply();
+                break;
+            case ROTATELEFT:
+                processedBmp = Functions.rotateLeft(processedBmp);
+                apply();
+                break;
+            case ROTATERIGHT:
+                processedBmp = Functions.rotateRight(processedBmp);
+                apply();
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + currentAlgorithm);
         }
@@ -447,6 +527,9 @@ public class MainActivity extends AppCompatActivity {
 
     /* --- SeekBar --- */
 
+    /**
+     * Tool function which set up all seek bars on the app start up.
+     */
     public void setSeekBar(){
         // Option sliders listeners
         bar1 = sliderBars.findViewById(R.id.seekBar1);
@@ -507,6 +590,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Tool function which helps setting up seekBars that we use for Algorithms views.
+     * @param name indicator to see which seekBar it is
+     * @param visible1 1st bar visibility
+     * @param text1 1st bar text
+     * @param maxVal1 1st bar max value settable
+     * @param visible2 2nd bar visibility
+     * @param text2 2nd bar text
+     * @param maxVal2 2nd bar max value settable
+     * @param visible3 3rd bar visibility
+     * @param text3 3rd bar text
+     * @param maxVal3 3rd bar max value settable
+     */
     public void seekbars_load(String name, boolean visible1, String text1, int maxVal1, boolean visible2, String text2, int maxVal2, boolean visible3, String text3, int maxVal3) {
         TextView t1 = sliderBars.findViewById(R.id.textView1), t2 = sliderBars.findViewById(R.id.textView2), t3 = sliderBars.findViewById(R.id.textView3), t4 = sliderBars.findViewById(R.id.textView4);
         bar1.setVisibility(visible1 ? View.VISIBLE : View.GONE);
@@ -528,6 +625,12 @@ public class MainActivity extends AppCompatActivity {
 
     /* --- Camera and Gallery --- */
 
+    /**
+     * Retrieve image from Camera and/or Gallery.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1002 && resultCode == RESULT_OK) {
@@ -554,12 +657,18 @@ public class MainActivity extends AppCompatActivity {
         processedBmp = savedBmp;
     }
 
+    /**
+     * Get Image from Gallery and load onActivityResult if succeed
+     */
     public void getImageFromGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, RESULT_LOAD_IMG);
     }
 
+    /**
+     * Launch Camera and wait for onActivityResult if succeed
+     */
     public void launchCamera(){
         ContentValues values= new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, "New Picture");
@@ -572,6 +681,11 @@ public class MainActivity extends AppCompatActivity {
 
     /* --- Menu --- */
 
+    /**
+     * Function that detects which button is selected between either Camera Roll or Gallery or saving a file.
+     * @param item
+     * @return
+     */
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.gallery:

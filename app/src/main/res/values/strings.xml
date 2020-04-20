@@ -16,6 +16,9 @@
     <string name="linear_transformation_button">Linear extansion</string>
     <string name="gray_button">Gray</string>
     <string name="blur_button">Blur</string>
+    <string name="reverse_button">Mirror</string>
+    <string name="rotation_button">Rotation</string>
+    <string name="transformation_button">Transformation</string>
 
     <string name="average_button">Average</string>
     <string name="average_3_button">3*3</string>
@@ -40,5 +43,6 @@
     <string name="gallery_string">Gallery</string>
     <string name="save_button" >Save</string>
     <string name="renderscript_switch">Renderscript</string>
+    <string name="setRGB">Set RGB</string>
 
 </resources>

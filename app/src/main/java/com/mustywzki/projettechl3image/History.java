@@ -1,6 +1,7 @@
 package com.mustywzki.projettechl3image;
 
 import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +19,18 @@ public class History {
         this.size = size;
     }
 
+    /**
+     * Returns indCurPicture.
+     * @return indCurPicture
+     */
     public int getIndCurPicture() {
         return indCurPicture;
     }
+
+    /**
+     * Set indCurPicture.
+     * @param indCurPicture
+     */
     public void setIndCurPicture(int indCurPicture) {
         this.indCurPicture = indCurPicture;
     }
@@ -32,6 +42,10 @@ public class History {
         this.history = history;
     }
 
+    /**
+     * Returns top.
+     * @return top
+     */
     public int getTop(){
         return top;
     }
@@ -39,6 +53,11 @@ public class History {
         this.top = top;
     }
 
+    /**
+     * Constructor of the History Class
+     * @param size
+     * @param curPicture
+     */
     public History(int size, Bitmap curPicture){
         this.size = size;
         history = new ArrayList<>();
@@ -48,6 +67,11 @@ public class History {
     }
 
 
+    /**
+     * Adds a bitmap image in the History class
+     * @param picture bitmap image to add
+     * @return true if it succeeds, else false
+     */
 /* --- Functions --- */
     public boolean addElement(Bitmap picture){
         if (top < size-1){
@@ -66,6 +90,9 @@ public class History {
         return true;
     }
 
+    /**
+     * @return Current picture
+     */
     public Bitmap getCur_picture(){
         return history.get(indCurPicture);
     }

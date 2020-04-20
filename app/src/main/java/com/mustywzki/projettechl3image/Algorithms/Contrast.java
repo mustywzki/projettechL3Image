@@ -12,6 +12,10 @@ public class Contrast {
     private static int maxBlue;
     private static int minBlue;
 
+    /**
+     * Algorithm for linear transformation applied on a bitmap image
+     * @param bmp processed bitmap image
+     */
     // TODO contraste with HSV and linear extension less
     public static void linear_transformation(Bitmap bmp){
         int[] pixels = new int[bmp.getWidth()*bmp.getHeight()];
@@ -41,6 +45,11 @@ public class Contrast {
         bmp.setPixels(colors, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
+    /**
+     * Generates an image with an equalized histogram
+     * @param hist histogram to equalize
+     * @param bmp bitmap image to modify
+     */
     public static void histogramEqualizer(int[] hist, Bitmap bmp){
         int[] cumulativeHist;
         cumulativeHist = Tools.cumulativeHistogram(hist);
@@ -57,6 +66,10 @@ public class Contrast {
         bmp.setPixels(pixels,0,bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
     }
 
+    /**
+     * Generates red channel Look-Up Table
+     * @return Red LUT
+     */
     private static int[] createLUTred (){
         int[] LUTred = new int[256];
 
@@ -71,12 +84,21 @@ public class Contrast {
         return LUTred;
     }
 
+    /**
+     * Generates red channel Look-Up Table
+     * @param max_min_red max & minimal ranges for red
+     * @return Red LUT
+     */
     public static int[] createLUTred (int[] max_min_red){
         maxRed = max_min_red[0];
         minRed = max_min_red[1];
         return createLUTred();
     }
 
+    /**
+     * Generates green channel Look-Up Table
+     * @return Green LUT
+     */
     private static int[] createLUTgreen (){
         int[] LUTgreen = new int[256];
 
@@ -91,12 +113,21 @@ public class Contrast {
         return LUTgreen;
     }
 
+    /**
+     * Generates green channel Look-Up Table
+     * @param max_min_green max & minimal ranges for green
+     * @return Green LUT
+     */
     public static int[] createLUTgreen (int[] max_min_green){
         maxGreen = max_min_green[0];
         minGreen = max_min_green[1];
         return createLUTgreen();
     }
 
+    /**
+     * Generates blue channel Look-Up Table
+     * @return Blue LUT
+     */
     private static int[] createLUTblue () {
         int[] LUTblue = new int[256];
 
@@ -111,12 +142,21 @@ public class Contrast {
 
     }
 
+    /**
+     * Generates blue channel Look-Up Table
+     * @param max_min_blue max & minimal ranges for blue
+     * @return Blue LUT
+     */
     public static int[] createLUTblue (int[] max_min_blue){
         maxBlue = max_min_blue[0];
         minBlue = max_min_blue[1];
         return createLUTblue();
     }
 
+    /**
+     * Finds red min/max range
+     * @param pixels pixels of the image
+     */
     private static void max_min_red (int[] pixels){
         int max_red = 0, min_red = 255, red;
 
@@ -132,6 +172,10 @@ public class Contrast {
         minRed = min_red;
     }
 
+    /**
+     * Finds green min/max range
+     * @param pixels pixels of the image
+     */
     private static void max_min_green (int[] pixels){
         int max_green = 0, min_green = 255, green;
 
@@ -147,6 +191,10 @@ public class Contrast {
         maxGreen = max_green;
     }
 
+    /**
+     * Finds blue min/max range
+     * @param pixels pixels of the image
+     */
     private static void max_min_blue (int[] pixels){
         int max_blue = 0, min_blue = 255, blue;
 

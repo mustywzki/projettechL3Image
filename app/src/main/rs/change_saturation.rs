@@ -5,7 +5,6 @@
 
 float saturation_change;
 
-//TODO modification picture have to check (saturation_change - 50)*0.02 (even in java version)
 uchar4 RS_KERNEL change_saturation(uchar4 in){
     float4 hsv = RgbToHsv(in);
 

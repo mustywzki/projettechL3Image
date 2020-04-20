@@ -5,19 +5,16 @@ import android.graphics.Color;
 
 public class Functions {
 
-    /* --- Method --- */
-
-    public static void toGray(Bitmap bmp, double red_coef, double green_coef, double blue_coef){
+    /**
+     * Function that creates an image of shades of gray
+     * @param bmp Processed bitmap image
+     */
+    public static void toGray(Bitmap bmp){
 
         // Scaling RGB values to the specific range (equalizer)
-        red_coef = red_coef > 1.0 ? 1.0 : red_coef;
-        red_coef = red_coef < 0.0 ? 0.0 : red_coef;
-
-        blue_coef = blue_coef > 1.0 ? 1.0 : blue_coef;
-        blue_coef = blue_coef < 0.0 ? 0.0 : blue_coef;
-
-        green_coef = green_coef > 1.0 ? 1.0 : green_coef;
-        green_coef = green_coef < 0.0 ? 0.0 : green_coef;
+        double red_coef = 0.3;
+        double green_coef = 0.59;
+        double blue_coef = 0.11;
 
         // Copying the bitmap bmp's pixels into a int[] in order to perform the algorithm faster using getPixels()
         int[] tmpCopy = new int[bmp.getHeight()*bmp.getWidth()];
@@ -34,6 +31,11 @@ public class Functions {
         bmp.setPixels(tmpCopy,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
     }
 
+    /**
+     * Function that changes the hue value of an image and adapts it to the entire Bitmap image.
+     * @param bmp processed bitmap image
+     * @param hue hue value to append
+     */
     public static void colorize(Bitmap bmp, float hue) {
 
         // Copying the bitmap bmp's pixels into a int[] in order to perform the algorithm faster using getPixels()
@@ -50,6 +52,12 @@ public class Functions {
         bmp.setPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
+    /**
+     * Generate an image which only changes color for a certain range of hue between hue & chromakey.
+     * @param bmp processed bitmap image
+     * @param hue initial hue value
+     * @param chromakey closing hue value
+     */
     public static void keepColor(Bitmap bmp, float hue, float chromakey) {
         hue = hue % 360f;
         chromakey = chromakey % 180f;
@@ -68,13 +76,18 @@ public class Functions {
         bmp.setPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
-    // TODO change in red color when add, maybe when > (not pb with HSV/RGB)
+    /**
+     * Generates an image with a different saturation
+     * @param bmp processed bitmap image
+     * @param saturation_change value of saturation to append
+     */
     public static void change_saturation(Bitmap bmp, float saturation_change){
         int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
         int[] colors = new int[bmp.getWidth() * bmp.getHeight()];
 
         int red, green, blue;
+        saturation_change = 100;
 
         for (int i = 0; i < pixels.length; i++) {
             red = Color.red(pixels[i]);
@@ -94,6 +107,11 @@ public class Functions {
         bmp.setPixels(colors, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
+    /**
+     * Change brightness of the processed bitmap image
+     * @param bmp processed bitmap image
+     * @param brightness_change brightness value (V from HSV)
+     */
     public static void change_brightness (Bitmap bmp, float brightness_change){
         int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
@@ -119,6 +137,10 @@ public class Functions {
         bmp.setPixels(colors, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
+    /**
+     * Generates the negative of a bitmap image
+     * @param bmp processed bitmap image
+     */
     public static void negative(Bitmap bmp){
         int[] pixels = new int[bmp.getWidth()*bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
@@ -138,5 +160,108 @@ public class Functions {
         }
 
         bmp.setPixels(colors,0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+    }
+
+    public static void setRGB(Bitmap bmp, double red_coef, double green_coef, double blue_coef){
+
+        red_coef = (red_coef - 50)*0.02;
+        green_coef = (green_coef - 50)*0.02;
+        blue_coef = (blue_coef - 50)*0.02;
+
+        int[] pixels = new int[bmp.getHeight()*bmp.getWidth()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0,0,bmp.getWidth(),bmp.getHeight());
+
+        // Applying gray filter
+        for(int i = 0; i < pixels.length; i++) {
+            double redValue = Color.red(pixels[i]);
+            redValue += 255*red_coef;
+            if (redValue < 0) redValue = 0;
+            if (redValue > 255) redValue = 255;
+
+            double blueValue = Color.blue(pixels[i]);
+            blueValue += 255*blue_coef;
+            if (blueValue < 0) blueValue = 0;
+            if (blueValue > 255) blueValue = 255;
+
+            double greenValue = Color.green(pixels[i]);
+            greenValue += 255*green_coef;
+            if (greenValue < 0) greenValue = 0;
+            if (greenValue > 255) greenValue = 255;
+
+            pixels[i] = Color.rgb((int)redValue, (int)greenValue, (int)blueValue);
+        }
+        bmp.setPixels(pixels,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
+    }
+
+    public static Bitmap rotateLeft(Bitmap bmp){
+        Bitmap newBmp = Bitmap.createBitmap(bmp.getHeight(), bmp.getWidth(), bmp.getConfig());
+
+        int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+
+        int[] new_pixels = new int[newBmp.getWidth() * newBmp.getHeight()];
+
+        int ind_pixels = 0;
+        for (int x = 0; x < newBmp.getWidth(); x++){
+            for (int y = newBmp.getHeight() -1; y >= 0; y--){
+                int ind_pixels_new = y * newBmp.getWidth() + x;
+                new_pixels[ind_pixels_new] = pixels[ind_pixels];
+                ind_pixels++;
+            }
+        }
+        newBmp.setPixels(new_pixels,0, newBmp.getWidth(),0,0,newBmp.getWidth(),newBmp.getHeight());
+        return newBmp;
+    }
+
+    public static Bitmap rotateRight(Bitmap bmp){
+        Bitmap newBmp = Bitmap.createBitmap(bmp.getHeight(), bmp.getWidth(), bmp.getConfig());
+
+        int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+
+        int[] new_pixels = new int[newBmp.getWidth() * newBmp.getHeight()];
+
+        int ind_pixels = 0;
+        for (int x = newBmp.getWidth() - 1; x >= 0; x--){
+            for (int y = 0; y < newBmp.getHeight(); y++){
+                int ind_pixels_new = y * newBmp.getWidth() + x;
+                new_pixels[ind_pixels_new] = pixels[ind_pixels];
+                ind_pixels++;
+            }
+        }
+        newBmp.setPixels(new_pixels,0, newBmp.getWidth(),0,0,newBmp.getWidth(),newBmp.getHeight());
+        return newBmp;
+    }
+
+    public static void reverseVer(Bitmap bmp){
+        int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+        for (int y = 0; y < bmp.getHeight(); y++){
+            int ind_right = bmp.getWidth() * (y +1) - 1;
+            int ind_left = bmp.getWidth() * y;
+            for (int x = 0; x < bmp.getWidth()/2; x++){
+                int tmp = pixels[ind_left];
+                pixels[ind_left] = pixels[ind_right];
+                pixels[ind_right] = tmp;
+                ind_left++;
+                ind_right--;
+            }
+        }
+        bmp.setPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+    }
+
+    public static void reverseHor(Bitmap bmp){
+        int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+        for (int x = 0; x < bmp.getWidth(); x++){
+            for (int y = 0; y < bmp.getHeight()/2; y++){
+                int ind_bot = bmp.getWidth() * y + x;
+                int ind_top = bmp.getWidth() * (bmp.getHeight()-y-1) + x;
+                int tmp = pixels[ind_bot];
+                pixels[ind_bot] = pixels[ind_top];
+                pixels[ind_top] = tmp;
+            }
+        }
+        bmp.setPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 }

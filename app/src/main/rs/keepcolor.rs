@@ -3,8 +3,6 @@
 #include "RgbToHsv.rs"
 #include "HsvToRgb.rs"
 
-
-
 float hue, tolerance;
 
 uchar4 RS_KERNEL keepcolor(uchar4 in){

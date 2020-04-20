@@ -6,6 +6,13 @@ import android.graphics.Color;
 
 public class Tools {
 
+    /**
+     * Convert RGB values to HSV
+     * @param red red channel
+     * @param green green channel
+     * @param blue blue channel
+     * @return HSV values
+     */
     protected static float[] RGBToHSV(int red, int green, int blue){
         float[] hsv = new float[3];
 
@@ -22,7 +29,7 @@ public class Tools {
             hsv[0] = 0;
         }
         else if (Cmax == r){
-            hsv[0] = ((g - b)/delta) % 6;
+            hsv[0] = ((g - b)/delta)%6;
         }
         else if (Cmax == g){
             hsv[0] = (b - r)/delta + 2;
@@ -30,7 +37,7 @@ public class Tools {
         else if (Cmax == b){
             hsv[0] = (r - g)/delta + 4;
         }
-        hsv[0] = Math.round(hsv[0] * 60);
+        hsv[0] = hsv[0] * 60;
 
         if (hsv[0] < 0){
             hsv[0] += 360;
@@ -50,6 +57,12 @@ public class Tools {
         return hsv;
     }
 
+    /**
+     * Convert HSV values to RGB
+     * @param hsv hsv float containing H,S,V values
+     * @param alpha predefined alpha to set on the RGBa.
+     * @return int of a RGB value.
+     */
     protected static int HSVToRGB(float[] hsv, int alpha){
         float h = hsv[0];
         float s = hsv[1];
@@ -57,6 +70,7 @@ public class Tools {
 
         float c = v * s;
         float x = c * (1 - Math.abs(((h/60) % 2) - 1));
+        float m = v - c;
 
         float r = 0;
         float g = 0;
@@ -95,30 +109,18 @@ public class Tools {
             }
         }
 
-        float m = v - c;
-
-        int red, green, blue;
-
-        red = (int) ((r + m) * 255);
-        green = (int) ((g + m) * 255);
-        blue = (int) ((b + m) * 255);
+        int red = (int) ((r + m) * 255);
+        int green = (int) ((g + m) * 255);
+        int blue = (int) ((b + m) * 255);
 
         return Color.argb(alpha, red, green, blue);
     }
 
-    protected static int colorToGray(int pixel){
-        double red = Color.red(pixel) * 0.3;
-        double green = Color.green(pixel) * 0.59;
-        double blue = Color.blue(pixel) * 0.11;
-        int tmp = (int) (red + green + blue);
-
-        return Color.rgb(tmp, tmp, tmp);
-    }
-
-    protected static boolean isInside(float test, int start, int end){
-        return (test >= start && test <= end);
-    }
-
+    /**
+     * Generate and Returns Histogram from bitmap image
+     * @param bmp Bitmap Image
+     * @return Histogram
+     */
     public static int[] getHistogram(Bitmap bmp) {
         int[] hist = new int[256];
         int[] tmpCopy = new int[bmp.getWidth() * bmp.getHeight()];
@@ -131,6 +133,11 @@ public class Tools {
         return hist;
     }
 
+    /**
+     * Creates a cumulative Histogram from a base histogram
+     * @param hist Histogram
+     * @return Cumulative Histogram
+     */
     public static int[] cumulativeHistogram(int[] hist){
         int[] C = new int[256];
         C[0] = hist[0];
