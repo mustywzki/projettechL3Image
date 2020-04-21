@@ -40,6 +40,8 @@ import java.util.Date;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
+import static android.os.Build.VERSION.SDK;
+
 public class MainActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMG=1000;
     private static final int PERMISSION_CODE = 1001;
@@ -844,8 +846,8 @@ public class MainActivity extends AppCompatActivity {
                     String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
                     requestPermissions(permissions, PERMISSION_CODE);
                 }
-
-                String root = Environment.getExternalStorageDirectory().toString();
+                //String root = Environment.getExternalStorageDirectory().toString();
+                String root = getExternalFilesDir("/").toString();
                 System.out.println(root);
                 File myDir = new File(root + "/piceditor");
                 myDir.mkdirs();
@@ -853,21 +855,26 @@ public class MainActivity extends AppCompatActivity {
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 String fname = "PicEditor_" + timeStamp + ".jpg";
 
-                File file = new File(myDir, fname);
-                if (file.exists()) file.delete();
-                try {
-                    FileOutputStream out = new FileOutputStream(file);
-                    processedBmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                    out.flush();
-                    out.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                String savedImageURL = MediaStore.Images.Media.insertImage(
+                            getContentResolver(),
+                            processedBmp,
+                            fname, ""
+                    );
+
+
                 Toast.makeText(this,"Image saved", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private void galleryAdd(String photopath) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(photopath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
     }
 }
