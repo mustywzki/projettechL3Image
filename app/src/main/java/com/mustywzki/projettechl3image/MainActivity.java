@@ -519,9 +519,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case PREWITT_HOR:
                 if(isRenderscript){
-                    float[] core = {-1, 0, 1
-                            ,-1, 0, 1
-                            ,-1, 0, 1};
+                    float[] core = {-1, -1, -1
+                            ,0, 0, 0
+                            ,1, 1, 1};
                     functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 1);
                 }
                 else
@@ -529,9 +529,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case PREWITT_VER:
                 if(isRenderscript){
-                    float[] core = {-1, -1, -1
-                            ,0, 0, 0
-                            ,1, 1, 1};
+                    float[] core = {-1, 0, 1
+                            ,-1, 0, 1
+                            ,-1, 0, 1};
                     functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 1);
                 }
                 else
@@ -543,9 +543,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case SOBEL_HOR:
                 if(isRenderscript){
-                    float[] core = {-1, 0, 1
-                            ,-2, 0, 2
-                            ,-1, 0, 1};
+                    float[] core = {-1, -2, -1
+                            ,0, 0, 0
+                            ,1, 2, 1};
                     functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 1);
                 }
                 else
@@ -553,9 +553,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case SOBEL_VER:
                 if(isRenderscript){
-                    float[] core = {-1, -2, -1
-                            ,0, 0, 0
-                            ,1, 2, 1};
+                    float[] core = {-1, 0, 1
+                            ,-2, 0, 2
+                            ,-1, 0, 1};
                     functionsRS.apply_filter(getApplicationContext(), processedBmp, core, core.length, 1);
                 }
                 else

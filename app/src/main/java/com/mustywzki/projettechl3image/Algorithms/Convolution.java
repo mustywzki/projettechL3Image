@@ -113,7 +113,7 @@ public class Convolution {
     }
 
     // Appelle applyfilter sur bmp avec le filtre de prewitt horizontal
-    public static void filter_Prewitt_horizontal(Bitmap bmp){
+    public static void filter_Prewitt_vertical(Bitmap bmp){
         double[] core = {-1, 0, 1
                         ,-1, 0, 1
                         ,-1, 0, 1};
@@ -121,7 +121,7 @@ public class Convolution {
     }
 
     // Appelle applyfilter sur bmp avec le filtre de prewitt vertical
-    public static void filter_Prewitt_vertical(Bitmap bmp){
+    public static void filter_Prewitt_horizontal(Bitmap bmp){
         double[] core = {-1, -1, -1
                         ,0, 0, 0
                         ,1, 1, 1};
@@ -144,7 +144,7 @@ public class Convolution {
     }
 
     // Appelle applyfilter sur bmp avec le filtre de sobel horizontal
-    public static void filter_Sobel_horizontal(Bitmap bmp){
+    public static void filter_Sobel_vertical(Bitmap bmp){
         double[] core = {-1, 0, 1
                         ,-2, 0, 2
                         ,-1, 0, 1};
@@ -152,7 +152,7 @@ public class Convolution {
     }
 
     // Appelle applyfilter sur bmp avec le filtre de sobel vertical
-    public static void filter_Sobel_vertical(Bitmap bmp){
+    public static void filter_Sobel_horizontal(Bitmap bmp){
         double[] core = {-1, -2, -1
                         ,0, 0, 0
                         ,1, 2, 1};

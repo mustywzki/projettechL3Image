@@ -87,7 +87,6 @@ public class Functions {
         int[] colors = new int[bmp.getWidth() * bmp.getHeight()];
 
         int red, green, blue;
-        saturation_change = 100;
 
         for (int i = 0; i < pixels.length; i++) {
             red = Color.red(pixels[i]);
