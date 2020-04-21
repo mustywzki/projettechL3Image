@@ -13,7 +13,7 @@ public class Tools {
      * @param blue blue channel
      * @return HSV values
      */
-    protected static float[] RGBToHSV(int red, int green, int blue){
+    static float[] RGBToHSV(int red, int green, int blue){
         float[] hsv = new float[3];
 
         float r = red / 255.F;
@@ -63,7 +63,7 @@ public class Tools {
      * @param alpha predefined alpha to set on the RGBa.
      * @return int of a RGB value.
      */
-    protected static int HSVToRGB(float[] hsv, int alpha){
+    static int HSVToRGB(float[] hsv, int alpha){
         float h = hsv[0];
         float s = hsv[1];
         float v = hsv[2];

@@ -5,20 +5,13 @@ import android.graphics.Bitmap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class History {
+class History {
     private int size;
     private int indCurPicture;
     private List<Bitmap> history;
     private int top;
 
 /* --- Getter Setter --- */
-    public int getSize(){
-        return size;
-    }
-    public void setSize(int size){
-        this.size = size;
-    }
-
     /**
      * Returns indCurPicture.
      * @return indCurPicture
@@ -29,17 +22,10 @@ public class History {
 
     /**
      * Set indCurPicture.
-     * @param indCurPicture
+     * @param indCurPicture the new indice of the current picture
      */
     public void setIndCurPicture(int indCurPicture) {
         this.indCurPicture = indCurPicture;
-    }
-
-    public List<Bitmap> getHistory() {
-        return history;
-    }
-    public void setHistory(List<Bitmap> history) {
-        this.history = history;
     }
 
     /**
@@ -49,14 +35,11 @@ public class History {
     public int getTop(){
         return top;
     }
-    public void setTop(int top){
-        this.top = top;
-    }
 
     /**
      * Constructor of the History Class
-     * @param size
-     * @param curPicture
+     * @param size the size of the new History
+     * @param curPicture the current picture on the application
      */
     public History(int size, Bitmap curPicture){
         this.size = size;
@@ -70,10 +53,9 @@ public class History {
     /**
      * Adds a bitmap image in the History class
      * @param picture bitmap image to add
-     * @return true if it succeeds, else false
      */
 /* --- Functions --- */
-    public boolean addElement(Bitmap picture){
+    public void addElement(Bitmap picture){
         if (top < size-1){
             indCurPicture++;
             history.add(picture);
@@ -84,10 +66,9 @@ public class History {
         }
         else{
             System.out.println("ERROR ! History ind_cur_picture is more than size !");
-            return false;
+            return;
         }
         top = indCurPicture;
-        return true;
     }
 
     /**

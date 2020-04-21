@@ -2,8 +2,6 @@
     <string name="app_name">PicEditor</string>
 
     <string name="picture_description">picture</string>
-    <string name="change_picture_button">Change picture</string>
-    <string name="reset_c_button">Reset</string>
 
 
     <string name="filter_button">Filters</string>
@@ -38,8 +36,6 @@
     <string name="vertical_filter">Vertical</string>
     <string name="hor_ver_filter">All</string>
 
-
-    <string name="return_button">Return</string>
     <string name="camera_string">Camera</string>
     <string name="gallery_string">Gallery</string>
     <string name="save_button" >Save</string>

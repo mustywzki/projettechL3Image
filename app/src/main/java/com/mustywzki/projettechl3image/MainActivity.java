@@ -42,10 +42,10 @@ import java.util.Date;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class MainActivity extends AppCompatActivity {
-    static final int RESULT_LOAD_IMG=1000;
+    private static final int RESULT_LOAD_IMG=1000;
     private static final int PERMISSION_CODE = 1001;
-    static final int RESULT_IMAGE_CAPTURE=1002;
-    Uri image_uri = null;
+    private static final int RESULT_IMAGE_CAPTURE=1002;
+    private Uri image_uri = null;
 
     private View sliderBars, filterView, averageView, laplacienView, prewittView, sobelView, blurView, transformationView;
     private Switch buttonSwitch;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSliding, isRenderscript;
     private AlgorithmType currentAlgorithm;
     private FunctionsRS functionsRS;
-    private ArrayList<TextView> rsTexts = new ArrayList<>();
+    private final ArrayList<TextView> rsTexts = new ArrayList<>();
 
     private History history;
 
@@ -191,12 +191,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
-                requestPermissions(permissions, PERMISSION_CODE);
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
+            requestPermissions(permissions, PERMISSION_CODE);
 
-            }
         }
     }
 
@@ -228,13 +226,7 @@ public class MainActivity extends AppCompatActivity {
                 buttonsView.addView(blurView);
                 break;
             default:
-                if (((TextView)sliderBars.findViewById(R.id.textView4)).getText().toString().equals(getResources().getString(R.string.gray_button))){
-                    buttonsView.addView(filterView);
-                    ((TextView) sliderBars.findViewById(R.id.textView4)).setText("abc");
-                }
-                else{
-                    buttonsView.addView(buttonScroll);
-                }
+                buttonsView.addView(buttonScroll);
                 break;
         }
         imageView.setImageBitmap(currentBmp);
@@ -420,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Apply algorithm depending on which buttons has been pressed and if RenderScript is activated or not.
      */
-    public void applyProcessings(){
+    private void applyProcessings(){
         processedBmp = currentBmp.copy(currentBmp.getConfig(),true);
 
         switch (currentAlgorithm){
@@ -642,7 +634,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Tool function which set up all seek bars on the app start up.
      */
-    public void setSeekBar(){
+    private void setSeekBar(){
         // Option sliders listeners
         bar1 = sliderBars.findViewById(R.id.seekBar1);
         bar2 = sliderBars.findViewById(R.id.seekBar2);
@@ -716,7 +708,7 @@ public class MainActivity extends AppCompatActivity {
      * @param text3 3rd bar text
      * @param maxVal3 3rd bar max value settable
      */
-    public void seekbars_load(String name, boolean visible1, String text1, int maxVal1, boolean visible2, String text2, int maxVal2, boolean visible3, String text3, int maxVal3) {
+    private void seekbars_load(String name, boolean visible1, String text1, int maxVal1, boolean visible2, String text2, int maxVal2, boolean visible3, String text3, int maxVal3) {
         TextView t1 = sliderBars.findViewById(R.id.textView1), t2 = sliderBars.findViewById(R.id.textView2), t3 = sliderBars.findViewById(R.id.textView3), t4 = sliderBars.findViewById(R.id.textView4);
         bar1.setVisibility(visible1 ? View.VISIBLE : View.GONE);
         bar2.setVisibility(visible2 ? View.VISIBLE : View.GONE);
@@ -746,22 +738,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1002 && resultCode == RESULT_OK) {
-
             try {
                 savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
-
         else if(requestCode == RESULT_LOAD_IMG && data!=null && resultCode==RESULT_OK){
             image_uri = data.getData();
             try{
                 savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
             }
             catch (Exception e){
-
+                e.printStackTrace();
             }
         }
         imageView.setImageURI(image_uri);
@@ -772,7 +761,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Get Image from Gallery and load onActivityResult if succeed
      */
-    public void getImageFromGallery(){
+    private void getImageFromGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, RESULT_LOAD_IMG);
@@ -781,7 +770,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Launch Camera and wait for onActivityResult if succeed
      */
-    public void launchCamera(){
+    private void launchCamera(){
         ContentValues values= new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, "New Picture");
         values.put (MediaStore.Images.Media.DESCRIPTION, "From the Camera");
@@ -801,45 +790,32 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.gallery:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else{
-                        getImageFromGallery();
-                    }
-
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
                 }
                 else{
                     getImageFromGallery();
                 }
+
                 if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)){
                     Button cameraButton = findViewById(R.id.gallery);
                     cameraButton.setEnabled(false);
                 }
                 break;
             case R.id.camera:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else{
-                        launchCamera();
-                    }
-
+                if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
+                    String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
                 }
                 else{
                     launchCamera();
                 }
                 break;
             case R.id.save:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                        String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
+                if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
                 }
 
                 String root = Environment.getExternalStorageDirectory().toString();

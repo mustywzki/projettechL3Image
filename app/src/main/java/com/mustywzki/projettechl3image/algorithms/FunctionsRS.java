@@ -117,7 +117,7 @@ public class FunctionsRS extends Activity {
 
     }
 
-    int[] histogramm(Context ctx, Bitmap bmp) {
+    private int[] histogramm(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         ScriptC_histogramm HistogrammScript = new ScriptC_histogramm(rs);
@@ -149,7 +149,7 @@ public class FunctionsRS extends Activity {
 
     }
 
-    int[] max_min(Context ctx, Bitmap bmp) {
+    private int[] max_min(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         ScriptC_Max_Min max_minScript = new ScriptC_Max_Min(rs);
