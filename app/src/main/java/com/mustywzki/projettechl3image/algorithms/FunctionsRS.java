@@ -229,11 +229,11 @@ public class FunctionsRS extends Activity {
         Allocation A2 = Allocation.createFromBitmap(rs, bmp2);
         Allocation output = Allocation.createTyped(rs, A1.getType());
         ScriptC_mix_bmp Mbmp_Script = new ScriptC_mix_bmp(rs);
+
         Mbmp_Script.set_A1(A1);
         Mbmp_Script.set_A2(A2);
         Mbmp_Script.forEach_mix_bmp(input, output);
         output.copyTo(bmp);
-        output.destroy();
         A1.destroy();
         A2.destroy();
         input.destroy();

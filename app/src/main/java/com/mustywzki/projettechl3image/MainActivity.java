@@ -534,8 +534,22 @@ public class MainActivity extends AppCompatActivity {
                     Convolution.filter_Prewitt_vertical(processedBmp);
                 break;
             case PREWITT_ALL:
-                //TODO rs
-                Convolution.filter_Prewitt(processedBmp);
+                if(isRenderscript) {
+                    Bitmap b1 = processedBmp.copy(processedBmp.getConfig(), true);
+                    Bitmap b2 = processedBmp.copy(processedBmp.getConfig(), true);
+                    float[] core1 = {-1, -1, -1
+                            , 0, 0, 0
+                            , 1, 1, 1};
+                    functionsRS.apply_filter(getApplicationContext(), b1, core1, core1.length, 1);
+                    float[] core2 = {-1, 0, 1
+                            , -1, 0, 1
+                            , -1, 0, 1};
+                    functionsRS.apply_filter(getApplicationContext(), b2, core2, core2.length, 1);
+                    functionsRS.mix_bmp(getApplicationContext(), processedBmp, b1, b2);
+                }
+                else {
+                    Convolution.filter_Prewitt(processedBmp);
+                }
                 break;
             case SOBEL_HOR:
                 if(isRenderscript){
@@ -558,8 +572,22 @@ public class MainActivity extends AppCompatActivity {
                     Convolution.filter_Sobel_vertical(processedBmp);
                 break;
             case SOBEL_ALL:
-                //TODO RS
+                if(isRenderscript) {
+                    Bitmap b1 = processedBmp.copy(processedBmp.getConfig(), true);
+                    Bitmap b2 = processedBmp.copy(processedBmp.getConfig(), true);
+                    float[] core1 = {-1, -2, -1
+                            , 0, 0, 0
+                            , 1, 2, 1};
+                    functionsRS.apply_filter(getApplicationContext(), b1, core1, core1.length, 1);
+                    float[] core2 = {-1, 0, 1
+                            , -2, 0, 2
+                            , -1, 0, 1};
+                    functionsRS.apply_filter(getApplicationContext(), b2, core2, core2.length, 1);
+                    functionsRS.mix_bmp(getApplicationContext(),processedBmp,b1,b2);
+                }
+                else{
                 Convolution.filter_Sobel(processedBmp);
+                }
                 break;
             case LAPLACIEN_4:
                 if(isRenderscript){
