@@ -1,4 +1,4 @@
-package com.mustywzki.projettechl3image.Algorithms;
+package com.mustywzki.projettechl3image.algorithms;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

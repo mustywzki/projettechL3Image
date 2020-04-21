@@ -28,12 +28,9 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
-import com.mustywzki.projettechl3image.Algorithms.Contrast;
-import com.mustywzki.projettechl3image.Algorithms.Convolution;
-import com.mustywzki.projettechl3image.Algorithms.Functions;
-import com.mustywzki.projettechl3image.Algorithms.FunctionsRS;
-import com.mustywzki.projettechl3image.Algorithms.Tools;
+import com.mustywzki.projettechl3image.algorithms.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -126,11 +123,13 @@ public class MainActivity extends AppCompatActivity {
         rsTexts.add((TextView) findViewById(R.id.colorise_text));
         rsTexts.add((TextView) findViewById(R.id.setRgb_text));
         rsTexts.add((TextView) findViewById(R.id.blur_text));
+        rsTexts.add((TextView) findViewById(R.id.transformation_text));
 
         rsTexts.add((TextView) filterView.findViewById(R.id.gray_text));
         rsTexts.add((TextView) filterView.findViewById(R.id.linear_transformation_text));
         rsTexts.add((TextView) filterView.findViewById(R.id.egalisation_text));
         rsTexts.add((TextView) filterView.findViewById(R.id.laplacian_text));
+        rsTexts.add((TextView) filterView.findViewById(R.id.sepia_text));
 
         rsTexts.add((TextView) prewittView.findViewById(R.id.prewitt_hor_text));
         rsTexts.add((TextView) prewittView.findViewById(R.id.prewitt_ver_text));
@@ -142,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         rsTexts.add((TextView) laplacienView.findViewById(R.id.laplacian_8_text));
 
         rsTexts.add((TextView) transformationView.findViewById(R.id.mirror_text));
+        rsTexts.add((TextView) transformationView.findViewById(R.id.rotation_text));
 
         rsTexts.add((TextView) blurView.findViewById(R.id.gaussian_text));
         rsTexts.add((TextView) blurView.findViewById(R.id.average_text));
@@ -173,11 +173,11 @@ public class MainActivity extends AppCompatActivity {
                 isRenderscript = isChecked;
                 if (isRenderscript) {
                     for (int i = 0; i < rsTexts.size(); i++){
-                        rsTexts.get(i).setTextColor(getResources().getColor(R.color.colorPrimary));
+                        rsTexts.get(i).setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
                     }
                 } else {
                     for (int i = 0; i < rsTexts.size(); i++){
-                        rsTexts.get(i).setTextColor(getResources().getColor(R.color.colorAccent));
+                        rsTexts.get(i).setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
                     }
                 }
             }

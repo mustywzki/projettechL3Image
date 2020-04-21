@@ -6,18 +6,18 @@
         android:id="@+id/gallery"
         android:icon="@drawable/gallery_bleu"
         android:title="@string/gallery_string"
-        app:showAsAction="ifRoom|collapseActionView"></item>
+        app:showAsAction="ifRoom|collapseActionView"/>
 
     <item
         android:id="@+id/camera"
         android:icon="@drawable/appareil_photo_contour_bleu"
         android:title="@string/camera_string"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/save"
         android:icon="@drawable/enregister"
         android:title="@string/save_button"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="ifRoom"/>
 
 </menu>
