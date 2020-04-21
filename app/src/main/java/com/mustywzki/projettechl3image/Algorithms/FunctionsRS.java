@@ -299,7 +299,6 @@ public class FunctionsRS extends Activity {
         output.destroy();
         RRScript.destroy();
         rs.destroy();
-        reverseVer(ctx,newBmp);
         return newBmp;
     }
 
@@ -318,7 +317,6 @@ public class FunctionsRS extends Activity {
         output.destroy();
         RLScript.destroy();
         rs.destroy();
-        reverseVer(ctx,newBmp);
         return newBmp;
     }
 
