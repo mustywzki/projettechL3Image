@@ -55,7 +55,12 @@ public class Convolution {
         bmp.setPixels(colors,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
     }
 
-    // Fait la fusion de deux images bmp1 et bmp2 et la renvoi dans bmp
+    /**
+     *  Mix two bitmap images into one.
+     * @param bmp The result bitmap image
+     * @param bmp1 The first bitmap image to mix
+     * @param bmp2 The second bitmap image to mix
+     */
     private static void mix_bmp(Bitmap bmp, Bitmap bmp1, Bitmap bmp2){
         int[] pixels_1 = new int[bmp.getWidth() * bmp.getHeight()];
         bmp1.getPixels(pixels_1, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
@@ -77,7 +82,11 @@ public class Convolution {
         bmp.setPixels(colors, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
-    // Appelle applyfilter sur bmp avec le filtre moyenneur à la taille demandée par size
+    /**
+     * Call apply_filter on bmp with specified size for Average filter
+     * @param bmp Processed bitmap image
+     * @param size size of the average filter
+     */
     public static void filter_Moyenneur(Bitmap bmp, int size){
         double[] core = new double[size];
         for (int i = 0; i < core.length; i++){
@@ -86,7 +95,10 @@ public class Convolution {
         applyfilter(bmp, core, size);
     }
 
-    // Appelle applyfilter sur bmp avec le filtre gaussien
+    /**
+     * Call apply_filter on bmp with Gaussian filter
+     * @param bmp Processed bitmap image
+     */
     public static void filter_Gaussien(Bitmap bmp){
         double[] core = {1.0, 2.0, 3.0, 2.0, 1.0
                         ,2.0, 6.0, 8.0, 6.0, 2.0
@@ -98,7 +110,10 @@ public class Convolution {
 
     /* --- Prewitt --- */
 
-    // Appelle applyfilter sur bmp avec le filtre de prewitt
+    /**
+     * Call apply_filter on bmp with Prewitt Filter
+     * @param bmp Processed bitmap image
+     */
     public static void filter_Prewitt(Bitmap bmp){
         Bitmap p_modif_ver = bmp;
         p_modif_ver = p_modif_ver.copy(p_modif_ver.getConfig(), true);
@@ -111,7 +126,10 @@ public class Convolution {
         mix_bmp(bmp, p_modif_hor, p_modif_ver);
     }
 
-    // Appelle applyfilter sur bmp avec le filtre de prewitt horizontal
+    /**
+     * Call apply_filter on bmp with Prewitt vertical filter
+     * @param bmp Processed bitmap image
+     */
     public static void filter_Prewitt_vertical(Bitmap bmp){
         double[] core = {-1, 0, 1
                         ,-1, 0, 1
@@ -119,7 +137,10 @@ public class Convolution {
         applyfilter(bmp, core, 1);
     }
 
-    // Appelle applyfilter sur bmp avec le filtre de prewitt vertical
+    /**
+     * Call apply_filter on bmp with Prewitt horizontal filter
+     * @param bmp Processed bitmap image
+     */
     public static void filter_Prewitt_horizontal(Bitmap bmp){
         double[] core = {-1, -1, -1
                         ,0, 0, 0
@@ -128,8 +149,10 @@ public class Convolution {
     }
 
     /* --- Sobel --- */
-
-    // Appelle applyfilter sur bmp avec le filtre de sobel
+    /**
+     * Call apply_filter on bmp with Sobel filter
+     * @param bmp Processed bitmap image
+     */
     public static void filter_Sobel(Bitmap bmp){
         Bitmap p_modif_ver = bmp;
         p_modif_ver = p_modif_ver.copy(p_modif_ver.getConfig(), true);
@@ -142,15 +165,20 @@ public class Convolution {
         mix_bmp(bmp, p_modif_hor, p_modif_ver);
     }
 
-    // Appelle applyfilter sur bmp avec le filtre de sobel horizontal
+    /**
+     * Call apply_filter on bmp with Sobel vertical filter
+     * @param bmp Processed bitmap image
+     */
     public static void filter_Sobel_vertical(Bitmap bmp){
         double[] core = {-1, 0, 1
                         ,-2, 0, 2
                         ,-1, 0, 1};
         applyfilter(bmp, core, 1);
     }
-
-    // Appelle applyfilter sur bmp avec le filtre de sobel vertical
+    /**
+     * Call apply_filter on bmp with Sobel horizontal filter
+     * @param bmp Processed bitmap image
+     */
     public static void filter_Sobel_horizontal(Bitmap bmp){
         double[] core = {-1, -2, -1
                         ,0, 0, 0
@@ -160,7 +188,10 @@ public class Convolution {
 
     /* --- Laplacien --- */
 
-    // Appelle applyfilter sur bmp avec le filtre de laplacien en modification de 4
+    /**
+     * Call apply_filter on bmp with Laplacier filtered with 4
+     * @param bmp Processed bitmap image
+     */
     public static void filter_Laplacier_4(Bitmap bmp){
         double[] core = {0, 1, 0
                         ,1, -4, 1
@@ -168,7 +199,10 @@ public class Convolution {
         applyfilter(bmp, core, 1);
     }
 
-    // Appelle applyfilter sur bmp avec le filtre de laplacien en modification de 8
+    /**
+     * Call apply_filter on bmp with Laplacier filtered with 8
+     * @param bmp Processed bitmap image
+     */
     public static void filter_Laplacier_8(Bitmap bmp){
         double[] core = {1, 1, 1
                         ,1, -8, 1
