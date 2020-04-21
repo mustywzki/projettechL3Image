@@ -1,6 +1,5 @@
 package com.mustywzki.projettechl3image.algorithms;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
