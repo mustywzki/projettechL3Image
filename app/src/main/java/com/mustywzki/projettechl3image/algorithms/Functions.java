@@ -38,6 +38,14 @@ public class Functions {
             red = old_red*0.393 + old_green*0.769 + old_blue*0.189;
             green = old_red*0.349 + old_green*0.686 + old_blue*0.168;
             blue = old_red*0.272 + old_green*0.534 + old_blue*0.131;
+
+            if (red < 0) red = 0;
+            if (red > 255) red = 255;
+            if (green < 0) green = 0;
+            if (green > 255) green = 255;
+            if (blue < 0) blue = 0;
+            if (blue > 255) blue = 255;
+
             pixels[i] = Color.rgb((int)red,(int)green,(int)blue);
         }
         bmp.setPixels(pixels,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
