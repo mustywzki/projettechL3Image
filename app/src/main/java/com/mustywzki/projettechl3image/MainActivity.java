@@ -94,7 +94,8 @@ public class MainActivity extends AppCompatActivity {
         REVERSEVER,
         REVERSEHOR,
         ROTATELEFT,
-        ROTATERIGHT
+        ROTATERIGHT,
+        SEPIA
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -405,6 +406,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.rotate_right_button:
                 currentAlgorithm = AlgorithmType.ROTATERIGHT;
                 break;
+            case R.id.sepia_button:
+                currentAlgorithm = AlgorithmType.SEPIA;
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + v.getId());
         }
@@ -607,23 +611,25 @@ public class MainActivity extends AppCompatActivity {
                 apply();
                 break;
             case ROTATELEFT:
-                if(isRenderscript){
-                    processedBmp= functionsRS.rotateLeft(getApplicationContext(),processedBmp);
-                }
-                else{
-                processedBmp = Functions.rotateLeft(processedBmp);
+                if(isRenderscript)
+                    processedBmp = functionsRS.rotateLeft(getApplicationContext(),processedBmp);
+                else
+                    processedBmp = Functions.rotateLeft(processedBmp);
                 apply();
-                }
                 break;
             case ROTATERIGHT:
-                if(isRenderscript){
-                    processedBmp= functionsRS.rotateRight(getApplicationContext(),processedBmp);
-
-                }
-                else {
+                if(isRenderscript)
+                    processedBmp = functionsRS.rotateRight(getApplicationContext(),processedBmp);
+                else
                     processedBmp = Functions.rotateRight(processedBmp);
-                    apply();
-                }
+                apply();
+                break;
+            case SEPIA:
+                if(isRenderscript)
+                    functionsRS.toSepiaRS(getApplicationContext(), processedBmp);
+                else
+                    Functions.toSepia(processedBmp);
+                apply();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + currentAlgorithm);

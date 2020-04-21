@@ -10,25 +10,36 @@ public class Functions {
      * @param bmp Processed bitmap image
      */
     public static void toGray(Bitmap bmp){
+        int[] pixels = new int[bmp.getHeight()*bmp.getWidth()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0,0,bmp.getWidth(),bmp.getHeight());
 
-        // Scaling RGB values to the specific range (equalizer)
-        double red_coef = 0.3;
-        double green_coef = 0.59;
-        double blue_coef = 0.11;
-
-        // Copying the bitmap bmp's pixels into a int[] in order to perform the algorithm faster using getPixels()
-        int[] tmpCopy = new int[bmp.getHeight()*bmp.getWidth()];
-        bmp.getPixels(tmpCopy, 0, bmp.getWidth(), 0,0,bmp.getWidth(),bmp.getHeight());
-
-        // Applying gray filter
-        for(int i = 0; i < tmpCopy.length; i++) {
-            int currentPixel = tmpCopy[i];
-            double grayValue = red_coef * Color.red(currentPixel);
-            grayValue += blue_coef * Color.blue(currentPixel);
-            grayValue += green_coef * Color.green(currentPixel);
-            tmpCopy[i] = Color.rgb((int)grayValue,(int)grayValue,(int)grayValue);
+        for(int i = 0; i < pixels.length; i++) {
+            int currentPixel = pixels[i];
+            double grayValue = 0.3 * Color.red(currentPixel);
+            grayValue += 0.59 * Color.blue(currentPixel);
+            grayValue += 0.11 * Color.green(currentPixel);
+            pixels[i] = Color.rgb((int)grayValue,(int)grayValue,(int)grayValue);
         }
-        bmp.setPixels(tmpCopy,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
+        bmp.setPixels(pixels,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
+    }
+
+    public static void toSepia(Bitmap bmp){
+        int[] pixels = new int[bmp.getHeight()*bmp.getWidth()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0,0,bmp.getWidth(),bmp.getHeight());
+
+        double red, green, blue;
+
+        for(int i = 0; i < pixels.length; i++) {
+            int currentPixel = pixels[i];
+            double old_red = Color.red(currentPixel);
+            double old_green = Color.green(currentPixel);
+            double old_blue = Color.blue(currentPixel);
+            red = old_red*0.393 + old_green*0.769 + old_blue*0.189;
+            green = old_red*0.349 + old_green*0.686 + old_blue*0.168;
+            blue = old_red*0.272 + old_green*0.534 + old_blue*0.131;
+            pixels[i] = Color.rgb((int)red,(int)green,(int)blue);
+        }
+        bmp.setPixels(pixels,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
     }
 
     /**
@@ -37,19 +48,16 @@ public class Functions {
      * @param hue hue value to append
      */
     public static void colorize(Bitmap bmp, float hue) {
+        int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
+        bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
 
-        // Copying the bitmap bmp's pixels into a int[] in order to perform the algorithm faster using getPixels()
-        int[] tmpCopy = new int[bmp.getWidth() * bmp.getHeight()];
-        bmp.getPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
-
-        // Applying hue modifications
-        for (int i = 0; i < tmpCopy.length; i++) {
-            int currentPixel = tmpCopy[i];
+        for (int i = 0; i < pixels.length; i++) {
+            int currentPixel = pixels[i];
             float[] hsv = Tools.RGBToHSV(Color.red(currentPixel), Color.green(currentPixel), Color.blue(currentPixel)); // Getting HSV values for the currentPixel
             hsv[0] = hue; // setting up the new hue selected
-            tmpCopy[i] = Tools.HSVToRGB(hsv, Color.alpha(currentPixel)); // Setting the HSV values back to RGB in order to set the modified pixel
+            pixels[i] = Tools.HSVToRGB(hsv, Color.alpha(currentPixel)); // Setting the HSV values back to RGB in order to set the modified pixel
         }
-        bmp.setPixels(tmpCopy, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
+        bmp.setPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
     /**

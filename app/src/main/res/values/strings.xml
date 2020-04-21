@@ -19,6 +19,7 @@
     <string name="reverse_button">Mirror</string>
     <string name="rotation_button">Rotation</string>
     <string name="transformation_button">Transformation</string>
+    <string name="sepia_button">Sepia</string>
 
     <string name="average_button">Average</string>
     <string name="average_3_button">3*3</string>
