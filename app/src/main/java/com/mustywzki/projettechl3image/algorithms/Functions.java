@@ -1,5 +1,6 @@
 package com.mustywzki.projettechl3image.algorithms;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
@@ -169,6 +170,13 @@ public class Functions {
         bmp.setPixels(colors,0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
+    /**
+     * Function that set the RGB values with the coefs
+     * @param bmp processed bitmap image
+     * @param red_coef the coef for red value
+     * @param green_coef the coef for green value
+     * @param blue_coef the coef for blue value
+     */
     public static void setRGB(Bitmap bmp, double red_coef, double green_coef, double blue_coef){
 
         red_coef = (red_coef - 50)*0.02;
@@ -200,6 +208,11 @@ public class Functions {
         bmp.setPixels(pixels,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
     }
 
+    /**
+     * Rotate the bmp to the left with 90°
+     * @param bmp processed bitmap image
+     * @return the new Bitmap
+     */
     public static Bitmap rotateLeft(Bitmap bmp){
         Bitmap newBmp = Bitmap.createBitmap(bmp.getHeight(), bmp.getWidth(), bmp.getConfig());
 
@@ -220,6 +233,11 @@ public class Functions {
         return newBmp;
     }
 
+    /**
+     * Rotate the bmp to the right with 90°
+     * @param bmp processed bitmap image
+     * @return the new Bitmap
+     */
     public static Bitmap rotateRight(Bitmap bmp){
         Bitmap newBmp = Bitmap.createBitmap(bmp.getHeight(), bmp.getWidth(), bmp.getConfig());
 
@@ -240,6 +258,10 @@ public class Functions {
         return newBmp;
     }
 
+    /**
+     * Vertically reverse the bitmap
+     * @param bmp processed bitmap image
+     */
     public static void reverseVer(Bitmap bmp){
         int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
@@ -257,6 +279,10 @@ public class Functions {
         bmp.setPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
     }
 
+    /**
+     * Horizontally reverse the bitmap
+     * @param bmp processed bitmap image
+     */
     public static void reverseHor(Bitmap bmp){
         int[] pixels = new int[bmp.getWidth() * bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
