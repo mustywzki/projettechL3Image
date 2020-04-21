@@ -5,5 +5,5 @@ rs_allocation gOut;
 int height, width;
 
 void RS_KERNEL rotateLeft(uchar4 in, uint32_t x, uint32_t y){
-    rsSetElementAt_uchar4(gOut,in,height-y-1,x);
+    rsSetElementAt_uchar4(gOut,in,y,width-x-1);
 }
