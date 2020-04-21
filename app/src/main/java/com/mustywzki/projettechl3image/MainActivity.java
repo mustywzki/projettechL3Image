@@ -399,7 +399,8 @@ public class MainActivity extends AppCompatActivity {
                 currentAlgorithm = AlgorithmType.REVERSEHOR;
                 break;
             case R.id.rotate_left_button:
-                currentAlgorithm = AlgorithmType.ROTATELEFT;
+                    currentAlgorithm = AlgorithmType.ROTATELEFT;
+
                 break;
             case R.id.rotate_right_button:
                 currentAlgorithm = AlgorithmType.ROTATERIGHT;
@@ -606,14 +607,23 @@ public class MainActivity extends AppCompatActivity {
                 apply();
                 break;
             case ROTATELEFT:
-                //TODO RS
+                if(isRenderscript){
+                    processedBmp= functionsRS.rotateLeft(getApplicationContext(),processedBmp);
+                }
+                else{
                 processedBmp = Functions.rotateLeft(processedBmp);
                 apply();
+                }
                 break;
             case ROTATERIGHT:
-                //TODO RS
-                processedBmp = Functions.rotateRight(processedBmp);
-                apply();
+                if(isRenderscript){
+                    processedBmp= functionsRS.rotateRight(getApplicationContext(),processedBmp);
+
+                }
+                else {
+                    processedBmp = Functions.rotateRight(processedBmp);
+                    apply();
+                }
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + currentAlgorithm);
