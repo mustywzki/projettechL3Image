@@ -16,7 +16,6 @@ public class Contrast {
      * Algorithm for linear transformation applied on a bitmap image
      * @param bmp processed bitmap image
      */
-    // TODO contraste with HSV and linear extension less
     public static void linear_transformation(Bitmap bmp){
         int[] pixels = new int[bmp.getWidth()*bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
