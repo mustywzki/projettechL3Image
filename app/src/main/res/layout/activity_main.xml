@@ -38,7 +38,7 @@
                 android:id="@+id/renderscript_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="@bool/switchRenderscript"
+                android:checked="false"
                 android:text="@string/renderscript_switch"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"

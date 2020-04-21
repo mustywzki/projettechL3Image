@@ -109,6 +109,7 @@
                     android:onClick="onClickAlgorithms" />
 
                 <TextView
+                    android:id="@+id/sobel_all_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

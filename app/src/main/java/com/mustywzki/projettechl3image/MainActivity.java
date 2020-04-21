@@ -123,18 +123,23 @@ public class MainActivity extends AppCompatActivity {
         rsTexts.add((TextView) findViewById(R.id.setRgb_text));
         rsTexts.add((TextView) findViewById(R.id.blur_text));
         rsTexts.add((TextView) findViewById(R.id.transformation_text));
+        rsTexts.add((TextView) findViewById(R.id.filter_text));
 
         rsTexts.add((TextView) filterView.findViewById(R.id.gray_text));
         rsTexts.add((TextView) filterView.findViewById(R.id.linear_transformation_text));
         rsTexts.add((TextView) filterView.findViewById(R.id.egalisation_text));
         rsTexts.add((TextView) filterView.findViewById(R.id.laplacian_text));
         rsTexts.add((TextView) filterView.findViewById(R.id.sepia_text));
+        rsTexts.add((TextView) filterView.findViewById(R.id.prewitt_text));
+        rsTexts.add((TextView) filterView.findViewById(R.id.sobel_text));
 
         rsTexts.add((TextView) prewittView.findViewById(R.id.prewitt_hor_text));
         rsTexts.add((TextView) prewittView.findViewById(R.id.prewitt_ver_text));
+        rsTexts.add((TextView) prewittView.findViewById(R.id.prewitt_all_text));
 
         rsTexts.add((TextView) sobelView.findViewById(R.id.sobel_hor_text));
         rsTexts.add((TextView) sobelView.findViewById(R.id.sobel_ver_text));
+        rsTexts.add((TextView) sobelView.findViewById(R.id.sobel_all_text));
 
         rsTexts.add((TextView) laplacienView.findViewById(R.id.laplacian_4_text));
         rsTexts.add((TextView) laplacienView.findViewById(R.id.laplacian_8_text));
@@ -547,9 +552,8 @@ public class MainActivity extends AppCompatActivity {
                     functionsRS.apply_filter(getApplicationContext(), b2, core2, core2.length, 1);
                     functionsRS.mix_bmp(getApplicationContext(), processedBmp, b1, b2);
                 }
-                else {
+                else
                     Convolution.filter_Prewitt(processedBmp);
-                }
                 break;
             case SOBEL_HOR:
                 if(isRenderscript){
@@ -585,9 +589,8 @@ public class MainActivity extends AppCompatActivity {
                     functionsRS.apply_filter(getApplicationContext(), b2, core2, core2.length, 1);
                     functionsRS.mix_bmp(getApplicationContext(),processedBmp,b1,b2);
                 }
-                else{
-                Convolution.filter_Sobel(processedBmp);
-                }
+                else
+                    Convolution.filter_Sobel(processedBmp);
                 break;
             case LAPLACIEN_4:
                 if(isRenderscript){
