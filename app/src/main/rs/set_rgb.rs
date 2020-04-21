@@ -7,7 +7,6 @@ float green_coef;
 float blue_coef;
 
 
-// TODO change strange
 uchar4 RS_KERNEL setRgb(uchar4 in) {
         float4 pixel = rsUnpackColor8888(in);
         float new_red_c = (red_coef - 50)*0.02;

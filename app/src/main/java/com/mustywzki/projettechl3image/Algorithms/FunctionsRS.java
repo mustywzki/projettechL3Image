@@ -11,6 +11,7 @@ import androidx.renderscript.RenderScript;
 import com.mustywzki.projettechl3image.ScriptC_Gray;
 import com.mustywzki.projettechl3image.ScriptC_HistogramEqualizer;
 import com.mustywzki.projettechl3image.ScriptC_Max_Min;
+import com.mustywzki.projettechl3image.ScriptC_Sepia;
 import com.mustywzki.projettechl3image.ScriptC_apply_filter;
 import com.mustywzki.projettechl3image.ScriptC_change_brightness;
 import com.mustywzki.projettechl3image.ScriptC_change_saturation;
@@ -22,6 +23,8 @@ import com.mustywzki.projettechl3image.ScriptC_mix_bmp;
 import com.mustywzki.projettechl3image.ScriptC_negative;
 import com.mustywzki.projettechl3image.ScriptC_reverseHor;
 import com.mustywzki.projettechl3image.ScriptC_reverseVer;
+import com.mustywzki.projettechl3image.ScriptC_rotateLeft;
+import com.mustywzki.projettechl3image.ScriptC_rotateRight;
 import com.mustywzki.projettechl3image.ScriptC_set_rgb;
 
 public class FunctionsRS extends Activity {
@@ -281,7 +284,56 @@ public class FunctionsRS extends Activity {
         rs.destroy();
     }
 
+    public Bitmap rotateRight(Context ctx, Bitmap bmp) {
+        Bitmap newBmp = Bitmap.createBitmap(bmp.getHeight(), bmp.getWidth(), bmp.getConfig());
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
+        Allocation output = Allocation.createFromBitmap(rs,newBmp);
+        ScriptC_rotateRight RRScript = new ScriptC_rotateRight(rs);
+        RRScript.set_gOut(output);
+        RRScript.set_width(bmp.getWidth());
+        RRScript.set_height(bmp.getHeight());
+        RRScript.forEach_rotateRight(input);
+        output.copyTo(newBmp);
+        input.destroy();
+        output.destroy();
+        RRScript.destroy();
+        rs.destroy();
+        reverseVer(ctx,newBmp);
+        return newBmp;
+    }
 
+    public Bitmap rotateLeft(Context ctx, Bitmap bmp) {
+        Bitmap newBmp = Bitmap.createBitmap(bmp.getHeight(), bmp.getWidth(), bmp.getConfig());
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
+        Allocation output = Allocation.createFromBitmap(rs,newBmp);
+        ScriptC_rotateLeft RLScript = new ScriptC_rotateLeft(rs);
+        RLScript.set_gOut(output);
+        RLScript.set_width(bmp.getWidth());
+        RLScript.set_height(bmp.getHeight());
+        RLScript.forEach_rotateLeft(input);
+        output.copyTo(newBmp);
+        input.destroy();
+        output.destroy();
+        RLScript.destroy();
+        rs.destroy();
+        reverseVer(ctx,newBmp);
+        return newBmp;
+    }
+
+    public void sepia(Context ctx, Bitmap bmp) {
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+        ScriptC_Sepia sepiaScript = new ScriptC_Sepia(rs);
+        sepiaScript.forEach_Sepia(input, output);
+        output.copyTo(bmp);
+        input.destroy();
+        output.destroy();
+        sepiaScript.destroy();
+        rs.destroy();
+    }
 
 }
 
