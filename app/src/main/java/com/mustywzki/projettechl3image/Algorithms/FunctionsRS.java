@@ -11,6 +11,7 @@ import androidx.renderscript.RenderScript;
 import com.mustywzki.projettechl3image.ScriptC_Gray;
 import com.mustywzki.projettechl3image.ScriptC_HistogramEqualizer;
 import com.mustywzki.projettechl3image.ScriptC_Max_Min;
+import com.mustywzki.projettechl3image.ScriptC_Sepia;
 import com.mustywzki.projettechl3image.ScriptC_apply_filter;
 import com.mustywzki.projettechl3image.ScriptC_change_brightness;
 import com.mustywzki.projettechl3image.ScriptC_change_saturation;
@@ -319,6 +320,19 @@ public class FunctionsRS extends Activity {
         rs.destroy();
         reverseVer(ctx,newBmp);
         return newBmp;
+    }
+
+    public void sepia(Context ctx, Bitmap bmp) {
+        RenderScript rs = RenderScript.create(ctx);
+        Allocation input = Allocation.createFromBitmap(rs, bmp);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+        ScriptC_Sepia sepiaScript = new ScriptC_Sepia(rs);
+        sepiaScript.forEach_Sepia(input, output);
+        output.copyTo(bmp);
+        input.destroy();
+        output.destroy();
+        sepiaScript.destroy();
+        rs.destroy();
     }
 
 }
