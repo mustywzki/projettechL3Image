@@ -31,18 +31,11 @@ public class FunctionsRS extends Activity {
 
     public void toGrayRS(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
-        // 2) Creer des Allocations pour passer les donnees
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        // 3) Creer le script
         ScriptC_Gray grayScript = new ScriptC_Gray(rs);
-        // 4) Copier les donnees dans les Allocations
-        // 5) Initialiser les variables globales potentielles
-        // 6) Lancer le noyau
         grayScript.forEach_Gray(input, output);
-        // 7) Recuperer les donnees des Allocation (s)
         output.copyTo(bmp);
-        // 8) Detruire le context , les Allocation (s) et le script
         input.destroy();
         output.destroy();
         grayScript.destroy();
@@ -206,7 +199,6 @@ public class FunctionsRS extends Activity {
     }
 
     public void apply_filter(Context ctx, Bitmap bmp, float[] core, int core_length, int div) {
-
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
@@ -253,7 +245,6 @@ public class FunctionsRS extends Activity {
     }
 
     public void reverseHor(Context ctx, Bitmap bmp) {
-
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
@@ -320,7 +311,7 @@ public class FunctionsRS extends Activity {
         return newBmp;
     }
 
-    public void sepia(Context ctx, Bitmap bmp) {
+    public void toSepiaRS(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
