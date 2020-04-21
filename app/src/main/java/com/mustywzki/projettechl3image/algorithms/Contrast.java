@@ -16,7 +16,6 @@ public class Contrast {
      * Algorithm for linear transformation applied on a bitmap image
      * @param bmp processed bitmap image
      */
-    // TODO contraste with HSV and linear extension less
     public static void linear_transformation(Bitmap bmp){
         int[] pixels = new int[bmp.getWidth()*bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
@@ -74,7 +73,7 @@ public class Contrast {
         int[] LUTred = new int[256];
 
         for (int ng = 0; ng < 256; ng++){
-            if (maxRed != minRed || maxRed - minRed != 0) {
+            if (maxRed != minRed) {
                 LUTred[ng] = (255 * (ng - minRed) / (maxRed - minRed));
             }
             else {
@@ -103,7 +102,7 @@ public class Contrast {
         int[] LUTgreen = new int[256];
 
         for (int ng = 0; ng < 256; ng++){
-            if (maxGreen != minGreen || maxGreen - minGreen != 0) {
+            if (maxGreen != minGreen) {
                 LUTgreen[ng] = (255 * (ng - minGreen) / (maxGreen - minGreen));
             }
             else {
@@ -132,7 +131,7 @@ public class Contrast {
         int[] LUTblue = new int[256];
 
         for (int ng = 0; ng < 256; ng++) {
-            if (maxBlue != minBlue || maxBlue - minBlue != 0) {
+            if (maxBlue != minBlue) {
                 LUTblue[ng] = (255 * (ng - minBlue) / (maxBlue - minBlue));
             } else {
                 LUTblue[ng] = maxBlue;
