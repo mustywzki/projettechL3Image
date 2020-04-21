@@ -29,6 +29,11 @@ import com.mustywzki.projettechl3image.ScriptC_set_rgb;
 
 public class FunctionsRS extends Activity {
 
+    /**
+     * Function that creates an image of shades of gray.
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp Processed bitmap image
+     */
     public void toGrayRS(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -43,6 +48,13 @@ public class FunctionsRS extends Activity {
     }
 
 
+    /**
+     * Generate an image which only changes color for a certain range of hue between hue & chromakey.
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp Processed bitmap image
+     * @param hue initial hue value
+     * @param tolerance closing hue value
+     */
     public void keepColorRS(Context ctx, Bitmap bmp, float hue, float tolerance) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -58,6 +70,12 @@ public class FunctionsRS extends Activity {
         rs.destroy();
     }
 
+    /**
+     * Function that changes the hue value of an image and adapts it to the entire Bitmap image.
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     * @param hue hue value to append
+     */
     public void colorize(Context ctx, Bitmap bmp, float hue) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -73,6 +91,12 @@ public class FunctionsRS extends Activity {
 
     }
 
+    /**
+     * Generates an image with a different saturation
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     * @param saturation value of saturation to append
+     */
     public void change_saturation(Context ctx, Bitmap bmp, float saturation) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -88,6 +112,12 @@ public class FunctionsRS extends Activity {
 
     }
 
+    /**
+     * Change brightness of the processed bitmap image
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     * @param brightness brightness value (V from HSV)
+     */
     public void change_brightness(Context ctx, Bitmap bmp, float brightness) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -103,6 +133,11 @@ public class FunctionsRS extends Activity {
 
     }
 
+    /**
+     * Generates the negative of a bitmap image
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     */
     public void negative(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -117,7 +152,13 @@ public class FunctionsRS extends Activity {
 
     }
 
-    private int[] histogramm(Context ctx, Bitmap bmp) {
+    /**
+     * Generates and Returns histogram from bitmap image
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     * @return histogram
+     */
+    private int[] histogram(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         ScriptC_histogramm HistogrammScript = new ScriptC_histogramm(rs);
@@ -130,8 +171,13 @@ public class FunctionsRS extends Activity {
     }
 
 
+    /**
+     * Generates an image by equalizing histogram from bitmap image
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     */
     public void HistogramEqualizer(Context ctx, Bitmap bmp) {
-        int[] histo = histogramm(ctx, bmp);
+        int[] histo = histogram(ctx, bmp);
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
@@ -149,6 +195,12 @@ public class FunctionsRS extends Activity {
 
     }
 
+    /**
+     * Retrieves the max and min values from the bitmap image gray/color level values
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     * @return the min and max values (which is a 2 slot int[])
+     */
     private int[] max_min(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -160,6 +212,11 @@ public class FunctionsRS extends Activity {
         return maxi_mini;
     }
 
+    /**
+     * Extends the min and max values for a linear extension from the bitmap image
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     */
     public void LinearExtention(Context ctx, Bitmap bmp) {
         int[] tab = max_min(ctx, bmp);
         int[] LUTred = Contrast.createLUTred(new int[]{tab[0], tab[1]});
@@ -182,6 +239,14 @@ public class FunctionsRS extends Activity {
 
     }
 
+    /**
+     * Function that sets the RGB values with the coefficients
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     * @param red_coef red value coefficient
+     * @param green_coef green value coefficient
+     * @param blue_coef blue value coefficient
+     */
     public void setRgbRS(Context ctx, Bitmap bmp, float red_coef, float green_coef, float blue_coef) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -198,6 +263,14 @@ public class FunctionsRS extends Activity {
         rs.destroy();
     }
 
+    /**
+     * Apply Convolution filter in core field to bitmap image by using div.
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     * @param core filter to pass
+     * @param core_length length of filter to pass
+     * @param div division to apply
+     */
     public void apply_filter(Context ctx, Bitmap bmp, float[] core, int core_length, int div) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -222,6 +295,13 @@ public class FunctionsRS extends Activity {
 
     }
 
+    /**
+     * Mix two bitmap images into one.
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp The result bitmap image
+     * @param bmp1 The first bitmap image to mix
+     * @param bmp2 The second bitmap image to mix
+     */
     public void mix_bmp(Context ctx, Bitmap bmp, Bitmap bmp1, Bitmap bmp2) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -244,6 +324,11 @@ public class FunctionsRS extends Activity {
 
     }
 
+    /**
+     * Horizontally reverse the bitmap
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     */
     public void reverseHor(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -260,6 +345,11 @@ public class FunctionsRS extends Activity {
     }
 
 
+    /**
+     * Veritcally reverse the bitmap
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     */
     public void reverseVer(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
@@ -275,6 +365,12 @@ public class FunctionsRS extends Activity {
         rs.destroy();
     }
 
+    /**
+     * Rotate the bitmap image to the right by 90°
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     * @return
+     */
     public Bitmap rotateRight(Context ctx, Bitmap bmp) {
         Bitmap newBmp = Bitmap.createBitmap(bmp.getHeight(), bmp.getWidth(), bmp.getConfig());
         RenderScript rs = RenderScript.create(ctx);
@@ -293,6 +389,12 @@ public class FunctionsRS extends Activity {
         return newBmp;
     }
 
+    /**
+     * Rotate the bitmap image to the left by 90°
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     * @return
+     */
     public Bitmap rotateLeft(Context ctx, Bitmap bmp) {
         Bitmap newBmp = Bitmap.createBitmap(bmp.getHeight(), bmp.getWidth(), bmp.getConfig());
         RenderScript rs = RenderScript.create(ctx);
@@ -311,6 +413,11 @@ public class FunctionsRS extends Activity {
         return newBmp;
     }
 
+    /**
+     * Function that creates an image of sepia colors.
+     * @param ctx Context from which the RenderScript will run
+     * @param bmp processed bitmap image
+     */
     public void toSepiaRS(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);

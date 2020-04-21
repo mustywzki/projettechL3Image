@@ -24,6 +24,11 @@ public class Functions {
         bmp.setPixels(pixels,0, bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
     }
 
+
+    /**
+     * Function that creates an image of sepia colors.
+     * @param bmp Processed bitmap image
+     */
     public static void toSepia(Bitmap bmp){
         int[] pixels = new int[bmp.getHeight()*bmp.getWidth()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0,0,bmp.getWidth(),bmp.getHeight());
@@ -179,11 +184,11 @@ public class Functions {
     }
 
     /**
-     * Function that set the RGB values with the coefs
+     * Function that set the RGB values with the coefficients
      * @param bmp processed bitmap image
-     * @param red_coef the coef for red value
-     * @param green_coef the coef for green value
-     * @param blue_coef the coef for blue value
+     * @param red_coef red value coefficient
+     * @param green_coef green value coefficient
+     * @param blue_coef blue value coefficient
      */
     public static void setRGB(Bitmap bmp, double red_coef, double green_coef, double blue_coef){
 
@@ -217,7 +222,7 @@ public class Functions {
     }
 
     /**
-     * Rotate the bmp to the left with 90°
+     * Rotate the bmp to the left by 90°
      * @param bmp processed bitmap image
      * @return the new Bitmap
      */
@@ -242,7 +247,7 @@ public class Functions {
     }
 
     /**
-     * Rotate the bmp to the right with 90°
+     * Rotate the bmp to the right by 90°
      * @param bmp processed bitmap image
      * @return the new Bitmap
      */

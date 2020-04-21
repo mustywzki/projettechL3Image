@@ -117,7 +117,7 @@ public class Tools {
     }
 
     /**
-     * Generate and Returns Histogram from bitmap image
+     * Generates and Returns Histogram from bitmap image
      * @param bmp Bitmap Image
      * @return Histogram
      */
