@@ -34,14 +34,12 @@ public class Convolution {
      * @param core filter to pass
      * @param div division to apply
      */
-    // Applique le filtre dans core à l'image bmp en divisant les pixels par div
     private static void applyfilter(Bitmap bmp, double[] core, double div){
         int[] pixels = new int[bmp.getWidth()*bmp.getHeight()];
         bmp.getPixels(pixels, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
 
         int[] colors = new int[bmp.getWidth()*bmp.getHeight()];
 
-        // Set la longueur d'une ligne dans le carré du filtre
         double line = Math.sqrt(core.length);
 
         int dif = (int)(line - 1) / 2;
@@ -49,20 +47,18 @@ public class Convolution {
         double newRed, newGreen, newBlue;
         int id_color_to_set, id_color, id_core;
 
-        // Parcourir toute l'image en x et y
         for (int y = dif; y < (bmp.getHeight() - dif); y++){
             for (int x = dif; x < (bmp.getWidth() - dif); x++){
 
-                id_color_to_set = y * bmp.getWidth() + x; // indice du pixel courant à modifier
+                id_color_to_set = y * bmp.getWidth() + x;
                 newRed = 0;
                 newGreen = 0;
                 newBlue = 0;
 
-                // Parcourir le carré autour du pixel courant (en fonction de la taille de core)
                 for (int j = 0; j < line; j++){
                     for (int i = 0; i < line; i++){
-                        id_color = id_color_to_set + (j - dif) * bmp.getWidth() + (i - dif); // indice de la couleur dans le carré de l'image
-                        id_core = (int) (j * line + i); // indice de la couleur dans le carré du filtre
+                        id_color = id_color_to_set + (j - dif) * bmp.getWidth() + (i - dif);
+                        id_core = (int) (j * line + i);
 
                         newRed += Color.red(pixels[id_color]) * core[id_core];
 

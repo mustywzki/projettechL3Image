@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * When clicking on buttons indiccating a modification, performs it.
+     * When clicking on buttons indicating a modification, performs it.
      * @param v View in which buttons are clickable and valid
      */
     public void onClickView(View v){
@@ -334,12 +334,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.random_button:
                 currentAlgorithm = AlgorithmType.COLORIZE;
-                seekbars_load("Colorise", true,"Hue",359,false,"",1,false, "",1);
+                seekbars_load("Colorise","Hue",359,false,"",1,false, "",1);
                 bar1.setProgress((int) (Math.random() * 100));
                 break;
             case R.id.selected_color_button:
                 currentAlgorithm = AlgorithmType.COLOR_RANGE;
-                seekbars_load("Keep Hue", true,"Hue",359,true,"Tolerance",180,false,"",1);
+                seekbars_load("Keep Hue","Hue",359,true,"Tolerance",180,false,"",1);
                 break;
             case R.id.linear_transformation_button:
                 currentAlgorithm = AlgorithmType.DYNAMIC_EXTENSION;
@@ -352,12 +352,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.saturation_button:
                 currentAlgorithm = AlgorithmType.SATURATION;
-                seekbars_load("Saturation", true,"", 100,false,"",1,false, "",1);
+                seekbars_load("Saturation","", 100,false,"",1,false, "",1);
                 bar1.setProgress(50);
                 break;
             case R.id.brightness_button:
                 currentAlgorithm = AlgorithmType.BRIGHTNESS;
-                seekbars_load("Brightness", true,"",100,false,"",1,false, "",1);
+                seekbars_load("Brightness","",100,false,"",1,false, "",1);
                 bar1.setProgress(50);
                 break;
             case R.id.average_3_button:
@@ -398,7 +398,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.setRGB_button:
                 currentAlgorithm = AlgorithmType.SETRGB;
-                seekbars_load("Set RGB", true,"Red",100,true,"Green",100,true,"Blue",100);
+                seekbars_load("Set RGB","Red",100,true,"Green",100,true,"Blue",100);
                 // Default bars
                 bar1.setProgress(50);
                 bar2.setProgress(50);
@@ -743,7 +743,6 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Tool function which helps setting up seekBars that we use for Algorithms views.
      * @param name indicator to see which seekBar it is
-     * @param visible1 1st bar visibility
      * @param text1 1st bar text
      * @param maxVal1 1st bar max value settable
      * @param visible2 2nd bar visibility
@@ -753,9 +752,8 @@ public class MainActivity extends AppCompatActivity {
      * @param text3 3rd bar text
      * @param maxVal3 3rd bar max value settable
      */
-    private void seekbars_load(String name, boolean visible1, String text1, int maxVal1, boolean visible2, String text2, int maxVal2, boolean visible3, String text3, int maxVal3) {
+    private void seekbars_load(String name, String text1, int maxVal1, boolean visible2, String text2, int maxVal2, boolean visible3, String text3, int maxVal3) {
         TextView t1 = sliderBars.findViewById(R.id.textView1), t2 = sliderBars.findViewById(R.id.textView2), t3 = sliderBars.findViewById(R.id.textView3), t4 = sliderBars.findViewById(R.id.textView4);
-        bar1.setVisibility(visible1 ? View.VISIBLE : View.GONE);
         bar2.setVisibility(visible2 ? View.VISIBLE : View.GONE);
         bar3.setVisibility(visible3 ? View.VISIBLE : View.GONE);
 
@@ -776,9 +774,9 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Retrieve image from Camera and/or Gallery.
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * @param requestCode the requestCode for super function
+     * @param resultCode the resultCode for the super function
+     * @param data the data for the super function
      */
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -835,8 +833,8 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Function that detects which button is selected between either Camera Roll or Gallery or saving a file.
-     * @param item
-     * @return
+     * @param item the menu item clicked on
+     * @return true if it's working, super.onOptionsItemSelected(item) otherwise
      */
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
@@ -868,8 +866,12 @@ public class MainActivity extends AppCompatActivity {
                     String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
                     requestPermissions(permissions, PERMISSION_CODE);
                 }
-                String dateTime = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+                String dateTime = SimpleDateFormat.getDateTimeInstance().format(new Date());
                 String filename = "PicEd_"+dateTime+".jpg";
+                filename = filename.replace(" ", "_");
+                filename = filename.replace(":", "");
+                filename = filename.replace("._", "");
+                filename = filename.replace("_", "");
                 String path = Environment.getExternalStorageDirectory().toString();
                 Toast toast = Toast.makeText(this,"tmp", Toast.LENGTH_SHORT);
                 if(SDK_INT > Build.VERSION_CODES.P) {
@@ -894,10 +896,8 @@ public class MainActivity extends AppCompatActivity {
                         Bitmap pictureBitmap = processedBmp.copy(processedBmp.getConfig(), true);
                         pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
                         fOut.close(); // do not forget to close the stream
-                    } catch (FileNotFoundException e) {
+                    } catch (Exception e){
                         e.printStackTrace();
-                    } catch (IOException e2) {
-                        e2.printStackTrace();
                     }
                     toast.setText("Image saved in Pictures/PicEditor");
                 }
