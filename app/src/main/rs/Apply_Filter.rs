@@ -51,7 +51,7 @@ uchar4 RS_KERNEL apply_filter(uchar4 in, uint32_t x, uint32_t y){
             red = fabs(red);
             green = fabs(green);
             blue = fabs(blue);
-
+            float alpha = (rsUnpackColor8888(in))[3];
 
             red = red > 255 ? 255 : red;
             green = green > 255 ? 255 : green;
@@ -60,6 +60,6 @@ uchar4 RS_KERNEL apply_filter(uchar4 in, uint32_t x, uint32_t y){
             green = green < 0 ? 0 : green;
             blue = blue < 0 ? 0 : blue;
 
-            return rsPackColorTo8888( red, green,blue);
+            return rsPackColorTo8888( red, green,blue,alpha );
 
 }

@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         rsTexts.add((TextView) findViewById(R.id.brightness_text));
         rsTexts.add((TextView) findViewById(R.id.saturation_text));
         rsTexts.add((TextView) findViewById(R.id.negative_text));
-        rsTexts.add((TextView) findViewById(R.id.colorise_text));
+        rsTexts.add((TextView) findViewById(R.id.colorize_text));
         rsTexts.add((TextView) findViewById(R.id.setRgb_text));
         rsTexts.add((TextView) findViewById(R.id.blur_text));
         rsTexts.add((TextView) findViewById(R.id.transformation_text));

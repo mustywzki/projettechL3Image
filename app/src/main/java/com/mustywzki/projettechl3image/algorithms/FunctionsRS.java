@@ -8,24 +8,25 @@ import androidx.renderscript.Allocation;
 import androidx.renderscript.Element;
 import androidx.renderscript.RenderScript;
 
+import com.mustywzki.projettechl3image.ScriptC_Apply_Filter;
+import com.mustywzki.projettechl3image.ScriptC_Change_Brightness;
+import com.mustywzki.projettechl3image.ScriptC_Change_Saturation;
+import com.mustywzki.projettechl3image.ScriptC_Colorize;
 import com.mustywzki.projettechl3image.ScriptC_Gray;
-import com.mustywzki.projettechl3image.ScriptC_HistogramEqualizer;
+import com.mustywzki.projettechl3image.ScriptC_Histogram;
+import com.mustywzki.projettechl3image.ScriptC_Histogram_Egalisation;
+import com.mustywzki.projettechl3image.ScriptC_KeepColor;
+import com.mustywzki.projettechl3image.ScriptC_Linear_Extention;
 import com.mustywzki.projettechl3image.ScriptC_Max_Min;
+import com.mustywzki.projettechl3image.ScriptC_MixBmp;
+import com.mustywzki.projettechl3image.ScriptC_Negative;
+import com.mustywzki.projettechl3image.ScriptC_ReverseHor;
+import com.mustywzki.projettechl3image.ScriptC_ReverseVer;
+import com.mustywzki.projettechl3image.ScriptC_RotateLeft;
+import com.mustywzki.projettechl3image.ScriptC_RotateRight;
 import com.mustywzki.projettechl3image.ScriptC_Sepia;
-import com.mustywzki.projettechl3image.ScriptC_apply_filter;
-import com.mustywzki.projettechl3image.ScriptC_change_brightness;
-import com.mustywzki.projettechl3image.ScriptC_change_saturation;
-import com.mustywzki.projettechl3image.ScriptC_colorize;
-import com.mustywzki.projettechl3image.ScriptC_histogramm;
-import com.mustywzki.projettechl3image.ScriptC_keepcolor;
-import com.mustywzki.projettechl3image.ScriptC_linear_extention;
-import com.mustywzki.projettechl3image.ScriptC_mix_bmp;
-import com.mustywzki.projettechl3image.ScriptC_negative;
-import com.mustywzki.projettechl3image.ScriptC_reverseHor;
-import com.mustywzki.projettechl3image.ScriptC_reverseVer;
-import com.mustywzki.projettechl3image.ScriptC_rotateLeft;
-import com.mustywzki.projettechl3image.ScriptC_rotateRight;
-import com.mustywzki.projettechl3image.ScriptC_set_rgb;
+import com.mustywzki.projettechl3image.ScriptC_SetRGB;
+
 
 public class FunctionsRS extends Activity {
 
@@ -59,7 +60,7 @@ public class FunctionsRS extends Activity {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_keepcolor keepColorScript = new ScriptC_keepcolor(rs);
+        ScriptC_KeepColor keepColorScript = new ScriptC_KeepColor(rs);
         keepColorScript.set_hue(hue);
         keepColorScript.set_tolerance(tolerance);
         keepColorScript.forEach_keepcolor(input, output);
@@ -80,7 +81,7 @@ public class FunctionsRS extends Activity {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_colorize colorizeScript = new ScriptC_colorize(rs);
+        ScriptC_Colorize colorizeScript = new ScriptC_Colorize(rs);
         colorizeScript.set_rand(hue);
         colorizeScript.forEach_colorize(input, output);
         output.copyTo(bmp);
@@ -101,7 +102,7 @@ public class FunctionsRS extends Activity {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_change_saturation SaturationScript = new ScriptC_change_saturation(rs);
+        ScriptC_Change_Saturation SaturationScript = new ScriptC_Change_Saturation(rs);
         SaturationScript.set_saturation_change(saturation);
         SaturationScript.forEach_change_saturation(input, output);
         output.copyTo(bmp);
@@ -122,7 +123,7 @@ public class FunctionsRS extends Activity {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_change_brightness BrightnessScript = new ScriptC_change_brightness(rs);
+        ScriptC_Change_Brightness BrightnessScript = new ScriptC_Change_Brightness(rs);
         BrightnessScript.set_brightness_change(brightness);
         BrightnessScript.forEach_change_brightness(input, output);
         output.copyTo(bmp);
@@ -142,7 +143,7 @@ public class FunctionsRS extends Activity {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_negative NegativeScript = new ScriptC_negative(rs);
+        ScriptC_Negative NegativeScript = new ScriptC_Negative(rs);
         NegativeScript.forEach_negative(input, output);
         output.copyTo(bmp);
         input.destroy();
@@ -161,11 +162,11 @@ public class FunctionsRS extends Activity {
     private int[] histogram(Context ctx, Bitmap bmp) {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
-        ScriptC_histogramm HistogrammScript = new ScriptC_histogramm(rs);
-        int[] histo = HistogrammScript.reduce_histogramm(input).get();
+        ScriptC_Histogram HistogramScript = new ScriptC_Histogram(rs);
+        int[] histo = HistogramScript.reduce_histogram(input).get();
 
         input.destroy();
-        HistogrammScript.destroy();
+        HistogramScript.destroy();
         rs.destroy();
         return Tools.cumulativeHistogram(histo);
     }
@@ -181,12 +182,10 @@ public class FunctionsRS extends Activity {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_HistogramEqualizer HEScript = new ScriptC_HistogramEqualizer(rs);
+        ScriptC_Histogram_Egalisation HEScript = new ScriptC_Histogram_Egalisation(rs);
         HEScript.set_cumulative_histogramm(histo);
-
         HEScript.set_tab_length(bmp.getWidth() * bmp.getHeight());
         HEScript.forEach_HistogramEqualize(input, output);
-
         output.copyTo(bmp);
         input.destroy();
         output.destroy();
@@ -226,7 +225,7 @@ public class FunctionsRS extends Activity {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_linear_extention LeScript = new ScriptC_linear_extention(rs);
+        ScriptC_Linear_Extention LeScript = new ScriptC_Linear_Extention(rs);
         LeScript.set_LUTred(LUTred);
         LeScript.set_LUTgreen(LUTgreen);
         LeScript.set_LUTblue(LUTblue);
@@ -251,7 +250,7 @@ public class FunctionsRS extends Activity {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_set_rgb setRgbScript = new ScriptC_set_rgb(rs);
+        ScriptC_SetRGB setRgbScript = new ScriptC_SetRGB(rs);
         setRgbScript.set_red_coef(red_coef);
         setRgbScript.set_green_coef(green_coef);
         setRgbScript.set_blue_coef(blue_coef);
@@ -277,7 +276,7 @@ public class FunctionsRS extends Activity {
         Allocation output = Allocation.createTyped(rs, input.getType());
         Allocation core_tab = Allocation.createSized(rs, Element.F32(rs), core_length);
         core_tab.copyFrom(core);
-        ScriptC_apply_filter apf_script = new ScriptC_apply_filter(rs);
+        ScriptC_Apply_Filter apf_script = new ScriptC_Apply_Filter(rs);
         apf_script.set_width(bmp.getWidth());
         apf_script.set_height(bmp.getHeight());
         apf_script.set_core_length(core_length);
@@ -308,7 +307,7 @@ public class FunctionsRS extends Activity {
         Allocation A1 = Allocation.createFromBitmap(rs, bmp1);
         Allocation A2 = Allocation.createFromBitmap(rs, bmp2);
         Allocation output = Allocation.createTyped(rs, A1.getType());
-        ScriptC_mix_bmp Mbmp_Script = new ScriptC_mix_bmp(rs);
+        ScriptC_MixBmp Mbmp_Script = new ScriptC_MixBmp(rs);
 
         Mbmp_Script.set_A1(A1);
         Mbmp_Script.set_A2(A2);
@@ -333,7 +332,7 @@ public class FunctionsRS extends Activity {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_reverseHor RhScript = new ScriptC_reverseHor(rs);
+        ScriptC_ReverseHor RhScript = new ScriptC_ReverseHor(rs);
         RhScript.set_gIn(input);
         RhScript.set_height(bmp.getHeight());
         RhScript.forEach_reverseHor(input, output);
@@ -354,7 +353,7 @@ public class FunctionsRS extends Activity {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createTyped(rs, input.getType());
-        ScriptC_reverseVer RvScript = new ScriptC_reverseVer(rs);
+        ScriptC_ReverseVer RvScript = new ScriptC_ReverseVer(rs);
         RvScript.set_gIn(input);
         RvScript.set_width(bmp.getWidth());
         RvScript.forEach_reverseHor(input, output);
@@ -376,7 +375,7 @@ public class FunctionsRS extends Activity {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createFromBitmap(rs,newBmp);
-        ScriptC_rotateRight RRScript = new ScriptC_rotateRight(rs);
+        ScriptC_RotateRight RRScript = new ScriptC_RotateRight(rs);
         RRScript.set_gOut(output);
         RRScript.set_width(bmp.getWidth());
         RRScript.set_height(bmp.getHeight());
@@ -400,7 +399,7 @@ public class FunctionsRS extends Activity {
         RenderScript rs = RenderScript.create(ctx);
         Allocation input = Allocation.createFromBitmap(rs, bmp);
         Allocation output = Allocation.createFromBitmap(rs,newBmp);
-        ScriptC_rotateLeft RLScript = new ScriptC_rotateLeft(rs);
+        ScriptC_RotateLeft RLScript = new ScriptC_RotateLeft(rs);
         RLScript.set_gOut(output);
         RLScript.set_width(bmp.getWidth());
         RLScript.set_height(bmp.getHeight());

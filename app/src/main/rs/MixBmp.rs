@@ -19,10 +19,14 @@ uchar4  RS_KERNEL mix_bmp(uchar4 in , uint32_t x, uint32_t y ) {
             float blue1 = pixelA1[2];
             float blue2 = pixelA2[2];
 
+            float alpha1 = pixelA1[3];
+            float alpha2 = pixelA2[3];
+
             float red = (red1 + red2)/2;
             float green = (green1 + green2)/2;
             float blue = (blue1+blue2)/2;
+            float alpha = (alpha1 + alpha2)/2;
 
-            float3 output = {red, green, blue};
+            float4 output = {red, green, blue,alpha};
             return rsPackColorTo8888(output);
     }

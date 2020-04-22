@@ -8,7 +8,7 @@
 typedef int32_t Histogram[ARRAY_SIZE];
 
 
-#pragma rs reduce(histogramm) \
+#pragma rs reduce(histogram) \
   accumulator(hsgAccum) combiner(hsgCombine)
 
 static void hsgAccum(Histogram *h, uchar4 in) {
