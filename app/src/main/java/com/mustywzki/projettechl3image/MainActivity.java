@@ -352,12 +352,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.saturation_button:
                 currentAlgorithm = AlgorithmType.SATURATION;
-                seekbars_load("Saturation", true,"Hue",100,false,"",1,false, "",1);
+                seekbars_load("Saturation", true,"", 100,false,"",1,false, "",1);
                 bar1.setProgress(50);
                 break;
             case R.id.brightness_button:
                 currentAlgorithm = AlgorithmType.BRIGHTNESS;
-                seekbars_load("Brightness", true,"Hue",100,false,"",1,false, "",1);
+                seekbars_load("Brightness", true,"",100,false,"",1,false, "",1);
                 bar1.setProgress(50);
                 break;
             case R.id.average_3_button:
