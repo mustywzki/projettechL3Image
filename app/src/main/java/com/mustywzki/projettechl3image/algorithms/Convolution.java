@@ -4,6 +4,29 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 
 public class Convolution {
+    private static final double[] coreGaussian = {1.0, 2.0, 3.0, 2.0, 1.0
+            ,2.0, 6.0, 8.0, 6.0, 2.0
+            ,3.0, 8.0, 10.0, 8.0, 3.0
+            ,2.0, 6.0, 8.0, 6.0, 2.0
+            ,1.0, 2.0, 3.0, 2.0, 1.0};
+    private static final double[] corePrewittHor = {-1, -1, -1
+            ,0, 0, 0
+            ,1, 1, 1};
+    private static final double[] corePrewittVer = {-1, 0, 1
+            ,-1, 0, 1
+            ,-1, 0, 1};
+    private static final double[] coreSobelVer = {-1, 0, 1
+            ,-2, 0, 2
+            ,-1, 0, 1};
+    private static final double[] coreSobelHor = {-1, -2, -1
+            ,0, 0, 0
+            ,1, 2, 1};
+    private static final double[] coreLap4 = {0, 1, 0
+            ,1, -4, 1
+            ,0, 1, 0};
+    private static final double[] coreLap8 = {1, 1, 1
+            ,1, -8, 1
+            ,1, 1, 1};
 
     /**
      * Apply filter in core to bitmap image by using div.
@@ -100,12 +123,7 @@ public class Convolution {
      * @param bmp Processed bitmap image
      */
     public static void filter_Gaussien(Bitmap bmp){
-        double[] core = {1.0, 2.0, 3.0, 2.0, 1.0
-                        ,2.0, 6.0, 8.0, 6.0, 2.0
-                        ,3.0, 8.0, 10.0, 8.0, 3.0
-                        ,2.0, 6.0, 8.0, 6.0, 2.0
-                        ,1.0, 2.0, 3.0, 2.0, 1.0};
-        applyfilter(bmp, core, 98);
+        applyfilter(bmp, coreGaussian, 98);
     }
 
     /* --- Prewitt --- */
@@ -131,10 +149,7 @@ public class Convolution {
      * @param bmp Processed bitmap image
      */
     public static void filter_Prewitt_vertical(Bitmap bmp){
-        double[] core = {-1, 0, 1
-                        ,-1, 0, 1
-                        ,-1, 0, 1};
-        applyfilter(bmp, core, 1);
+        applyfilter(bmp, corePrewittVer, 1);
     }
 
     /**
@@ -142,10 +157,7 @@ public class Convolution {
      * @param bmp Processed bitmap image
      */
     public static void filter_Prewitt_horizontal(Bitmap bmp){
-        double[] core = {-1, -1, -1
-                        ,0, 0, 0
-                        ,1, 1, 1};
-        applyfilter(bmp, core, 1);
+        applyfilter(bmp, corePrewittHor, 1);
     }
 
     /* --- Sobel --- */
@@ -170,20 +182,14 @@ public class Convolution {
      * @param bmp Processed bitmap image
      */
     public static void filter_Sobel_vertical(Bitmap bmp){
-        double[] core = {-1, 0, 1
-                        ,-2, 0, 2
-                        ,-1, 0, 1};
-        applyfilter(bmp, core, 1);
+        applyfilter(bmp, coreSobelVer, 1);
     }
     /**
      * Call apply_filter on bmp with Sobel horizontal filter
      * @param bmp Processed bitmap image
      */
     public static void filter_Sobel_horizontal(Bitmap bmp){
-        double[] core = {-1, -2, -1
-                        ,0, 0, 0
-                        ,1, 2, 1};
-        applyfilter(bmp, core, 1);
+        applyfilter(bmp, coreSobelHor, 1);
     }
 
     /* --- Laplacien --- */
@@ -193,10 +199,7 @@ public class Convolution {
      * @param bmp Processed bitmap image
      */
     public static void filter_Laplacier_4(Bitmap bmp){
-        double[] core = {0, 1, 0
-                        ,1, -4, 1
-                        ,0, 1, 0};
-        applyfilter(bmp, core, 1);
+        applyfilter(bmp, coreLap4, 1);
     }
 
     /**
@@ -204,10 +207,7 @@ public class Convolution {
      * @param bmp Processed bitmap image
      */
     public static void filter_Laplacier_8(Bitmap bmp){
-        double[] core = {1, 1, 1
-                        ,1, -8, 1
-                        ,1, 1, 1};
-        applyfilter(bmp, core, 1);
+        applyfilter(bmp, coreLap8, 1);
     }
 
 }

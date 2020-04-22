@@ -219,6 +219,12 @@ public class MainActivity extends AppCompatActivity {
         processedBmp = savedBmp;
         imageView.setImageBitmap(savedBmp);
         history.addElement(currentBmp);
+        Toast toast = Toast.makeText(this,"Image reset", Toast.LENGTH_SHORT);
+        View view = toast.getView();
+        view.setBackgroundResource(R.color.background);
+        TextView text = view.findViewById(android.R.id.message);
+        text.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+        toast.show();
     }
 
     /**
@@ -792,6 +798,7 @@ public class MainActivity extends AppCompatActivity {
         imageView.setImageURI(image_uri);
         currentBmp = savedBmp;
         processedBmp = savedBmp;
+        history.reset(currentBmp);
     }
 
     /**
