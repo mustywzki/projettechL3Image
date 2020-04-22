@@ -863,12 +863,16 @@ public class MainActivity extends AppCompatActivity {
                     requestPermissions(permissions, PERMISSION_CODE);
                 }
                 String dateTime = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+                String filename = "PicEd_"+dateTime+".jpg";
+                String path = Environment.getExternalStorageDirectory().toString();
+                Toast toast = Toast.makeText(this,"tmp", Toast.LENGTH_SHORT);
                 if(SDK_INT > Build.VERSION_CODES.P) {
                     System.out.println("HERE");
-                    MediaStore.Images.Media.insertImage(getContentResolver(), processedBmp, "PicEd_"+dateTime+".jpg", "");
+                    MediaStore.Images.Media.insertImage(getContentResolver(), processedBmp, filename, "");
+                    path = path.concat("/Pictures");
+                    toast.setText("Image saved in Pictures");
                 }
                 else{
-                    String path = Environment.getExternalStorageDirectory().toString();
                     path = path.concat("/Pictures/PicEditor");
 
                     File myDir = new File(path);
@@ -877,7 +881,6 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println(path);
                     OutputStream fOut;
 
-                    String filename = "PicEd_"+dateTime+".jpg";
                     File file = new File(path, filename); // the File to save , append increasing numeric counter to prevent files from getting overwritten.
 
                     try {
@@ -890,9 +893,9 @@ public class MainActivity extends AppCompatActivity {
                     } catch (IOException e2) {
                         e2.printStackTrace();
                     }
-                    galleryAdd(path.concat("/").concat(filename));
+                    toast.setText("Image saved in Pictures/PicEditor");
                 }
-                Toast toast = Toast.makeText(this,"Image saved in Pictures/PicEditor", Toast.LENGTH_SHORT);
+                galleryAdd(path.concat("/").concat(filename));
                 View view = toast.getView();
                 view.setBackgroundResource(R.color.background);
                 TextView text = view.findViewById(android.R.id.message);
