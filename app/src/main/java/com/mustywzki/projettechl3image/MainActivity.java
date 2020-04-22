@@ -36,15 +36,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
-
-import static android.os.Build.VERSION.SDK;
 
 public class MainActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMG=1000;
@@ -872,18 +868,20 @@ public class MainActivity extends AppCompatActivity {
                 OutputStream fOut;
                 String dateTime = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
 
-                File file = new File(path, "PicEd_"+dateTime+".jpg"); // the File to save , append increasing numeric counter to prevent files from getting overwritten.
+                String filename = "PicEd_"+dateTime+".jpg";
+                File file = new File(path, filename); // the File to save , append increasing numeric counter to prevent files from getting overwritten.
 
                 try {
                     fOut = new FileOutputStream(file);
                     Bitmap pictureBitmap = processedBmp.copy(processedBmp.getConfig(), true);
-                    pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
+                    pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
                     fOut.close(); // do not forget to close the stream
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                galleryAdd(path.concat("/").concat(filename));
                 Toast toast = Toast.makeText(this,"Image saved in Pictures/PicEditor", Toast.LENGTH_SHORT);
                 View view = toast.getView();
                 view.setBackgroundResource(R.color.background);
