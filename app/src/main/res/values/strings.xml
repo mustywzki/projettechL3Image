@@ -5,13 +5,13 @@
 
 
     <string name="filter_button">Filters</string>
-    <string name="egalisation_histogram_button">Egalisation histogram</string>
+    <string name="histogram_egalisation_button">Egalisation histogram</string>
     <string name="saturation_button">Saturation</string>
     <string name="brightness_button">Brightness</string>
     <string name="selected_color_button">Keep Hue</string>
-    <string name="random_button">Colorise</string>
+    <string name="random_button">Colorize</string>
     <string name="negative_button">Negative</string>
-    <string name="linear_transformation_button">Linear extansion</string>
+    <string name="linear_transformation_button">Linear Extention</string>
     <string name="gray_button">Gray</string>
     <string name="blur_button">Blur</string>
     <string name="reverse_button">Mirror</string>
