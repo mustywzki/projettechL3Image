@@ -11,7 +11,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/backButton"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:background="@drawable/annuler"
@@ -38,7 +37,6 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/validateButton"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="60dp"
             android:layout_height="60dp" />

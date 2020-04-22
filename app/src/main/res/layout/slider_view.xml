@@ -11,7 +11,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/backButton"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -40,7 +39,6 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/validateButton"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -64,7 +62,6 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="5dp"
                 android:gravity="center"
-                android:text="TextView"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -81,7 +78,6 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="5dp"
                 android:gravity="center"
-                android:text="TextView"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -98,7 +94,6 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="5dp"
                 android:gravity="center"
-                android:text="TextView"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />

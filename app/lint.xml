@@ -2,5 +2,10 @@
 <lint>
     <issue id="UnusedResources">
         <ignore path="src/main/res/drawable/rotation.png" />
+        <ignore path="src/main/res/mipmap-hdpi/logo_round.png" />
+        <ignore path="src/main/res/mipmap-mdpi/logo_round.png" />
+        <ignore path="src/main/res/mipmap-xhdpi/logo_round.png" />
+        <ignore path="src/main/res/mipmap-xxhdpi/logo_round.png" />
+        <ignore path="src/main/res/mipmap-xxxhdpi/logo_round.png" />
     </issue>
 </lint>

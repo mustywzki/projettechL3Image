@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 class History {
-    private int size;
+    private final int size;
     private int indCurPicture;
-    private List<Bitmap> history;
+    private final List<Bitmap> history;
     private int top;
 
 /* --- Getter Setter --- */
@@ -22,7 +22,7 @@ class History {
 
     /**
      * Set indCurPicture.
-     * @param indCurPicture the new indice of the current picture
+     * @param indCurPicture the new index of the current picture
      */
     public void setIndCurPicture(int indCurPicture) {
         this.indCurPicture = indCurPicture;

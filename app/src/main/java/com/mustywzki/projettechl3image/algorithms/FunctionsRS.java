@@ -369,7 +369,7 @@ public class FunctionsRS extends Activity {
      * Rotate the bitmap image to the right by 90°
      * @param ctx Context from which the RenderScript will run
      * @param bmp processed bitmap image
-     * @return
+     * @return the new Bitmap rotated
      */
     public Bitmap rotateRight(Context ctx, Bitmap bmp) {
         Bitmap newBmp = Bitmap.createBitmap(bmp.getHeight(), bmp.getWidth(), bmp.getConfig());
@@ -393,7 +393,7 @@ public class FunctionsRS extends Activity {
      * Rotate the bitmap image to the left by 90°
      * @param ctx Context from which the RenderScript will run
      * @param bmp processed bitmap image
-     * @return
+     * @return the new Bitmap rotated
      */
     public Bitmap rotateLeft(Context ctx, Bitmap bmp) {
         Bitmap newBmp = Bitmap.createBitmap(bmp.getHeight(), bmp.getWidth(), bmp.getConfig());
