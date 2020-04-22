@@ -30,7 +30,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.mustywzki.projettechl3image.algorithms.*;
+import com.mustywzki.projettechl3image.algorithms.Contrast;
+import com.mustywzki.projettechl3image.algorithms.Convolution;
+import com.mustywzki.projettechl3image.algorithms.Functions;
+import com.mustywzki.projettechl3image.algorithms.FunctionsRS;
+import com.mustywzki.projettechl3image.algorithms.Tools;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -820,13 +824,7 @@ public class MainActivity extends AppCompatActivity {
         values.put(MediaStore.Images.Media.TITLE, "New Picture");
         values.put (MediaStore.Images.Media.DESCRIPTION, "From the Camera");
         image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-        if(image_uri==null){
-            return;
-        }
         Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
-        if(intent==null){
-            return;
-        }
         intent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
         startActivityForResult(intent, RESULT_IMAGE_CAPTURE);
     }
