@@ -5,7 +5,7 @@
 
 
     <string name="filter_button">Filters</string>
-    <string name="egalisation_histogram_button">Egalisation histogram</string>
+    <string name="egalisation_histogram_button">histogram equalization</string>
     <string name="saturation_button">Saturation</string>
     <string name="brightness_button">Brightness</string>
     <string name="selected_color_button">Keep Hue</string>
