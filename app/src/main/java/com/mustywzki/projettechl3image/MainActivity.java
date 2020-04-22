@@ -32,10 +32,14 @@ import androidx.core.content.ContextCompat;
 import com.mustywzki.projettechl3image.algorithms.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -849,23 +853,36 @@ public class MainActivity extends AppCompatActivity {
                     String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
                     requestPermissions(permissions, PERMISSION_CODE);
                 }
-                //String root = Environment.getExternalStorageDirectory().toString();
-                String root = getExternalFilesDir("/").toString();
-                System.out.println(root);
-                File myDir = new File(root + "/piceditor");
+                //MediaStore.Images.Media.insertImage(getContentResolver(), processedBmp, "", "");
+
+                String path = Environment.getExternalStorageDirectory().toString();
+                path = path.concat("/Pictures/PicEditor");
+
+                File myDir = new File(path);
                 myDir.mkdirs();
 
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                String fname = "PicEditor_" + timeStamp + ".jpg";
+                System.out.println(path);
+                OutputStream fOut;
+                String dateTime = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
 
-                String savedImageURL = MediaStore.Images.Media.insertImage(
-                            getContentResolver(),
-                            processedBmp,
-                            fname, ""
-                    );
+                File file = new File(path, "PicEd_"+dateTime+".jpg"); // the File to save , append increasing numeric counter to prevent files from getting overwritten.
 
-
-                Toast.makeText(this,"Image saved", Toast.LENGTH_SHORT).show();
+                try {
+                    fOut = new FileOutputStream(file);
+                    Bitmap pictureBitmap = processedBmp.copy(processedBmp.getConfig(), true);
+                    pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
+                    fOut.close(); // do not forget to close the stream
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Toast toast = Toast.makeText(this,"Image saved in Pictures/PicEditor", Toast.LENGTH_SHORT);
+                View view = toast.getView();
+                view.setBackgroundResource(R.color.background);
+                TextView text = view.findViewById(android.R.id.message);
+                text.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+                toast.show();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
