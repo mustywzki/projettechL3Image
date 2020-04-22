@@ -893,7 +893,7 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         fOut = new FileOutputStream(file);
-                        Bitmap pictureBitmap = processedBmp.copy(processedBmp.getConfig(), true);
+                        Bitmap pictureBitmap = currentBmp.copy(currentBmp.getConfig(), true);
                         pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
                         fOut.close(); // do not forget to close the stream
                     } catch (Exception e){
