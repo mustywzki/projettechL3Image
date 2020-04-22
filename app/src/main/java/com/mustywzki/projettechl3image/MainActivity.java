@@ -794,10 +794,13 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        imageView.setImageURI(image_uri);
-        currentBmp = savedBmp;
-        processedBmp = savedBmp;
-        history.reset(currentBmp);
+        if(image_uri!= null) {
+            imageView.setImageURI(image_uri);
+            currentBmp = savedBmp;
+            processedBmp = savedBmp;
+            history.reset(currentBmp);
+        }
+        
     }
 
     /**
