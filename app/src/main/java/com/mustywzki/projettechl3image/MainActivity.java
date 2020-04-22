@@ -778,7 +778,7 @@ public class MainActivity extends AppCompatActivity {
      */
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1002 && resultCode == RESULT_OK) {
+        if (requestCode == RESULT_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             try {
                 savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
             } catch (IOException e) {
@@ -794,8 +794,8 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        if(image_uri!= null) {
-            imageView.setImageURI(image_uri);
+        if(savedBmp!=null) {
+            imageView.setImageBitmap(savedBmp);
             currentBmp = savedBmp;
             processedBmp = savedBmp;
             history.reset(currentBmp);
@@ -820,7 +820,13 @@ public class MainActivity extends AppCompatActivity {
         values.put(MediaStore.Images.Media.TITLE, "New Picture");
         values.put (MediaStore.Images.Media.DESCRIPTION, "From the Camera");
         image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        if(image_uri==null){
+            return;
+        }
         Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+        if(intent==null){
+            return;
+        }
         intent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
         startActivityForResult(intent, RESULT_IMAGE_CAPTURE);
     }
