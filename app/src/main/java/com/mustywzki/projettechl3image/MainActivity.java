@@ -785,6 +785,10 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == RESULT_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             try {
                 savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
+                imageView.setImageBitmap(savedBmp);
+                currentBmp = savedBmp;
+                processedBmp = savedBmp;
+                history.reset(currentBmp);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -793,16 +797,14 @@ public class MainActivity extends AppCompatActivity {
             image_uri = data.getData();
             try{
                 savedBmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
+                imageView.setImageBitmap(savedBmp);
+                currentBmp = savedBmp;
+                processedBmp = savedBmp;
+                history.reset(currentBmp);
             }
             catch (Exception e){
                 e.printStackTrace();
             }
-        }
-        if(savedBmp!=null) {
-            imageView.setImageBitmap(savedBmp);
-            currentBmp = savedBmp;
-            processedBmp = savedBmp;
-            history.reset(currentBmp);
         }
         
     }
