@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -41,6 +42,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
+
+import static android.os.Build.VERSION.SDK_INT;
 
 public class MainActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMG=1000;
@@ -856,32 +859,36 @@ public class MainActivity extends AppCompatActivity {
                     String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
                     requestPermissions(permissions, PERMISSION_CODE);
                 }
-                //MediaStore.Images.Media.insertImage(getContentResolver(), processedBmp, "", "");
-
-                String path = Environment.getExternalStorageDirectory().toString();
-                path = path.concat("/Pictures/PicEditor");
-
-                File myDir = new File(path);
-                myDir.mkdirs();
-
-                System.out.println(path);
-                OutputStream fOut;
                 String dateTime = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
-
-                String filename = "PicEd_"+dateTime+".jpg";
-                File file = new File(path, filename); // the File to save , append increasing numeric counter to prevent files from getting overwritten.
-
-                try {
-                    fOut = new FileOutputStream(file);
-                    Bitmap pictureBitmap = processedBmp.copy(processedBmp.getConfig(), true);
-                    pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
-                    fOut.close(); // do not forget to close the stream
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(SDK_INT > Build.VERSION_CODES.P) {
+                    System.out.println("HERE");
+                    MediaStore.Images.Media.insertImage(getContentResolver(), processedBmp, "PicEd_"+dateTime+".jpg", "");
                 }
-                galleryAdd(path.concat("/").concat(filename));
+                else{
+                    String path = Environment.getExternalStorageDirectory().toString();
+                    path = path.concat("/Pictures/PicEditor");
+
+                    File myDir = new File(path);
+                    myDir.mkdirs();
+
+                    System.out.println(path);
+                    OutputStream fOut;
+
+                    String filename = "PicEd_"+dateTime+".jpg";
+                    File file = new File(path, filename); // the File to save , append increasing numeric counter to prevent files from getting overwritten.
+
+                    try {
+                        fOut = new FileOutputStream(file);
+                        Bitmap pictureBitmap = processedBmp.copy(processedBmp.getConfig(), true);
+                        pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
+                        fOut.close(); // do not forget to close the stream
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e2) {
+                        e2.printStackTrace();
+                    }
+                    galleryAdd(path.concat("/").concat(filename));
+                }
                 Toast toast = Toast.makeText(this,"Image saved in Pictures/PicEditor", Toast.LENGTH_SHORT);
                 View view = toast.getView();
                 view.setBackgroundResource(R.color.background);
